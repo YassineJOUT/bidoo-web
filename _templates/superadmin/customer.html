@@ -12,17 +12,11 @@
 
     <link rel="shortcut icon" href="../assets/images/favicon.ico" />
 
-    <!-- datepicker -->
-    <link
-      href="https://themesbrand.com/veltrix/layouts-2/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"
-      rel="stylesheet"
-    />
-
-    <!-- jvectormap -->
-    <link
-      href="https://themesbrand.com/veltrix/layouts-2/plugins/jvectormap/jquery-jvectormap-2.0.2.css"
-      rel="stylesheet"
-    />
+   <!-- datepicker -->
+   <link href="../assets/libs/bootstrap-datepicker.min.css" rel="stylesheet">
+   <!-- DataTables -->
+   <link href="../assets/libs/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+   <link href="../assets/libs/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
     <link
       href="../assets/css/bootstrap.min.css"
@@ -36,6 +30,11 @@
     />
     <link href="../assets/css/icons.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/style.css" rel="stylesheet" type="text/css" />
+    <style>
+      td,th{
+          text-align: center;
+      }
+  </style>
   </head>
 
   <body>
@@ -186,8 +185,7 @@
                     <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-business"></i><span> Menu management <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="kitchen.html"> Kitchen </a></li>
-                        <li><a href="manu-category.html"> Menu categories</a></li>
-                        <li><a href="items.html"> Items</a></li>
+                        <li><a href="menu-category.html"> Menu categories</a></li>
                     </ul>
                 </li>
                  <li>
@@ -234,8 +232,22 @@
             <div class="page-title-box">
               <div class="row align-items-center">
                 <div class="col-sm-6">
-                  <h4 class="page-title">Dashboard</h4>
+                  <h4 class="page-title">Manage Customers</h4>
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index"><i class="mdi mdi-home-outline"></i></a></li>
+                    
+                    <li class="breadcrumb-item active">Manage Customers</li>
+                </ol>
                 </div>
+                <div class="col-sm-6">
+                  <div class="float-right d-none d-md-block">
+                      <button class="btn btn-primary dropdown-toggle arrow-none waves-effect waves-light" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-plus mr-2"></i> Add new customer
+                      </button>
+                  </div>
+                  
+                  
+              </div>
               </div>
               <!-- end row -->
             </div>
@@ -245,38 +257,11 @@
               <div class="col-lg-12">
                 <div class="card mini-stat ">
                   <div class="card-body mini-stat-img">
-                    <div class="row">
-                      <div class="col-sm-12 col-md-6">
-                        <div class="dataTables_length" id="datatable_length">
-                          <label
-                            >Show
-                            <select
-                              name="datatable_length"
-                              aria-controls="datatable"
-                              class="custom-select custom-select-sm form-control form-control-sm"
-                              ><option value="10">10</option
-                              ><option value="25">25</option
-                              ><option value="50">50</option
-                              ><option value="100">100</option></select
-                            >
-                            entries</label
-                          >
-                        </div>
-                      </div>
-                      <div class="col-sm-12 col-md-6">
-                        <div id="datatable_filter" class="dataTables_filter">
-                          <label
-                            >Search:<input
-                              type="search"
-                              class="form-control form-control-sm"
-                              placeholder=""
-                              aria-controls="datatable"
-                          /></label>
-                        </div>
-                      </div>
-                    </div>
+                  
+                    <h4 class="mt-0 header-title">Customers</h4>
+                    <br>
                     <div class="table-responsive">
-                      <table class="table mb-0">
+                      <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead class="thead-light">
                           <tr>
                             <th>#</th>
@@ -316,125 +301,15 @@
                             </td>
                             
                             <td>
-                              <button
-                                type="button"
-                                class="btn btn-outline-danger btn-rounded  waves-effect waves-light mr-1"
-                              >
-                                <i class="fas fa-trash"></i> Delete
-                              </button>
-                              
-                            </td>
+                              <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
+                              <a href="javascript:void(0);" class="mr-3 text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
+                              <a href="javascript:void(0);" class="mr-3 text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Log in"><i class="fas fa-lock-open font-18"></i></a>
+
+                          </td>
                           </tr>
                          
                         </tbody>
-                      </table>
-                      <div class="row">
-                        <div class="col-sm-12 col-md-5">
-                          <div
-                            class="dataTables_info"
-                            id="datatable_info"
-                            role="status"
-                            aria-live="polite"
-                          >
-                            Showing 1 to 10 of 57 entries
-                          </div>
-                        </div>
-                        <div class="col-sm-12 col-md-7">
-                          <div
-                            class="dataTables_paginate paging_simple_numbers"
-                            id="datatable_paginate"
-                          >
-                            <ul class="pagination">
-                              <li
-                                class="paginate_button page-item previous disabled"
-                                id="datatable_previous"
-                              >
-                                <a
-                                  href="#"
-                                  aria-controls="datatable"
-                                  data-dt-idx="0"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >Previous</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item active">
-                                <a
-                                  href="#"
-                                  aria-controls="datatable"
-                                  data-dt-idx="1"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >1</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item ">
-                                <a
-                                  href="#"
-                                  aria-controls="datatable"
-                                  data-dt-idx="2"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >2</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item ">
-                                <a
-                                  href="#"
-                                  aria-controls="datatable"
-                                  data-dt-idx="3"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >3</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item ">
-                                <a
-                                  href="#"
-                                  aria-controls="datatable"
-                                  data-dt-idx="4"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >4</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item ">
-                                <a
-                                  href="#"
-                                  aria-controls="datatable"
-                                  data-dt-idx="5"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >5</a
-                                >
-                              </li>
-                              <li class="paginate_button page-item ">
-                                <a
-                                  href="#"
-                                  aria-controls="datatable"
-                                  data-dt-idx="6"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >6</a
-                                >
-                              </li>
-                              <li
-                                class="paginate_button page-item next"
-                                id="datatable_next"
-                              >
-                                <a
-                                  href="#"
-                                  aria-controls="datatable"
-                                  data-dt-idx="7"
-                                  tabindex="0"
-                                  class="page-link"
-                                  >Next</a
-                                >
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
+                      </table> 
                     </div>
                   </div>
                 </div>
@@ -461,18 +336,24 @@
     <script src="../assets/js/jquery.slimscroll.js"></script>
     <script src="../assets/js/waves.min.js"></script>
 
-    <!-- datepicker -->
-    <script src="https://themesbrand.com/veltrix/layouts-2/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <!-- vector map  -->
-    <script src="https://themesbrand.com/veltrix/layouts-2/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
-    <script src="https://themesbrand.com/veltrix/layouts-2/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-
-    <!-- apexcharts -->
-    <script src="https://themesbrand.com/veltrix/layouts-2/plugins/apexcharts/apexcharts.min.js"></script>
-
-    <!-- Peity JS -->
-    <script src="https://themesbrand.com/veltrix/layouts-2/plugins/peity-chart/jquery.peity.min.js"></script>
-
+    <!-- Required datatable js -->
+    <script src="../assets/libs/jquery.dataTables.min.js"></script>
+    <script src="../assets/libs/dataTables.bootstrap4.min.js"></script>
+ 
+   <!-- Buttons examples -->
+   <script src="../assets/libs/dataTables.buttons.min.js"></script>
+   <script src="../assets/libs/buttons.bootstrap4.min.js"></script>
+   <script src="../assets/libs/jszip.min.js"></script>
+   <script src="../assets/libs/pdfmake.min.js"></script>
+   <script src="../assets/libs/vfs_fonts.js"></script>
+   <script src="../assets/libs/buttons.html5.min.js"></script>
+   <script src="../assets/libs/buttons.print.min.js"></script>
+   <script src="../assets/libs/buttons.colVis.min.js"></script>
+   <!-- Responsive examples -->
+   <script src="../assets/libs/dataTables.responsive.min.js"></script>
+   <script src="../assets/libs/responsive.bootstrap4.min.js"></script>
+   <!-- Datatable init js -->
+   <script src="../assets/pages/datatables.init.js"></script>    
     <script src="../assets/pages/dashboard.js"></script>
 
     <!-- App js -->

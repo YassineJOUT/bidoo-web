@@ -230,18 +230,18 @@
             <div class="page-title-box">
               <div class="row align-items-center">
                 <div class="col-sm-6">
-                  <h4 class="page-title">Manage restaurants</h4>
+                  <h4 class="page-title">Manage Categories</h4>
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index"><i class="mdi mdi-home-outline"></i></a></li>
                     
-                    <li class="breadcrumb-item active">Manage restaurants</li>
+                    <li class="breadcrumb-item active">Manage Categories</li>
                 </ol>
                 </div>
                 <div class="col-sm-6">
                   <div class="float-right d-none d-md-block">
                       <a href="add-restaurant.html" class="btn btn-primary dropdown-toggle arrow-none waves-effect waves-light">
                         
-                          <i class="fas fa-plus mr-2"></i> Add new restaurant
+                          <i class="fas fa-plus mr-2"></i> Add new category
                     
                       </a>
                   </div>
@@ -257,9 +257,9 @@
                   <div class="card mini-stat bg-pattern">
                       <div class="card-body mini-stat-img">
                           <div class="mini-stat-icon">
-                              <i class="ion ion-ios-restaurant bg-soft-primary text-primary float-right h1"></i>
+                              <i class="typcn typcn-folder-open bg-soft-primary text-primary float-right h1"></i>
                           </div>
-                          <h6 class="text-uppercase mb-3 mt-0">Total restaurants</h6>
+                          <h6 class="text-uppercase mb-3 mt-0">Total Categories</h6>
                           <h5 class="mb-3">4</h5>
                       </div>
                   </div>
@@ -268,9 +268,9 @@
                   <div class="card mini-stat bg-pattern">
                       <div class="card-body mini-stat-img">
                           <div class="mini-stat-icon">
-                              <i class="ion ion-ios-restaurant bg-soft-success text-success float-right h1"></i>
+                              <i class="typcn typcn-folder-open bg-soft-success text-success float-right h1"></i>
                           </div>
-                          <h6 class="text-uppercase mb-3 mt-0">Active restaurants</h6>
+                          <h6 class="text-uppercase mb-3 mt-0">Active Categories</h6>
                           <h5 class="mb-3">2</h5>
                       </div>
                   </div>
@@ -279,9 +279,9 @@
                   <div class="card mini-stat bg-pattern">
                       <div class="card-body mini-stat-img">
                           <div class="mini-stat-icon">
-                              <i class="ion ion-ios-restaurant bg-soft-danger text-danger float-right h1"></i>
+                              <i class="typcn typcn-folder-open bg-soft-danger text-danger float-right h1"></i>
                           </div>
-                          <h6 class="text-uppercase mb-3 mt-0">Inactive restaurants</h6>
+                          <h6 class="text-uppercase mb-3 mt-0">Inactive Catagories</h6>
                           <h5 class="mb-3">2</h5>
                          </div>
                   </div>
@@ -293,19 +293,17 @@
               <div class="col-12">
                   <div class="card">
                       <div class="card-body">
-                        <h4 class="mt-0 header-title">Restaurants</h4>
+                        <h4 class="mt-0 header-title">Categories</h4>
                         <p class="text-muted mb-4">
                         </p>
                           <table id="datatable-buttons" class="table  table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead class="thead-light">
                               <tr>
                                 <th class="text-center">#</th>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Phone</th>
-                                <th class="text-center">City</th>
+                                <th class="text-center">Category name</th>
+                                <th class="text-center">Added by</th>
+                                <th class="text-center">Added date</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Options</th>
                                 <th class="text-center">Action</th>
                               </tr>
                             </thead>
@@ -313,24 +311,22 @@
                               <tr>
                                 <th scope="row">1</th>
                                 <td class="text-center">
-                                  12
+                                  Pizza
                                 </td>
                                 <td class="text-center">
                                   Mcdo
                                 </td>
                                 <td class="text-center">
-                                  0638668167
+                                  Oct 8, 2019
                                 </td>
-                                <td class="text-center">
-                                  Casablanca
-                                </td>
+                                
                                 <td class="text-center">
                                   <div
                                     class="btn-group btn-group-toggle mt-2 mt-xl-0"
                                     data-toggle="buttons"
                                   >
                                     <label
-                                      class="btn btn-outline-primary btn-rounded  "
+                                      class="btn btn-outline-primary btn-rounded  active"
                                     >
                                       <input
                                         type="radio"
@@ -340,7 +336,7 @@
                                       active
                                     </label>
                                     <label
-                                      class="btn btn-outline-danger btn-rounded active"
+                                      class="btn btn-outline-danger btn-rounded "
                                     >
                                       <input
                                         type="radio"
@@ -352,9 +348,7 @@
                                     </label>
                                   </div>
                                 </td>
-                                <td class="text-center">
-                                  Details | Invoice | Preview
-                                </td>
+                               
                            
                                   <td class="text-center">
                                     <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
@@ -364,19 +358,17 @@
                             
                               </tr>
                               <tr>
-                                <th scope="row">1</th>
+                                <th scope="row">2</th>
                                 <td class="text-center">
-                                  12
+                                  Desserts
                                 </td>
                                 <td class="text-center">
                                   Mcdo
                                 </td>
                                 <td class="text-center">
-                                  0638668167
+                                  Oct 12, 2019
                                 </td>
-                                <td class="text-center">
-                                  Casablanca
-                                </td>
+                                
                                 <td class="text-center">
                                   <div
                                     class="btn-group btn-group-toggle mt-2 mt-xl-0"
@@ -405,29 +397,27 @@
                                     </label>
                                   </div>
                                 </td>
-                                <td class="text-center">
-                                  Details | Invoice | Preview
-                                </td>
-                                <td class="text-center">
-                                  <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
-                                  <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
+                               
+                           
+                                  <td class="text-center">
+                                    <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
+                                    <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
 
-                              </td>
+                                </td>
+                            
                               </tr>
                               <tr>
-                                <th scope="row">1</th>
+                                <th scope="row">3</th>
                                 <td class="text-center">
-                                  12
+                                  Pizza
                                 </td>
                                 <td class="text-center">
                                   Mcdo
                                 </td>
                                 <td class="text-center">
-                                  0638668167
+                                  Oct 25, 2019
                                 </td>
-                                <td class="text-center">
-                                  Casablanca
-                                </td>
+                                
                                 <td class="text-center">
                                   <div
                                     class="btn-group btn-group-toggle mt-2 mt-xl-0"
@@ -456,29 +446,27 @@
                                     </label>
                                   </div>
                                 </td>
-                                <td class="text-center">
-                                  Details | Invoice | Preview
-                                </td>
-                                <td class="text-center">
-                                  <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
-                                  <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
+                               
+                           
+                                  <td class="text-center">
+                                    <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
+                                    <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
 
-                              </td>
+                                </td>
+                            
                               </tr>
                               <tr>
-                                <th scope="row">1</th>
+                                <th scope="row">4</th>
                                 <td class="text-center">
-                                  12
+                                  Salads
                                 </td>
                                 <td class="text-center">
                                   Mcdo
                                 </td>
                                 <td class="text-center">
-                                  0638668167
+                                  Dec 8, 2019
                                 </td>
-                                <td class="text-center">
-                                  Casablanca
-                                </td>
+                                
                                 <td class="text-center">
                                   <div
                                     class="btn-group btn-group-toggle mt-2 mt-xl-0"
@@ -507,14 +495,14 @@
                                     </label>
                                   </div>
                                 </td>
-                                <td class="text-center">
-                                  Details | Invoice | Preview
-                                </td>
-                                <td class="text-center">
-                                  <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
-                                  <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
+                               
+                           
+                                  <td class="text-center">
+                                    <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
+                                    <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
 
-                              </td>
+                                </td>
+                            
                               </tr>
                             </tbody>
                           </table>
