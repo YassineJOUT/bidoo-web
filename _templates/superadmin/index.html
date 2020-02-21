@@ -2,20 +2,15 @@
 <html lang="en">
 
     
-<!-- Mirrored from themesbrand.com/veltrix/layouts-2/vertical/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 02 Feb 2020 22:24:37 GMT -->
+<!-- Mirrored from themesbrand.com/veltrix/layouts-2/vertical/pages-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 02 Feb 2020 22:27:25 GMT -->
 <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-        <title>Diboo dashboard super admin</title>
-
+        <title>DIBOO | Super admin | Login</title>
+        <meta content="Responsive admin theme build on top of Bootstrap 4" name="description" />
+        <meta content="Themesbrand" name="author" />
         <link rel="shortcut icon" href="../assets/images/favicon.ico">
-
-        <!-- datepicker -->
-        <link href="https://themesbrand.com/veltrix/layouts-2/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
-
-        <!-- jvectormap -->
-        <link href="https://themesbrand.com/veltrix/layouts-2/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
 
         <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="../assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
@@ -23,724 +18,59 @@
         <link href="../assets/css/style.css" rel="stylesheet" type="text/css">
     </head>
 
-    <body>
-
-        <!-- Begin page -->
-        <div id="wrapper">
-
-            <!-- Top Bar Start -->
-            <div class="topbar">
-
-                <!-- LOGO -->
-                <div class="topbar-left">
-                    <a href="index-2.html" class="logo">
-                        
-                    </a>
-                </div>
-
-                <nav class="navbar-custom">
-                    <ul class="navbar-right list-inline float-right mb-0">
-                        
-
-                        <!-- language-->
-                        <li class="dropdown notification-list list-inline-item d-none d-md-inline-block">
-                            <a class="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                <img src="../assets/images/flags/us_flag.jpg" class="mr-2" height="12" alt=""/> English <span class="mdi mdi-chevron-down"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right language-switch">
-                                <a class="dropdown-item" href="#"><img src="../assets/images/flags/french_flag.jpg" alt="" height="16" /><span> French </span></a>
-                            </div>
-                        </li>
-
-                        <!-- full screen -->
-                        <li class="dropdown notification-list list-inline-item d-none d-md-inline-block">
-                            <a class="nav-link waves-effect" href="#" id="btn-fullscreen">
-                                <i class="ion ion-md-qr-scanner noti-icon"></i>
-                            </a>
-                        </li>
-
-                        <!-- notification -->
-                        
-
-                        <li class="dropdown notification-list list-inline-item">
-                                    <div class="dropdown notification-list nav-pro-img">
-                                        <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                            <img src="../assets/images/users/user-4.jpg" alt="user" class="rounded-circle">
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                                            <!-- item-->
-                                            <a class="dropdown-item d-block" href="#"><span class="badge badge-success float-right">11</span><i class="mdi mdi-settings"></i> Settings</a>
-                                            <a class="dropdown-item" href="#"><i class="mdi mdi-lock-open-outline"></i> Change password</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item text-danger" href="#"><i class="mdi mdi-power text-danger"></i> Logout</a>
-                                        </div>
-                                    </div>
-                                </li>
-
-                    </ul>
-
-                    <ul class="list-inline menu-left mb-0">
-                        <li class="float-left">
-                            <button class="button-menu-mobile open-left waves-effect">
-                                <i class="mdi mdi-menu"></i>
-                            </button>
-                        </li>
-                       
-                    </ul>
-
-                </nav>
-
-            </div>
-            <!-- Top Bar End -->
-
-            <!-- ========== Left Sidebar Start ========== -->
-            <div class="left side-menu">
-                <div class="slimscroll-menu" id="remove-scroll">
-
-                    <!--- Sidemenu -->
-                    <div id="sidebar-menu">
-                        <!-- Left Menu Start -->
-                        <ul class="metismenu" id="side-menu">
-                            <li>
-                                <a href="index.html" class="waves-effect">
-                                    <i class="ion ion-md-speedometer"></i><span class="badge badge-success badge-pill float-right"></span> <span> Dashboard </span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-pin"></i><span> Map View <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                                <ul class="submenu">
-                                    <li><a href="map-view.html"> Restaurant Map View</a></li>
-                                </ul>
-                            </li>
-                           
-                            
-                            <li>
-                                <a href="carousel.html" class="waves-effect">
-                                    <i class="ion ion-md-home"></i><span class="badge badge-success badge-pill float-right"></span> <span> Home Carousel </span>
-                                </a>
-                            </li>
-                             <li>
-                                <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-ios-settings"></i><span> Settings <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                                <ul class="submenu">
-                                    <li><a href="site-settings.html"> Site settings </a></li>
-                                    <li><a href="commission-settings.html"> Commission settings</a></li>
-                                </ul>
-                            </li>
-                             <li>
-                                <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-business"></i><span> Manage restaurants <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                                <ul class="submenu">
-                                    <li><a href="add-restaurant.html"> Add new restaurant </a></li>
-                                    <li><a href="manage-restaurants.html"> Manage restaurant</a></li>
-                                    <li><a href="restaurant-report.html"> Restaurant Orders Report</a></li>
-                                     
-                                </ul>
-                            </li>
-                             <li>
-                                <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-business"></i><span> Menu management <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                                <ul class="submenu">
-                                    <li><a href="kitchen.html"> Kitchen </a></li>
-                                    <li><a href="menu-category.html"> Menu categories</a></li>
-                                    <li><a href="items.html"> Category items</a></li>
-
-                                </ul>
-                            </li>
-                             <li>
-                                <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-restaurant"></i><span> Manage customers <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                                <ul class="submenu">
-                                    <li><a href="customer.html"> Customers </a></li>
-                                    <li><a href="track-payment.html"> Track payment</a></li>
-                                </ul>
-                            </li>
-                             <li>
-                                <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-cart"></i><span> Manage orders <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                                <ul class="submenu">
-                                    <li><a href="orders.html"> Customer orders </a></li>
-                                    <li><a href="orders-guest.html"> Guest orders </a></li>
-                                </ul>
-                            </li>
-                                <!-- <li>
-                    <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-cart"></i><span> Management <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                    <ul class="submenu">
-                        <li><a href="content.html"> Content </a></li>
-                        <li><a href="faq.html"> FAQ </a></li>
-                    </ul>
-                </li>-->
-
-                           
-
-                        </ul>
-
-                    </div>
-                    <!-- Sidebar -->
-                    <div class="clearfix"></div>
-
-                </div>
-                <!-- Sidebar -left -->
-
-            </div>
-            <!-- Left Sidebar End -->
-
-            <!-- ============================================================== -->
-            <!-- Start right Content here -->
-            <!-- ============================================================== -->
-            <div class="content-page">
-                <!-- Start content -->
-                <div class="content">
-                    <div class="container-fluid">
-                        <div class="page-title-box">
-                            <div class="row align-items-center">
-                                <div class="col-sm-6">
-                                    <h4 class="page-title">Dashboard</h4>
-                                    
-                                </div>
-                                
-                            </div> <!-- end row -->
-                        </div>
-                        <!-- end page-title -->
-
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <div class="card mini-stat bg-pattern">
-                                    <div class="card-body mini-stat-img">
-                                        <div class="mini-stat-icon">
-                                            <i class="dripicons-broadcast bg-soft-primary text-primary float-right h4"></i>
-                                        </div>
-                                        <h6 class="text-uppercase mb-3 mt-0">Total Orders</h6>
-                                        <h5 class="mb-3">1 687</h5>
-                                         </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card mini-stat bg-pattern">
-                                    <div class="card-body mini-stat-img">
-                                        <div class="mini-stat-icon">
-                                            <i class="fas fa-user bg-soft-primary text-primary float-right h4"></i>
-                                        </div>
-                                        <h6 class="text-uppercase mb-3 mt-0">Total Customers</h6>
-                                        <h5 class="mb-3">265</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card mini-stat bg-pattern">
-                                    <div class="card-body mini-stat-img">
-                                        <div class="mini-stat-icon">
-                                            <i class="ion ion-md-restaurant bg-soft-primary text-primary float-right h4"></i>
-                                        </div>
-                                        <h6 class="text-uppercase mb-3 mt-0">Total Restaurants</h6>
-                                        <h5 class="mb-3">146</h5>
-                                        </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="card mini-stat bg-pattern">
-                                    <div class="card-body mini-stat-img">
-                                        <div class="mini-stat-icon">
-                                            <i class="fas fa-dollar-sign bg-soft-primary text-primary float-right h4"></i>
-                                        </div>
-                                        <h6 class="text-uppercase mb-3 mt-0">Total gain</h6>
-                                        <h5 class="mb-3">$ 1444.6</h5>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end row -->
-
-
-                        
-                        <div class="row">
-                            <div class="col-xl-8">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="mt-0 header-title mb-4">Overview</h4>
-                                        <ul class="nav nav-tabs" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" data-toggle="tab" href="#users" role="tab" aria-selected="false">
-                                                    <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
-                                                    <span class="d-none d-sm-block">Users</span>    
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#restaurants" role="tab" aria-selected="false">
-                                                    <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-                                                    <span class="d-none d-sm-block">Restaurants</span>    
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#orders" role="tab" aria-selected="false">
-                                                    <span class="d-block d-sm-none"><i class="far fa-envelope"></i></span>
-                                                    <span class="d-none d-sm-block">Last 8 Orders</span>    
-                                                </a>
-                                            </li>
-                                         
-                                        </ul>
-                                        <div class="tab-content">
-                                            <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="nav-first-tab">
-                                                <div class="p-2 mt-2">
-                                                    <ul class="list-unstyled latest-message-list mb-0">
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                              
-                                                                 
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">10</p>
-                                                                        <h7 class="mt-0">Total users</h7>
-                                                                    </div>
-                                                              
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                               
-                                                                    
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">111</p>
-                                                                        <h7 class="mt-0">Active users</h7>
-                                                                    </div>
-                                                               
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">8</p>
-                                                                        <h7 class="mt-0">Inactive users</h7>
-                                                                    </div>
-                                                                
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                               
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h7 class="mt-0">Users joined this week</h7>
-                                                                    </div>
-                                                              
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                               
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h7 class="mt-0">Users joined this month</h7>
-                                                                    </div>
-                                                              
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                               
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h7 class="mt-0">Users joined this year</h7>
-                                                                    </div>
-                                                              
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                               
-                                            </div>
-
-                                            <div class="tab-pane fade show " id="restaurants" role="tabpanel" aria-labelledby="nav-first-tab">
-                                                <div class="p-2 mt-2">
-                                                    <ul class="list-unstyled latest-message-list mb-0">
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                              
-                                                                 
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">10</p>
-                                                                        <h7 class="mt-0">Total restaurants</h7>
-                                                                    </div>
-                                                              
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                               
-                                                                    
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">111</p>
-                                                                        <h7 class="mt-0">Active restaurants</h7>
-                                                                    </div>
-                                                               
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">8</p>
-                                                                        <h7 class="mt-0">Inactive restaurants</h7>
-                                                                    </div>
-                                                                
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                               
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h7 class="mt-0">Pending activation restaurants </h7>
-                                                                    </div>
-                                                              
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                               
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h7 class="mt-0">Restaurants joined this week</h7>
-                                                                    </div>
-                                                              
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                               
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h7 class="mt-0">Restaurants joined this month</h7>
-                                                                    </div>
-                                                              
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                               
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h7 class="mt-0">Restaurants joined this year</h7>
-                                                                    </div>
-                                                              
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                               
-                                            </div>
-                                            <div class="tab-pane fade show " id="orders" role="tabpanel" aria-labelledby="nav-first-tab">
-                                                <div class="table-responsive">
-                                                    <table class="table mb-0">
-                                                        <caption>List of last 10 orders</caption>
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Rest ID</th>
-                                                                <th>Rest Name</th>
-                                                                <th>Order num</th>
-                                                                <th>Total price</th>
-                                                                <th>Ordered at</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>Rest 1</td>
-                                                                <td>ORD1234</td>
-                                                                <td>€ 6.00</td>
-                                                                <td>1 Feb 2020 / 3:45 PM</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Rest 2</td>
-                                                                <td>ORD12345</td>
-                                                                <td>€ 16.00</td>
-                                                                <td>13 Jan 2020 / 2:45 PM</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">3</th>
-                                                                <td>Rest 3</td>
-                                                                <td>ORD12322</td>
-                                                                <td>€ 61.00</td>
-                                                                <td>1 Jan 2020 / 5:45 PM</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                
-                                                </div>
-                                               
-                                            </div>
-
-                                        </div>
-    
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end col -->
-                            <div class="col-xl-4">
-                                <div class="card messages">
-                                    <div class="card-body">
-                                        <h4 class="mt-0 header-title mb-4">Orders statistics </h4>
-                                        <nav>
-                                            <div class="nav nav-tabs messages-tabs tab-wid nav-justified" role="tablist">
-                                                <a class="nav-item nav-link active" id="nav-first-tab" data-toggle="tab" href="#nav-first" role="tab" aria-controls="nav-first" aria-selected="true">
-                                                
-                                                    <p class="text-muted mb-0">Today</p>
-                                                </a>
-                                                <a class="nav-item nav-link" id="nav-second-tab" data-toggle="tab" href="#nav-second" role="tab" aria-controls="nav-second" aria-selected="false">
-                                                  
-                                                    <p class="text-muted mb-0">Week</p>
-                                                </a>
-                                                <a class="nav-item nav-link " id="nav-third-tab" data-toggle="tab" href="#nav-third" role="tab" aria-controls="nav-first" aria-selected="true">
-                                                    
-                                                    <p class="text-muted mb-0">Month</p>
-                                                </a>
-                                                <a class="nav-item nav-link" id="nav-fourth-tab" data-toggle="tab" href="#nav-fourth" role="tab" aria-controls="nav-second" aria-selected="false">
-                                                    
-                                                    <p class="text-muted mb-0">Year</p>
-                                                </a>
-                                            </div>
-                                        </nav>
-                                        <div class="tab-content">
-                                            <div class="tab-pane fade show active" id="nav-first" role="tabpanel" aria-labelledby="nav-first-tab">
-                                                <div class="p-2 mt-2">
-                                                    <ul class="list-unstyled latest-message-list mb-0">
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                                <div class="media">
-                                                                 
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">10</p>
-                                                                        <h6 class="mt-0">Orders Today</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                                <div class="media">
-                                                                    
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">111</p>
-                                                                        <h6 class="mt-0">Commission Today</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                <div class="media">
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">8</p>
-                                                                        <h6 class="mt-0">Delivered Orders</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                <div class="media">
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h6 class="mt-0">In preparation</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                               
-                                            </div>
-
-                                            <div class="tab-pane fade show " id="nav-second" role="tabpanel" aria-labelledby="nav-first-tab">
-                                                <div class="p-2 mt-2">
-                                                    <ul class="list-unstyled latest-message-list mb-0">
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                                <div class="media">
-                                                                 
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">10</p>
-                                                                        <h6 class="mt-0">Orders Week</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                                <div class="media">
-                                                                    
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">111</p>
-                                                                        <h6 class="mt-0">Commission Week</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                <div class="media">
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">8</p>
-                                                                        <h6 class="mt-0">Delivered Orders</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                <div class="media">
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h6 class="mt-0">In preparation</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                               
-                                            </div>
-
-                                            <div class="tab-pane fade show " id="nav-third" role="tabpanel" aria-labelledby="nav-first-tab">
-                                                <div class="p-2 mt-2">
-                                                    <ul class="list-unstyled latest-message-list mb-0">
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                                <div class="media">
-                                                                 
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">10</p>
-                                                                        <h6 class="mt-0">Orders Month</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                                <div class="media">
-                                                                    
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">111</p>
-                                                                        <h6 class="mt-0">Commission Month</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                <div class="media">
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">8</p>
-                                                                        <h6 class="mt-0">Delivered Orders</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                <div class="media">
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h6 class="mt-0">In preparation</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                               
-                                            </div>
-                                           
-                                            <div class="tab-pane fade show " id="nav-fourth" role="tabpanel" aria-labelledby="nav-first-tab">
-                                                <div class="p-2 mt-2">
-                                                    <ul class="list-unstyled latest-message-list mb-0">
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                                <div class="media">
-                                                                 
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">10</p>
-                                                                        <h6 class="mt-0">Orders Year</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#">
-                                                                <div class="media">
-                                                                    
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">111</p>
-                                                                        <h6 class="mt-0">Commission Year</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                <div class="media">
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">8</p>
-                                                                        <h6 class="mt-0">Delivered Orders</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li class="message-list-item">
-                                                            <a href="#" >
-                                                                <div class="media">
-                                                                  
-                                                                    <div class="media-body">
-                                                                        <p class="float-right font-12 text-muted">18</p>
-                                                                        <h6 class="mt-0">In preparation</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                               
-                                            </div>
-                                        </div>
-                                        <!-- end tab-content -->
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end col -->
-
-                        </div>
-                        <!-- end row -->
-                        
-                    </div>
-                    <!-- container-fluid -->
-
-                </div>
-                <!-- content -->
-
-                
-
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Right content here -->
-            <!-- ============================================================== -->
-
-        </div>
-        <!-- END wrapper -->
-
+    <body class="bg-primary">
        
+
+        <div class="account-pages my-5 pt-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card bg-pattern shadow-none">
+                            <div class="card-body">
+                                <div class="text-center mt-4">
+                                    <div class="mb-3">
+                                        <a href="i" class="logo"><img src="../assets/images/Diboo.png" height="150" alt="logo"></a>
+                                    </div>
+                                </div>
+                                <div class="p-3"> 
+                                    <h4 class="font-18 text-center">Welcome Back !</h4>
+                                    <p class="text-muted text-center mb-4">Sign in to continue to DIBOO super admin space.</p>
+                                    <form class="form-horizontal" action="./dashboard.html">
+                
+                                        <div class="form-group">
+                                            <label for="username">Email</label>
+                                            <input type="email" class="form-control" id="username" placeholder="Enter username">
+                                        </div>
+                
+                                        <div class="form-group">
+                                            <label for="userpassword">Password</label>
+                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password">
+                                        </div>
+                
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="customControlInline">
+                                            <label class="custom-control-label" for="customControlInline">Remember me</label>
+                                        </div>
+                                        
+                                        <div class="mt-3">
+                                            <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">Log In</button>
+                                        </div>
+            
+                                        <div class="mt-4 text-center">
+                                            <a href="recoverpw.html"><i class="mdi mdi-lock"></i> Forgot your password?</a>
+                                        </div>
+                                    </form>
+                
+                                </div>
+                    
+                            </div>
+                        </div>
+                      
+
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- jQuery  -->
         <script src="../assets/js/jquery.min.js"></script>
@@ -749,25 +79,11 @@
         <script src="../assets/js/jquery.slimscroll.js"></script>
         <script src="../assets/js/waves.min.js"></script>
 
-        <!-- datepicker -->
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-        <!-- vector map  -->
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-
-        <!-- apexcharts -->
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/apexcharts/apexcharts.min.js"></script>
-
-        <!-- Peity JS -->
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/peity-chart/jquery.peity.min.js"></script>
-
-        <script src="../assets/pages/dashboard.js"></script>
-
         <!-- App js -->
         <script src="../assets/js/app.js"></script>
         
     </body>
 
 
-<!-- Mirrored from themesbrand.com/veltrix/layouts-2/vertical/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 02 Feb 2020 22:26:18 GMT -->
+<!-- Mirrored from themesbrand.com/veltrix/layouts-2/vertical/pages-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 02 Feb 2020 22:27:26 GMT -->
 </html>
