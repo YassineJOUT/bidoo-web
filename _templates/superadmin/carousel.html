@@ -12,15 +12,24 @@
         <link rel="shortcut icon" href="../assets/images/favicon.ico">
 
         <!-- datepicker -->
-        <link href="https://themesbrand.com/veltrix/layouts-2/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+        <link href="../assets/libs/bootstrap-datepicker.min.css" rel="stylesheet">
+        <!-- DataTables -->
+        <link href="../assets/libs/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/libs/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
-        <!-- jvectormap -->
-        <link href="https://themesbrand.com/veltrix/layouts-2/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
 
+        <link href="../assets/libs/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        
+        
         <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="../assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
         <link href="../assets/css/icons.css" rel="stylesheet" type="text/css">
         <link href="../assets/css/style.css" rel="stylesheet" type="text/css">
+        <style>
+            td,th{
+                text-align: center;
+            }
+        </style>
     </head>
 
     <body>
@@ -141,8 +150,8 @@
                                 <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-business"></i><span> Menu management <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                                 <ul class="submenu">
                                     <li><a href="kitchen.html"> Kitchen </a></li>
-                                    <li><a href="manu-category.html"> Menu categories</a></li>
-                                    <li><a href="items.html"> Items</a></li>
+                                    <li><a href="menu-category.html"> Menu categories</a></li>
+                                    <li><a href="items.html"> Category items</a></li>
                                 </ul>
                             </li>
                              <li>
@@ -159,15 +168,13 @@
                                     <li><a href="orders-guest.html"> Guest orders </a></li>
                                 </ul>
                             </li>
-                             <li>
-                                <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-cart"></i><span> Management <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-                                <ul class="submenu">
-                                    <li><a href="content.html"> Content </a></li>
-                                    <li><a href="faq.html"> FAQ </a></li>
-                                </ul>
-                            </li>
-
-                           
+                              <!-- <li>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="ion ion-md-cart"></i><span> Management <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
+                    <ul class="submenu">
+                        <li><a href="content.html"> Content </a></li>
+                        <li><a href="faq.html"> FAQ </a></li>
+                    </ul>
+                </li>-->
 
                         </ul>
 
@@ -200,9 +207,11 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="float-right d-none d-md-block">
-                                        <button class="btn btn-primary dropdown-toggle arrow-none waves-effect waves-light" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        
+                                        <button type="button" class="btn btn-primary  waves-effect waves-light"  data-toggle="modal" data-target=".bs-caroussel-modal">
                                             <i class="fas fa-plus mr-2"></i> Add
                                         </button>
+                                        
                                     </div>
                                     
                                     
@@ -217,7 +226,7 @@
                                 <div class="card mini-stat ">
                                     <div class="card-body mini-stat-img">
                                         <div class="table-responsive">
-                                            <table class="table mb-0">
+                                            <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         
                                                 <thead class="thead-light">
                                                     <tr>
@@ -235,17 +244,17 @@
                                                         </td>
                                                         <td>
                                                             <div class="btn-group btn-group-toggle mt-2 mt-xl-0" data-toggle="buttons">
-                                                                <label class="btn btn-outline-primary btn-rounded  active">
+                                                                <label class="btn btn-outline-primary btn-sm btn-rounded  active">
                                                                   <input type="radio" name="options" id="option1" checked=""> active
                                                                 </label>
-                                                                <label class="btn btn-outline-danger btn-rounded ">
+                                                                <label class="btn btn-outline-danger btn-sm btn-rounded ">
                                                                   <input type="radio" name="options" id="option2"> inactive
                                                                 </label>
         
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
+                                                            <a  class="mr-3 text-primary"  data-toggle="modal" data-target=".bs-caroussel-modal"><i class="mdi mdi-pencil font-18" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"></i></a>
                                                             <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
          
                                                         </td>
@@ -256,16 +265,16 @@
                                                             <img src="http://localhost/eten/assets/uploaded_image/banner/thumbs/1539278712_banner_image.jpg" alt="Banner Image" title="Banner Image" class="imgborder" height="50" width="150"/>
                                                         </td>
                                                         <td><div class="btn-group btn-group-toggle mt-2 mt-xl-0" data-toggle="buttons">
-                                                            <label class="btn btn-outline-primary btn-rounded  active">
+                                                            <label class="btn btn-outline-primary btn-sm btn-rounded  active">
                                                               <input type="radio" name="options" id="option1" checked=""> active
                                                             </label>
-                                                            <label class="btn btn-outline-danger btn-rounded ">
+                                                            <label class="btn btn-outline-danger btn-sm btn-rounded ">
                                                               <input type="radio" name="options" id="option2"> inactive
                                                             </label>
     
                                                         </div></td>
                                                         <td>
-                                                            <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
+                                                            <a  class="mr-3 text-primary"  data-toggle="modal" data-target=".bs-caroussel-modal"><i class="mdi mdi-pencil font-18" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"></i></a>
                                                             <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
      
                                                         </td>
@@ -277,17 +286,17 @@
                                                         </td>
                                                         <td>
                                                             <div class="btn-group btn-group-toggle mt-2 mt-xl-0" data-toggle="buttons">
-                                                            <label class="btn btn-outline-primary btn-rounded  ">
+                                                            <label class="btn btn-outline-primary btn-sm btn-rounded  ">
                                                               <input type="radio" name="options" id="option1" > active
                                                             </label>
-                                                            <label class="btn btn-outline-danger btn-rounded active">
+                                                            <label class="btn btn-outline-danger  btn-sm btn-rounded active">
                                                               <input type="radio" name="options" id="option2" checked=""> inactive
                                                             </label>
     
                                                         </div>
                                                     </td>
                                                         <td>
-                                                            <a href="javascript:void(0);" class="mr-3 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-18"></i></a>
+                                                            <a  class="mr-3 text-primary"  data-toggle="modal" data-target=".bs-caroussel-modal"><i class="mdi mdi-pencil font-18" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"></i></a>
                                                             <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="mdi mdi-close font-18"></i></a>
      
                                                         </td>
@@ -304,7 +313,63 @@
 
 
                         
-                        
+                        <!--  Modal content for the above example -->
+                        <div class="modal fade bs-caroussel-modal tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title mt-0" id="myExtraLargeModalLabel">Add new carousel Image</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                        
+                                            <div class="col-lg-6">
+                                                
+                                                <h4 class="mt-0 header-title">Restaurant Banner</h4><br>
+                                                <label for="metakeywords">Banner photo</label>
+                                                <div class="form-group">
+                                                <div class="bootstrap-filestyle input-group"><span class="group-span-filestyle " tabindex="0"><label for="filestyle-1" class="btn btn-secondary "><span class="icon-span-filestyle fas fa-folder-open"></span> <span class="buttonText">Choose a file</span></label></span></div>
+                                            </div>
+                                                <div class="form-group">
+                                                    Recommended size ( 1903 x 969 )
+                                                    <br>
+                                                    <img class="rounded mr-2" alt="200x200" width="150" src="../assets/images/thumbnail-default.jpg" data-holder-rendered="true">
+                                                </div>
+                                                
+                                                <button type="submit" class="btn btn-success mr-1 waves-effect waves-light">Save Changes</button>
+                                
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="card-body">
+
+                                                    <div class="form-group">
+                                                        <label for="metakeywords">English banner title</label>
+                                                        <input id="metakeywords" name="englishTitle" type="text" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="metakeywords">Frensh banner title</label>
+                                                        <input id="metakeywords" name="frenshTitle" type="text" class="form-control">
+                                                    </div>
+                                                     
+                                                      
+                                                    <div class="form-group">
+                                                        <label for="metakeywords">Banner hyper link</label>
+                                                        <input id="metakeywords" name="hyperLink" type="text" class="form-control">
+                                                    </div>
+                    
+                                                </div>
+                                               
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
                         <!-- end row -->
                         
                     </div>
@@ -325,29 +390,36 @@
 
        
 
-        <!-- jQuery  -->
-        <script src="../assets/js/jquery.min.js"></script>
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <script src="../assets/js/metismenu.min.js"></script>
-        <script src="../assets/js/jquery.slimscroll.js"></script>
-        <script src="../assets/js/waves.min.js"></script>
+    <!-- jQuery  -->
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/metismenu.min.js"></script>
+    <script src="../assets/js/jquery.slimscroll.js"></script>
+    <script src="../assets/js/waves.min.js"></script>
 
-        <!-- datepicker -->
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-        <!-- vector map  -->
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- Required datatable js -->
+    <script src="../assets/libs/jquery.dataTables.min.js"></script>
+    <script src="../assets/libs/dataTables.bootstrap4.min.js"></script>
+ 
+   <!-- Buttons examples -->
+   <script src="../assets/libs/dataTables.buttons.min.js"></script>
+   <script src="../assets/libs/buttons.bootstrap4.min.js"></script>
+   <script src="../assets/libs/jszip.min.js"></script>
+   <script src="../assets/libs/pdfmake.min.js"></script>
+   <script src="../assets/libs/vfs_fonts.js"></script>
+   <script src="../assets/libs/buttons.html5.min.js"></script>
+   <script src="../assets/libs/buttons.print.min.js"></script>
+   <script src="../assets/libs/buttons.colVis.min.js"></script>
+   <!-- Responsive examples -->
+   <script src="../assets/libs/dataTables.responsive.min.js"></script>
+   <script src="../assets/libs/responsive.bootstrap4.min.js"></script>
+    
 
-        <!-- apexcharts -->
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/apexcharts/apexcharts.min.js"></script>
+    <!-- Datatable init js -->
+    <script src="../assets/pages/datatables.init.js"></script>    
 
-        <!-- Peity JS -->
-        <script src="https://themesbrand.com/veltrix/layouts-2/plugins/peity-chart/jquery.peity.min.js"></script>
-
-        <script src="../assets/pages/dashboard.js"></script>
-
-        <!-- App js -->
-        <script src="../assets/js/app.js"></script>
+    <!-- App js -->
+    <script src="../assets/js/app.js"></script>
         
     </body>
 
