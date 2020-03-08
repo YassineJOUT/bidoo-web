@@ -3,9 +3,10 @@
 /diboo-admin/node_modules
 /diboo-customer/node_modules
 /diboo-restaurant/node_modules
-/diboo-admin/build
+
 /diboo-customer/build
 /diboo-restaurant/build
+/diboo-admin/build
 
 # Logs
 logs
