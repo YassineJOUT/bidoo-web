@@ -111,8 +111,10 @@ class SideBar extends Component {
         
             <div id="sidebar-menu" className="mm-active">
               
-            <MetisMenu className="metismenu"
-                clasNameLink="metismenu-link"
+            <MetisMenu className="sidebar-menu"
+                        classNameContainer="metismenu"
+                        classNameItemActive="mm-active"
+                        classNameLinkActive="mm-active"
                 content={content} activeLinkFromLocation />
             </div>
            
