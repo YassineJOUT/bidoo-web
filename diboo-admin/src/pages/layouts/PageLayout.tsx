@@ -1,7 +1,7 @@
 
 import React, { ReactNode } from 'react';
-import SideBar from '../components/Shared/SideBar';
-import TopBar from '../components/Shared/TopBar';
+import SideBar from '../../components/Shared/SideBar';
+import TopBar from '../../components/Shared/TopBar';
 
 type Props = {
   children: ReactNode
