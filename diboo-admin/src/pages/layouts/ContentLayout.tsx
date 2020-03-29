@@ -4,7 +4,7 @@ type Props = {
   children: ReactNode;
 };
 
-const Layout: React.SFC<Props> = ({ children }) => (
+const ContentLayout: React.SFC<Props> = ({ children }) => (
   <div className="content-page">
     <div className="content">
       <div className="content-fluid">
@@ -14,4 +14,4 @@ const Layout: React.SFC<Props> = ({ children }) => (
   </div>
 );
 
-export default Layout;
+export default ContentLayout;
