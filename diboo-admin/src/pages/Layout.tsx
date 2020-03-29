@@ -5,7 +5,7 @@ type Props = {
 }
 
 const Layout: React.SFC<Props> = ({ children }) => (
-    <div>
+    <div >
 
                 { children }
     </div>
