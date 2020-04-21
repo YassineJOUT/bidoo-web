@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { Formik } from "formik";
-import { history } from "../../utilities/history";
-import Card from "../Shared/card";
+import Card from "../Shared/Card";
 import Title from "../Shared/ContentTitle";
 import Statistics from "./Statistics";
 import Overview from "./Overview";
+import BreadCrumb from "../Shared/BreadCrumb";
 
 const data = {
   today: {
@@ -148,67 +147,83 @@ const overviewdata = {
   orders: {
     label: "Last 8 Orders",
     tableCaption: "List of the last 8 orders",
-    tableHeader:[
-        "Rest Id",
-        "Rest name",
-        "Order number",
-        "Order Price",
-        "Ordered at",
+    tableHeader: [
+      "Rest Id",
+      "Rest name",
+      "Order number",
+      "Order Price",
+      "Ordered at"
     ],
     table: [
-        {
+      {
         id: 1,
-        name:"Rest name",
+        name: "Rest name",
         orderNumber: 1,
         price: "€ 16.00",
-        orderDate: 	"11 Jan 2020 / 2:45 PM"
-    },
-        {
+        orderDate: "11 Jan 2020 / 2:45 PM"
+      },
+      {
         id: 2,
-        name:"Rest name 2",
+        name: "Rest name 2",
         orderNumber: 2,
         price: "€ 13.00",
-        orderDate: 	"12 Jan 2020 / 2:45 PM"
-    },
-        {
+        orderDate: "12 Jan 2020 / 2:45 PM"
+      },
+      {
         id: 3,
-        name:"Rest name 3",
+        name: "Rest name 3",
         orderNumber: 3,
         price: "€ 14.00",
-        orderDate: 	"13 Jan 2020 / 2:45 PM"
-    },
-        {
+        orderDate: "13 Jan 2020 / 2:45 PM"
+      },
+      {
         id: 4,
-        name:"Rest name 4",
+        name: "Rest name 4",
         orderNumber: 4,
         price: "€ 111.00",
-        orderDate: 	"14 Jan 2020 / 2:45 PM"
-    },
-        {
+        orderDate: "14 Jan 2020 / 2:45 PM"
+      },
+      {
         id: 5,
-        name:"Rest name 5",
+        name: "Rest name 5",
         orderNumber: 5,
         price: "€ 14.00",
-        orderDate: 	"15 Jan 2020 / 2:45 PM"
-    },
-]
+        orderDate: "15 Jan 2020 / 2:45 PM"
+      }
+    ]
   }
 };
 class DashboardContainer extends Component {
   render = () => {
     return (
       <div>
-        <Title title="Dashboard" />
-
+        <div className="page-title-box">
+          <div className="row">
+            <Title title="Dashboard">
+              <BreadCrumb title="Dashboard" url="/dasbhoard" />
+            </Title>
+          </div>
+        </div>
         <div className="row">
-          <Card title="TOTAL ORDERS" icon="dripicons-broadcast" value={10} />
-          <Card title="TOTAL CUSTOMERS" icon="fas fa-user" value={20} />
+          <Card
+            title="TOTAL ORDERS"
+            icon="dripicons-broadcast"
+            value={10}
+            col={3}
+          />
+          <Card title="TOTAL CUSTOMERS" icon="fas fa-user" value={20} col={3} />
           <Card
             title="TOTAL RESTAURANTS"
             icon="ion ion-md-restaurant"
             value={10}
+            col={3}
           />
-          <Card title="TOTAL GAIN" icon="fas fa-dollar-sign" value={330} />
+          <Card
+            title="TOTAL GAIN"
+            icon="fas fa-dollar-sign"
+            value={330}
+            col={3}
+          />
         </div>
         <div className="row">
           <Overview data={overviewdata} title="Overview" />

@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { history } from "../../../utilities/history";
-import { Router, Route, Link } from "react-router-dom";
 import MetisMenu from "react-metismenu";
-class SideBar extends Component {
+
+interface Props {
+  collapse: boolean
+}
+
+class SideBar extends Component<Props> {
   //history.push("forgotpassword")
 
   render = () => {
@@ -19,6 +22,11 @@ class SideBar extends Component {
       },
       {
         icon: "ion ion-md-home",
+        label: "Home carousel",
+        to: "/carousel"
+      },
+      {
+        icon: "ion ion-ios-settings",
         label: "Settings",
         content: [
           {
@@ -45,7 +53,7 @@ class SideBar extends Component {
           },
           {
             label: "Orders Report",
-            to: "/restaurant-report"
+            to: "/order-reports"
           }
         ]
       },
@@ -59,11 +67,11 @@ class SideBar extends Component {
           },
           {
             label: "Menu categories",
-            to: "/menu-category"
+            to: "/menu-categories"
           },
           {
             label: "Category items",
-            to: "/tems"
+            to: "/category-items"
           }
         ]
       },
@@ -98,7 +106,8 @@ class SideBar extends Component {
     ];
 
     return (
-      <div className="left side-menu">
+      <div className="left side-menu " style={{display: this.props.collapse ? 'block' : 'none' }} >
+     
         <div className="slimScrollDiv ">
           <div className="slimscroll-menu mm-show" id="remove-scroll">
             <div id="sidebar-menu" className="mm-active">

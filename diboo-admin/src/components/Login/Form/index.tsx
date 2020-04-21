@@ -36,7 +36,7 @@ class LoginPage extends Component {
                   <div className="card-body">
                     <div className="text-center mt-4">
                       <div className="mb-3">
-                        <a href="i" className="logo">
+                        <a href="/#" className="logo">
                           <img
                             src="../assets/images/Diboo.png"
                             height="150"
@@ -119,7 +119,7 @@ class LoginPage extends Component {
                             </div>
 
                             <div className="mt-4 text-center">
-                              <a onClick={this.forgotPwd}>
+                              <a href="/#" onClick={this.forgotPwd}>
                                 <i className="mdi mdi-lock"></i> Forgot your
                                 password?
                               </a>

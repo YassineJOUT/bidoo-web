@@ -1,17 +1,17 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 
 type Props = {
-  title: string
-}
+  title: string;
+  children: ReactNode;
+};
 
-const Title: React.SFC<Props> = ({ title }) => (
-    <div className="page-title-box">
-    <div className="row align-items-center">
+const Title: React.SFC<Props> = ({ title, children }) => (
+  
       <div className="col-sm-6">
         <h4 className="page-title">{title}</h4>
+        {children}
       </div>
-    </div>
-    </div>
+  
 );
 
 export default Title;
