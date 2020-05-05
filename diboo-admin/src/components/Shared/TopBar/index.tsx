@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { useMediaQuery } from "react-responsive";
 
 interface Props {
   fireCollapse: Function;

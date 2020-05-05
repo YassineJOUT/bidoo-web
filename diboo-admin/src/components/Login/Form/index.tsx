@@ -1,24 +1,36 @@
 import React, { Component } from "react";
-import { Formik } from "formik";
 import { history } from "../../../utilities/history";
-interface ILoginProps {
-  login: Function;
-}
+import { useQuery } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
+import Form from "./Form";
 
-interface ILoginStateProps {}
-
-type IProps = ILoginProps & ILoginStateProps;
+const EXCHANGE_RATES = gql`
+  {
+    getAllSettings {
+    id
+    adminName
+    adminEmail
+    }
+  }
+`;
 
 class LoginPage extends Component {
+  testQuery = () => {
+    const { loading, error, data } = useQuery(EXCHANGE_RATES);
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+      console.log(data);
+    return <p>Sucess</p>;
+  };
   handleSubmit = (
     values: { email: string; password: string },
     {
       setSubmitting,
-      resetForm
+      resetForm,
     }: { setSubmitting: Function; resetForm: Function }
   ) => {
     setSubmitting(true);
-    //this.props.login(values.email, values.password);
+    //this.testQuery();
     setSubmitting(false);
     resetForm();
   };
@@ -27,7 +39,7 @@ class LoginPage extends Component {
   };
   render = () => {
     return (
-      <div >
+      <div>
         <div className="account-pages my-5 pt-5">
           <div className="container">
             <div className="row justify-content-center">
@@ -35,7 +47,13 @@ class LoginPage extends Component {
                 <div className="card bg-pattern shadow-none">
                   <div className="card-body">
                     <div className="text-center mt-4">
-                      <div className="mb-3">
+                    <h4 className="font-18 text-center">Welcome Back !</h4>
+                      <p className="text-muted text-center mb-4">
+                        Sign in to continue to DIBOO super admin space.
+                      </p>
+                    </div>
+                    <div className="p-3">
+                    <div className=" text-center mb-3">
                         <a href="/#" className="logo">
                           <img
                             src="../assets/images/Diboo.png"
@@ -44,90 +62,9 @@ class LoginPage extends Component {
                           />
                         </a>
                       </div>
-                    </div>
-                    <div className="p-3">
-                      <h4 className="font-18 text-center">Welcome Back !</h4>
-                      <p className="text-muted text-center mb-4">
-                        Sign in to continue to DIBOO super admin space.
-                      </p>
-
-                      <Formik
-                        initialValues={{ email: "", password: "" }}
-                        //validationSchema={loginValidationSchema}
-                        onSubmit={this.handleSubmit}
-                      >
-                        {({
-                          values,
-                          errors,
-                          touched,
-                          handleBlur,
-                          handleChange,
-                          handleSubmit,
-                          isSubmitting
-                        }) => (
-                          <form
-                            className="form-horizontal"
-                            onSubmit={handleSubmit}
-                          >
-                            <h1>{values.email}</h1>
-                            <div className="form-group">
-                              <label>Email</label>
-                              <input
-                                type="email"
-                                name="email"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                placeholder="Email"
-                                value={values.email}
-                                className="form-control"
-                                id="username"
-                              />
-                            </div>
-
-                            <div className="form-group">
-                              <label>Password</label>
-                              <input
-                                type="password"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                name="password"
-                                placeholder="Password"
-                                value={values.password}
-                                className="form-control"
-                                id="userpassword"
-                              />
-                            </div>
-
-                            <div className="custom-control custom-checkbox">
-                              <input
-                                type="checkbox"
-                                className="custom-control-input"
-                                id="customControlInline"
-                              />
-                              <label className="custom-control-label">
-                                Remember me
-                              </label>
-                            </div>
-
-                            <div className="mt-3">
-                              <button
-                                className="btn btn-primary btn-block waves-effect waves-light"
-                                type="submit"
-                              >
-                                Log In
-                              </button>
-                            </div>
-
-                            <div className="mt-4 text-center">
-                              <a href="/#" onClick={this.forgotPwd}>
-                                <i className="mdi mdi-lock"></i> Forgot your
-                                password?
-                              </a>
-                            </div>
-                          </form>
-                        )}
-                      </Formik>
-                    </div>
+                      
+                      <Form></Form>
+                  </div>
                   </div>
                 </div>
               </div>

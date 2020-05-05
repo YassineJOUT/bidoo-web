@@ -104,11 +104,10 @@ class SideBar extends Component<Props> {
         ]
       }
     ];
-
+    
     return (
-      <div className="left side-menu " style={{display: this.props.collapse ? 'block' : 'none' }} >
-     
-        <div className="slimScrollDiv ">
+      <div className="left side-menu" >
+        <div className="slimScrollDiv" >
           <div className="slimscroll-menu mm-show" id="remove-scroll">
             <div id="sidebar-menu" className="mm-active">
               <MetisMenu
