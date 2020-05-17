@@ -62,7 +62,7 @@ class LoginPage extends Component {
                           />
                         </a>
                       </div>
-                      <Form></Form>
+                      <Form/>
                   </div>
                   </div>
                 </div>
