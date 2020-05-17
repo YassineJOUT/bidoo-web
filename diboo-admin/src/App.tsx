@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "./pages/Login";
-import { Router, Route } from "react-router-dom";
+import { Router, Route, Redirect } from "react-router-dom";
 import { history } from "./utilities/history";
 import Dashboard from "./pages/Dashboard";
 import Carousel from "./pages/Carousel";
@@ -20,51 +20,164 @@ import { createHttpLink } from "apollo-link-http";
 import ApolloClient from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloProvider } from "@apollo/react-hooks";
+import {
+  Context,
+  loadState,
+} from "./utilities/useAuth";
+import ProtectedRoute, {
+  ProtectedRouteProps,
+} from "./utilities/protectedRoute";
 
 const link = createHttpLink({
-  uri: 'http://localhost:3005/graphql',
-  credentials: 'include',
+  uri: "http://localhost:3005/graphql",
+  credentials: "include",
 });
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link,
-  
 });
-
-
+const loadedState = loadState();
 const App: React.FC = () => {
+  const [context, setContext] = useState<Context>(loadedState);
+  //console.log('state');
+  // console.log(context);
+  const defaultProtectedRouteProps: ProtectedRouteProps = {
+    isAuthenticated: context.contextState.isLogged,
+    authenticationPath: "/",
+  };
   return (
-    <ApolloProvider client={client}>
-      <div>
-        <Router history={history}>
-          <Route path="/" exact component={Login} />
-          <Route path="/dashboard" exact component={Dashboard} />
-          <Route path="/carousel" exact component={Carousel} />
-          <Route path="/site-settings" exact component={SiteSettings} />
-          <Route
+    <Context.Provider value={{ ...context, setContext }}>
+      <ApolloProvider client={client}>
+        <div>
+          <Router history={history}>
+            <Route
+              path="/"
+              exact
+              component={() => (
+                <Redirect
+                  to={context.contextState.isLogged ? "/dashboard" : "login"}
+                />
+              )}
+            />
+            <Route path="/login" exact component={Login} />
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/dashboard"
+              component={Dashboard}
+            />
+            {/* <Route path="/" exact component={Dashboard} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/carousel"
+              component={Carousel}
+            />
+            {/* <Route path="/carousel" exact component={Carousel} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/site-settings"
+              component={SiteSettings}
+            />
+            {/* <Route path="/site-settings" exact component={SiteSettings} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/commission-settings"
+              component={CommissionSettings}
+            />
+            {/* <Route
             path="/commission-settings"
             exact
             component={CommissionSettings}
-          />
-          <Route path="/add-restaurant" exact component={AddRestaurant} />
-          <Route
+          /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/add-restaurant"
+              component={AddRestaurant}
+            />
+            {/* <Route path="/add-restaurant" exact component={AddRestaurant} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/manage-restaurants"
+              component={ManageRestaurants}
+            />
+            {/* <Route
             path="/manage-restaurants"
             exact
             component={ManageRestaurants}
+          /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/order-reports"
+              component={OrderReports}
+            />
+            {/* <Route path="/order-reports" exact component={OrderReports} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/kitchen"
+              component={Kitchen}
+            />
+            {/* <Route path="/kitchen" exact component={Kitchen} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/menu-categories"
+              component={Categories}
+            />
+            {/* <Route path="/menu-categories" exact component={Categories} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/category-items"
+              component={Items}
+            />
+            {/* <Route path="/category-items" exact component={Items} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/Customer"
+              component={Customers}
+            />
+            {/* <Route path="/customer" exact component={Customers} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/track-payment"
+              component={Payments}
+            />
+            {/* <Route path="/track-payment" exact component={Payments} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/orders"
+              component={CustomerOrders}
+            />
+            {/* <Route path="/orders" exact component={CustomerOrders} /> */}
+            <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/orders-guest"
+              component={GuestOrders}
+            />
+            {/* <Route path="/orders-guest" exact component={GuestOrders} /> */}
+            {/* <ProtectedRoute
+            {...defaultProtectedRouteProps}
+            exact={true}
+            path="/forgotpassword"
+            component={Carousel}
           />
-          <Route path="/order-reports" exact component={OrderReports} />
-          <Route path="/kitchen" exact component={Kitchen} />
-          <Route path="/menu-categories" exact component={Categories} />
-          <Route path="/category-items" exact component={Items} />
-          <Route path="/customer" exact component={Customers} />
-          <Route path="/track-payment" exact component={Payments} />
-          <Route path="/orders" exact component={CustomerOrders} />
-          <Route path="/orders-guest" exact component={GuestOrders} />
-          <Route path="/forgotpassword" />
-        </Router>
-      </div>
-    </ApolloProvider>
+          <Route path="/forgotpassword" /> */}
+          </Router>
+        </div>
+      </ApolloProvider>
+    </Context.Provider>
   );
 };
 

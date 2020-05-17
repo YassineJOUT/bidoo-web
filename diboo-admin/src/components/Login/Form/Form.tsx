@@ -1,20 +1,52 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { Formik } from "formik";
 import { useMutation } from "@apollo/react-hooks";
 import { USER_LOGIN_MUTATION } from "../../../helpers/gql";
 import { loginValidationSchema } from "../../../utilities/validationSchema";
 import { Error } from "../../Error";
 import { history } from "../../../utilities/history";
-
+import { Context, saveState } from "../../../utilities/useAuth";
+// addUser = useMutation(mutation, {
+//   update: (proxy, mutationResult) => {
+//      /* NOT CALLED */
+//   },
+//   refetchQueries: (result) => {
+//     /* CALLED ON errorPolicy: "ignore" */
+//   },
+//   onCompleted: (data) => {
+//      /* NOT CALLED */
+//   },
+//   onError: (data) => {
+//      /* NOT CALLED */
+//   }
+// });
 const Form: React.SFC = () => {
-  const [
-    loginUser,
-    { loading: mutationLoading, data },
-  ] = useMutation(USER_LOGIN_MUTATION);
-  
-  if (data && data.login.ok) {
-    history.push("dashboard");
-  }
+  const {contextState, setContext} = useContext(Context);
+  const [loginUser, { loading: mutationLoading, data, error }] = useMutation(
+    USER_LOGIN_MUTATION,
+    {
+      onCompleted: (data) => {
+        console.log("d");
+        console.log(data);
+        const { login } = data;
+        const v = {
+          contextState:{
+            isLogged: login.ok,
+            user:{
+              id: login.data.id,
+              role: 'admin'
+            }
+          },
+          setContext
+        };
+      setContext(v);
+      saveState(v);
+      console.log(contextState)
+      history.push("dashboard");
+      },
+    }
+  );
+
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -33,7 +65,9 @@ const Form: React.SFC = () => {
         <form className="form-horizontal" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>
-            {touched.email && <Error touched={touched.email} message={errors.email} /> } 
+            {touched.email && (
+              <Error touched={touched.email} message={errors.email} />
+            )}
             <input
               type="email"
               name="email"
@@ -48,7 +82,9 @@ const Form: React.SFC = () => {
 
           <div className="form-group">
             <label>Password</label>
-           {touched.password && <Error touched={touched.password} message={errors.password} /> } 
+            {touched.password && (
+              <Error touched={touched.password} message={errors.password} />
+            )}
             <input
               type="password"
               onChange={handleChange}
@@ -67,7 +103,6 @@ const Form: React.SFC = () => {
               className="custom-control-input"
               id="customControlInline"
             />
-            
           </div>
 
           <div className="mt-3">
@@ -75,14 +110,15 @@ const Form: React.SFC = () => {
               className="btn btn-primary btn-block waves-effect waves-light"
               type="submit"
             >
-              {mutationLoading ? "Loading... " :  "Login"}
+              {mutationLoading ? "Loading... " : "Login"}
             </button>
           </div>
 
           <div className="mt-4 text-center">
-              {data && console.log(data.login)}
-          {data && !data.login.ok && <Error message={data.login.error} /> } 
-           
+            {data && !data.login.ok && <Error message={data.login.error} />}
+
+            {error && <Error message={error.toString()} />}
+
             <a href="/#">
               <i className="mdi mdi-lock"></i> Forgot your password?
             </a>
