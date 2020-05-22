@@ -19,10 +19,11 @@ export const saveState = (state:Context) => {
   };
 export interface AuthType {
   isLogged: boolean;
-  user: {
+  user?: {
     id: string;
     role: string;
   };
+  error?: string
 }
 
 export const initialState: AuthType = {
@@ -31,6 +32,7 @@ export const initialState: AuthType = {
     id: "",
     role: "",
   },
+  error: ""
 };
 
 export type Context = {

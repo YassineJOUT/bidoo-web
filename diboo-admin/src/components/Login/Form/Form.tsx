@@ -21,28 +21,44 @@ import { Context, saveState } from "../../../utilities/useAuth";
 //   }
 // });
 const Form: React.SFC = () => {
-  const {contextState, setContext} = useContext(Context);
-  const [loginUser, { loading: mutationLoading, data, error }] = useMutation(
+  //get contexte
+  const { contextState, setContext } = useContext(Context);
+  // open dashboard if user is logged in
+  if (contextState.isLogged) {
+    history.push("dashboard");
+  }
+  // login mutation
+  const [loginUser, { loading: mutationLoading, error }] = useMutation(
     USER_LOGIN_MUTATION,
     {
       onCompleted: (data) => {
-        console.log("d");
-        console.log(data);
         const { login } = data;
-        const v = {
-          contextState:{
-            isLogged: login.ok,
-            user:{
-              id: login.data.id,
-              role: 'admin'
-            }
-          },
-          setContext
-        };
-      setContext(v);
-      saveState(v);
-      console.log(contextState)
-      history.push("dashboard");
+        if (login.ok) {
+          const state = {
+            contextState: {
+              isLogged: true,
+              user: {
+                id: login.id,
+                role: "admin",
+              },
+            },
+            setContext,
+          };
+          setContext(state);
+          saveState(state);
+          history.push("dashboard");
+        }
+        else{
+          const state = {
+            contextState: {
+              isLogged: false,
+              error: login.error
+            },
+            setContext,
+          };
+          setContext(state);
+          saveState(state);
+        }
       },
     }
   );
@@ -115,10 +131,7 @@ const Form: React.SFC = () => {
           </div>
 
           <div className="mt-4 text-center">
-            {data && !data.login.ok && <Error message={data.login.error} />}
-
-            {error && <Error message={error.toString()} />}
-
+            {error ?  <Error message={"Something went wrong"} /> : contextState.error && <Error message={contextState.error} />}
             <a href="/#">
               <i className="mdi mdi-lock"></i> Forgot your password?
             </a>

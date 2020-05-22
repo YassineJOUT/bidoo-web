@@ -1,42 +1,16 @@
 import React, { Component } from "react";
-import { history } from "../../../utilities/history";
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 import Form from "./Form";
 
-const EXCHANGE_RATES = gql`
-  {
-    getAllSettings {
-    id
-    adminName
-    adminEmail
-    }
-  }
-`;
 
 class LoginPage extends Component {
-  testQuery = () => {
-    const { loading, error, data } = useQuery(EXCHANGE_RATES);
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error :(</p>;
-      console.log(data);
-    return <p>Sucess</p>;
-  };
-  handleSubmit = (
-    values: { email: string; password: string },
-    {
-      setSubmitting,
-      resetForm,
-    }: { setSubmitting: Function; resetForm: Function }
-  ) => {
-    setSubmitting(true);
-    //this.testQuery();
-    setSubmitting(false);
-    resetForm();
-  };
-  forgotPwd = () => {
-    history.push("forgotpassword");
-  };
+  // testQuery = () => {
+  //   const { loading, error, data } = useQuery(EXCHANGE_RATES);
+  //   if (loading) return <p>Loading...</p>;
+  //   if (error) return <p>Error :(</p>;
+  //     console.log(data);
+  //   return <p>Sucess</p>;
+  // };
+ 
   render = () => {
     return (
       <div>
@@ -74,15 +48,4 @@ class LoginPage extends Component {
     );
   };
 }
-
-/*const mapStateToProps = ({ login }: ApplicationState) => ({
-  userInfo: login.userInfo,
-  isLoggedIn: login.isLoggedIn,
-  error: login.error,
-  isLoading: login.isLoading
-});*/
-
-//const mapActionsToProps = { login };
-
-//export default connect(mapStateToProps, mapActionsToProps)(LoginPage);
 export default LoginPage;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./pages/Login";
 import { Router, Route, Redirect } from "react-router-dom";
 import { history } from "./utilities/history";
@@ -42,6 +42,7 @@ const App: React.FC = () => {
   const [context, setContext] = useState<Context>(loadedState);
   //console.log('state');
   // console.log(context);
+  
   const defaultProtectedRouteProps: ProtectedRouteProps = {
     isAuthenticated: context.contextState.isLogged,
     authenticationPath: "/",
