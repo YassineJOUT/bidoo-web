@@ -4,7 +4,6 @@ class SiteForm extends Component {
   render = () => {
     return (
       <form>
-        {" "}
         <div className="row">
           <div className="col-lg-6">
             <h4 className="mt-0 header-title">General info</h4>
