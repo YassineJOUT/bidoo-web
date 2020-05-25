@@ -13,7 +13,6 @@ class LoginPage extends Component {
  
   render = () => {
     return (
-      <div>
         <div className="account-pages my-5 pt-5">
           <div className="container">
             <div className="row justify-content-center">
@@ -44,7 +43,6 @@ class LoginPage extends Component {
             </div>
           </div>
         </div>
-      </div>
     );
   };
 }
