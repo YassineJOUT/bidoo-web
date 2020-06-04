@@ -23,6 +23,8 @@
     "history": "^4.10.1",
     "jquery": "^3.5.1",
     "js-cookie": "^2.2.1",
+    "loadsh": "0.0.4",
+    "lodash": "^4.17.15",
     "mdbreact": "^4.25.5",
     "popper.js": "^1.16.1",
     "react": "^16.13.0",
@@ -61,6 +63,7 @@
     "@types/history": "^4.7.5",
     "@types/jquery": "^3.3.33",
     "@types/js-cookie": "^2.2.6",
+    "@types/lodash": "^4.14.154",
     "@types/react-responsive": "^8.0.2",
     "@types/yup": "^0.28.0"
   },

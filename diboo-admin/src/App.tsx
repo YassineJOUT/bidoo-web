@@ -23,6 +23,8 @@ import {
   Context,
   loadState,
 } from "./utilities/useAuth";
+
+import './App.css';
 import ProtectedRoute, {
   ProtectedRouteProps,
 } from "./utilities/protectedRoute";
