@@ -1,23 +1,47 @@
-import React, { useCallback } from "react";
-import { Formik, Field, ErrorMessage } from "formik";
-import { useDropzone } from "react-dropzone";
-import { useMutation } from "@apollo/react-hooks";
+import React, { useState, useEffect } from "react";
+import { Formik, Field } from "formik";
+import Dropzone from "react-dropzone";
+import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
+import {
+  ADD_CAROUSEL_MUTATION,
+  GET_CAROUSEL_MUTATION,
+} from "../../helpers/gql";
+import _ from "lodash";
 
-const Form: React.SFC = () => {
- // const [uploadFile] = useMutation();
- const uploadFile = () => {
-    console.log('upload');
- }
-  const onDrop = useCallback(
-    ([file]) => {
-      uploadFile();
-    },
-    [uploadFile]
-  );
-  const addCarousel = () => {
-    console.log("fired");
+const Form: React.SFC<{ Id: string }> = (props) => {
+  const [Values,setValues] = useState({
+    title: "",
+    subtitle: "",
+    bannerLink: "",
+    image: null,
+    imagePath: "",
+  });
+  const [preview, setPreview] = useState<any>(null);
+
+  const [getCarousel,{ loading: getLoading, error: getError, data: getData } ]= useLazyQuery(GET_CAROUSEL_MUTATION,{onCompleted: (data) => {
+    setValues(data.getOneCarousel.data[0])
+  }});
+  useEffect(() => {
+    if (!_.isEmpty(props.Id)) {
+      getCarousel({ variables: { id: props.Id } });
+    }
+
+  },[props.Id]);
+
+  const addCarousel = (
+    values: { title: string; subtitle: string; bannerLink: string; image: any },
+    actions: any
+  ) => {
+    addCarouselMutation({ variables: values }).finally(() => {
+      actions.resetForm();
+      setPreview(null);
+    });
   };
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const [
+    addCarouselMutation,
+    { loading: mutationLoading, error, data },
+  ] = useMutation(ADD_CAROUSEL_MUTATION);
+
   return (
     <div
       className="modal fade bs-caroussel-modal tabindex= show"
@@ -31,6 +55,7 @@ const Form: React.SFC = () => {
             <h5 className="modal-title mt-0" id="myExtraLargeModalLabel">
               Add new carousel Image
             </h5>
+
             <button
               type="button"
               className="close"
@@ -41,57 +66,92 @@ const Form: React.SFC = () => {
             </button>
           </div>
           <Formik
-            initialValues={{ email: "", password: "" }}
+          enableReinitialize
+
+            initialValues={ Values }
             //   validationSchema={loginValidationSchema}
-            onSubmit={(values, { setSubmitting }) => addCarousel()}
+            onSubmit={(values, { setSubmitting, resetForm }) =>
+              addCarousel(values, { setSubmitting, resetForm })
+            }
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-            }) => (
+            {({ values, handleSubmit, setFieldValue,setValues }) => (
+              
               <form className="form-horizontal" onSubmit={handleSubmit}>
+               
                 <div className="modal-body">
+                  {data && data.createCarousel && data.createCarousel.ok && (
+                    <div
+                      className=" d-flex justify-content-center alert alert-success d-flex"
+                      role="alert"
+                    >
+                      Carousel Added
+                    </div>
+                  )}
+                  {data &&
+                    data.createCarousel &&
+                    data.createCarousel.ok === false && (
+                      <div
+                        className=" d-flex justify-content-center alert alert-danger"
+                        role="alert"
+                      >
+                        "Something went wrong"
+                      </div>
+                    )}
+                  {error && (
+                    <div
+                      className="alert alert-danger d-flex justify-content-center"
+                      role="alert"
+                    >
+                      "Something went wrong"
+                    </div>
+                  )}
                   <div className="row">
                     <div className="col-lg-6">
                       <h4 className="mt-0 header-title">Restaurant Banner</h4>
                       <br />
                       <label>Banner photo</label>
-                      <div className="form-group">
-                        <div className="bootstrap-filestyle input-group">
-                          <span className="group-span-filestyle ">
-                            <label className="btn btn-secondary ">
-                              <span className="icon-span-filestyle fas fa-folder-open"></span>{" "}
-                              <span className="buttonText">Choose a file</span>
-                            </label>
-                          </span>
-                        </div>
-                      </div>
+
                       <div className="form-group">
                         Recommended size ( 1903 x 969 )
                         <br />
-                        <div {...getRootProps()}>
-                          <input {...getInputProps()} />
-                          {isDragActive ? (
-                            <p>Drop the files here ...</p>
-                          ) : (
-                            <p>
-                              Drag 'n' drop some files here, or click to select
-                              files
-                            </p>
+                        <Dropzone
+                          accept="image/*"
+                          multiple={false}
+                          onDrop={(acceptedFiles) => {
+                            setFieldValue("image", acceptedFiles[0]);
+                            setPreview(URL.createObjectURL(acceptedFiles[0]));
+                          }}
+                        >
+                          {({ getRootProps, getInputProps }) => (
+                            <section>
+                              <div {...getRootProps()}>
+                                <input {...getInputProps()} />
+                                <div className="dropzone d-flex justify-content-center align-items-center">
+                                  {preview ? "" : Values.imagePath ? "" :"Drag an image here"}
+                                  {preview ? (
+                                    <img
+                                      src={preview}
+                                      style={{ width: "100%" }}
+                                    />
+                                  ) : (Values.imagePath &&
+                                    <img
+                                      src={"http://localhost:3005/"+Values.imagePath }
+                                      style={{ width: "100%" }}
+                                    /> 
+                                    )
+                                  }
+                                </div>
+                              </div>
+                            </section>
                           )}
-                        </div>
+                        </Dropzone>
                       </div>
 
                       <button
                         type="submit"
                         className="btn btn-success mr-1 waves-effect waves-light"
                       >
-                        Save Changes
+                        {mutationLoading ? "Loading... " : "Save Changes"}
                       </button>
                     </div>
                     <div className="col-lg-6">
@@ -104,12 +164,6 @@ const Form: React.SFC = () => {
                             name="title"
                             placeholder="Banner title"
                           />
-                          {/* <input
-                            id="metakeywords"
-                            name="englishTitle"
-                            type="text"
-                            className="form-control"
-                          /> */}
                         </div>
 
                         <div className="form-group">
@@ -120,12 +174,6 @@ const Form: React.SFC = () => {
                             className="form-control"
                             placeholder="Banner subtitle"
                           />
-                          {/* <input
-                            id="metakeywords"
-                            name="frenshTitle"
-                            type="text"
-                            className="form-control"
-                          /> */}
                         </div>
 
                         <div className="form-group">
@@ -136,13 +184,6 @@ const Form: React.SFC = () => {
                             className="form-control"
                             placeholder="Banner hyper link"
                           />
-
-                          {/* <input
-                            id="metakeywords"
-                            name="hyperLink"
-                            type="text"
-                            className="form-control"
-                          /> */}
                         </div>
                       </div>
                     </div>
