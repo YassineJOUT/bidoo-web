@@ -19,6 +19,13 @@ mutation createCarousel($title: String,$subtitle: String, $bannerLink: String,$i
     }
   }
 `;
+export const DELETE_MUTATION_MUTATION = gql`
+mutation deleteCarousel($id: String!) {
+    deleteCarousel(id: $id){
+        ok
+    }
+  }
+`;
 
 export const GET_CAROUSELS_MUTATION = gql`
 {
