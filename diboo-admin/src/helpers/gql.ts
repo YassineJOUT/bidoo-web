@@ -15,14 +15,27 @@ mutation login($email: String!,$password: String!) {
 export const ADD_CAROUSEL_MUTATION = gql`
 mutation createCarousel($id: String,$title: String,$subtitle: String, $bannerLink: String,$image: Upload) {
     createCarousel(input:{id: $id,title: $title,subtitle: $subtitle, bannerLink: $bannerLink,image:$image}){
-        ok
+        ok,
+        message,
+        error
+    }
+  }
+`;
+export const EDIT_CAROUSEL_STATUS_MUTATION = gql`
+mutation editStatusCarousel($id: String,$status: Boolean) {
+    editStatusCarousel(input:{id: $id,status: $status}){
+        ok,
+        message,
+        error
     }
   }
 `;
 export const DELETE_MUTATION_MUTATION = gql`
 mutation deleteCarousel($id: String!) {
     deleteCarousel(id: $id){
-        ok
+        ok,
+        message,
+        error
     }
   }
 `;

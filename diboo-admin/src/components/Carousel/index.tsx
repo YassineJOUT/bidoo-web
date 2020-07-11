@@ -7,8 +7,10 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
   GET_CAROUSELS_MUTATION,
   DELETE_MUTATION_MUTATION,
+  EDIT_CAROUSEL_STATUS_MUTATION,
 } from "../../helpers/gql";
 import YesNoModal from "../Shared/ConfirmModal";
+import Alert from "../Shared/Alert";
 
 const dataa = {
   columns: [
@@ -49,33 +51,60 @@ const dataa = {
     },
   ],
 };
-const handleActiveChnage = () => {
-  console.log("fireeed");
-};
-const CarouselContainer: React.SFC = () => {
-  const [open, setOpen] = React.useState(false);
 
+const CarouselContainer: React.FunctionComponent = () => {
+  const handleActiveChnage = (id: string, val: boolean) => {
+    editStatusMutation({
+      variables: {
+        id,
+        status: val,
+      },
+    });
+  };
+  const [open, setOpen] = useState(false);
+  const [showAlert, setShowAlert] = useState({
+    show: false,
+    message: "",
+    type: true,
+  });
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  const handlAlert = (show: boolean, message: string,type: boolean) => {
+    setShowAlert({ show, message, type });
+    setTimeout(() => {
+      setShowAlert({ show: false, message: "", type: true });
+    }, 2000);
+    refetch();
+  }
   const handleClose = (yes: boolean) => {
     setOpen(false);
     // call delete mutation
     yes && deleteMutation({ variables: { id: carouselId } });
-    console.log(yes);
   };
-  const [deleteMutation, { loading: mutationLoading }] = useMutation(
+  const [deleteMutation] = useMutation(
     DELETE_MUTATION_MUTATION,
     {
-      onCompleted: (data) => {  
-        console.log(data);
+      onCompleted: (data) => {
+      const { ok, message, error } = data.deleteCarousel;
+      handlAlert(true, ok ? message : error,  ok );
+        
       },
     }
   );
-
+  const [editStatusMutation] = useMutation(EDIT_CAROUSEL_STATUS_MUTATION, {
+    onCompleted: (data) => {
+      const { ok, message, error } = data.editStatusCarousel;
+      handlAlert(true, ok ? message : error,  ok );
+    },
+    onError: (err) => {
+      handlAlert(true, "something went wrong!",false);
+   
+    },
+  });
   const [carouselId, setCarouselId] = useState("");
-  const { loading, error, data } = useQuery(GET_CAROUSELS_MUTATION);
+  const { loading, error, data, refetch } = useQuery(GET_CAROUSELS_MUTATION);
 
   let rows = null;
   if (data && data.getCarousels) {
@@ -106,18 +135,24 @@ const CarouselContainer: React.SFC = () => {
             data-toggle="buttons"
           >
             <label
-              className="btn btn-outline-primary btn-sm btn-rounded  "
-              onClick={handleActiveChnage}
+              className={
+                val.status
+                  ? "btn btn-outline-primary btn-sm btn-rounded active"
+                  : "btn btn-outline-primary btn-sm btn-rounded "
+              }
+              onClick={() => handleActiveChnage(val.id, true)}
             >
               <input type="radio" name="options" id="option1" /> active
             </label>
-            <label className="btn btn-outline-danger btn-sm btn-rounded active">
-              <input
-                type="radio"
-                name="options"
-                id="option2"
-                onChange={handleActiveChnage}
-              />{" "}
+            <label
+              className={
+                val.status
+                  ? "btn btn-outline-danger btn-sm btn-rounded"
+                  : "btn btn-outline-danger btn-sm btn-rounded active"
+              }
+              onClick={() => handleActiveChnage(val.id, false)}
+            >
+              <input type="radio" name="options" id="option2" />
               inactive
             </label>
           </div>,
@@ -132,6 +167,9 @@ const CarouselContainer: React.SFC = () => {
               title=""
               data-original-title="Edit"
               onClick={() => {
+                setTimeout(() => {
+                  setCarouselId("");
+                }, 100); 
                 setCarouselId(val.id);
               }}
             >
@@ -158,11 +196,6 @@ const CarouselContainer: React.SFC = () => {
 
   return (
     <div>
-      <YesNoModal
-        message="Are you sure ?"
-        open={open}
-        handleClose={handleClose}
-      />
       <div className="page-title-box">
         <div className="row">
           <Title title="Website carousel">
@@ -201,15 +234,22 @@ const CarouselContainer: React.SFC = () => {
                   className="d-flex justify-content-center alert alert-danger"
                   role="alert"
                 >
-                  {" "}
-                  Something went wrong{" "}
+                  Something went wrong
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
-      <Form Id={carouselId} />
+      <Form Id={carouselId} handlAlert={handlAlert} />
+      {showAlert.show && (
+        <Alert message={showAlert.message} type={showAlert.type} />
+      )}
+      <YesNoModal
+        message="Are you sure ?"
+        open={open}
+        handleClose={handleClose}
+      />
     </div>
   );
 };
