@@ -9,7 +9,8 @@ import {
 import _ from "lodash";
 
 const Form: React.SFC<{ Id: string }> = (props) => {
-  const [Values,setValues] = useState({
+  const [Values, setValues] = useState({
+    id: "",
     title: "",
     subtitle: "",
     bannerLink: "",
@@ -18,20 +19,32 @@ const Form: React.SFC<{ Id: string }> = (props) => {
   });
   const [preview, setPreview] = useState<any>(null);
 
-  const [getCarousel,{ loading: getLoading, error: getError, data: getData } ]= useLazyQuery(GET_CAROUSEL_MUTATION,{onCompleted: (data) => {
-    setValues(data.getOneCarousel.data[0])
-  }});
+  const [
+    getCarousel,
+    { loading: getLoading, error: getError, data: getData },
+  ] = useLazyQuery(GET_CAROUSEL_MUTATION, {
+    onCompleted: (data) => {
+      setValues(data.getOneCarousel.data[0]);
+    },
+  });
   useEffect(() => {
     if (!_.isEmpty(props.Id)) {
       getCarousel({ variables: { id: props.Id } });
     }
-
-  },[props.Id]);
+  }, [props.Id]);
 
   const addCarousel = (
-    values: { title: string; subtitle: string; bannerLink: string; image: any },
+    values: {
+      id: string ;
+      title: string;
+      subtitle: string;
+      bannerLink: string;
+      image: any;
+    },
     actions: any
   ) => {
+    console.log("values");
+    console.log(values);
     addCarouselMutation({ variables: values }).finally(() => {
       actions.resetForm();
       setPreview(null);
@@ -66,18 +79,16 @@ const Form: React.SFC<{ Id: string }> = (props) => {
             </button>
           </div>
           <Formik
-          enableReinitialize
-
-            initialValues={ Values }
+            enableReinitialize
+            initialValues={Values}
             //   validationSchema={loginValidationSchema}
-            onSubmit={(values, { setSubmitting, resetForm }) =>
-              addCarousel(values, { setSubmitting, resetForm })
-            }
+            onSubmit={(values, { setSubmitting, resetForm }) => {
+              values.id = props.Id;
+              return addCarousel(values, { setSubmitting, resetForm });
+            }}
           >
-            {({ values, handleSubmit, setFieldValue,setValues }) => (
-              
+            {({ values, handleSubmit, setFieldValue, setValues }) => (
               <form className="form-horizontal" onSubmit={handleSubmit}>
-               
                 <div className="modal-body">
                   {data && data.createCarousel && data.createCarousel.ok && (
                     <div
@@ -127,19 +138,27 @@ const Form: React.SFC<{ Id: string }> = (props) => {
                               <div {...getRootProps()}>
                                 <input {...getInputProps()} />
                                 <div className="dropzone d-flex justify-content-center align-items-center">
-                                  {preview ? "" : Values.imagePath ? "" :"Drag an image here"}
+                                  {preview
+                                    ? ""
+                                    : Values.imagePath
+                                    ? ""
+                                    : "Drag an image here"}
                                   {preview ? (
                                     <img
                                       src={preview}
                                       style={{ width: "100%" }}
                                     />
-                                  ) : (Values.imagePath &&
-                                    <img
-                                      src={"http://localhost:3005/"+Values.imagePath }
-                                      style={{ width: "100%" }}
-                                    /> 
+                                  ) : (
+                                    Values.imagePath && (
+                                      <img
+                                        src={
+                                          "http://localhost:3005/" +
+                                          Values.imagePath
+                                        }
+                                        style={{ width: "100%" }}
+                                      />
                                     )
-                                  }
+                                  )}
                                 </div>
                               </div>
                             </section>

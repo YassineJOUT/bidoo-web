@@ -14,7 +14,6 @@ interface Props {
 const YesNoModal: React.FunctionComponent<Props> = ({ message, handleClose, open }) => {
 
   return (
-    <div>
       <Dialog
         open={open}
         onClose={() => handleClose(false)}
@@ -38,7 +37,6 @@ const YesNoModal: React.FunctionComponent<Props> = ({ message, handleClose, open
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
   );
 };
 

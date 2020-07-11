@@ -13,8 +13,8 @@ mutation login($email: String!,$password: String!) {
 `;
 
 export const ADD_CAROUSEL_MUTATION = gql`
-mutation createCarousel($title: String,$subtitle: String, $bannerLink: String,$image: Upload) {
-    createCarousel(input:{title: $title,subtitle: $subtitle, bannerLink: $bannerLink,image:$image}){
+mutation createCarousel($id: String,$title: String,$subtitle: String, $bannerLink: String,$image: Upload) {
+    createCarousel(input:{id: $id,title: $title,subtitle: $subtitle, bannerLink: $bannerLink,image:$image}){
         ok
     }
   }
