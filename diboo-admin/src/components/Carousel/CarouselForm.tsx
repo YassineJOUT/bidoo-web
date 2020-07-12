@@ -1,13 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Formik, Field } from "formik";
 import Dropzone from "react-dropzone";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
-import {
-  ADD_CAROUSEL_MUTATION,
-  GET_CAROUSEL_MUTATION,
-} from "../../helpers/gql";
+import { useMutation } from "@apollo/react-hooks";
+import { ADD_CAROUSEL_MUTATION } from "../../helpers/gql";
 import _ from "lodash";
-import Alert from "../Shared/Alert";
 
 interface CarouselProps {
   bannerLink: string;
@@ -24,36 +20,10 @@ interface Props {
 }
 
 const Form: React.SFC<Props> = (props) => {
-
   const dismissBtn = useRef<HTMLButtonElement>(null);
-  const [Values, setValues] = useState({
-    id: "",
-    title: "",
-    subtitle: "",
-    bannerLink: "",
-    image: null,
-    imagePath: "",
-  });
   const [preview, setPreview] = useState<any>(null);
 
-  // const [
-  //   getCarousel
-  // ] = useLazyQuery(GET_CAROUSEL_MUTATION, {
-  //   onCompleted: (data) => {
-  //     console.log(data)
-  //     setValues(data.getOneCarousel.data[0]);
-  //   },
-  // });
-  // useEffect(() => {
-  //   if (!_.isEmpty(props.values.id)) {
-  //     getCarousel({ variables: { id: props..Id } });
-  //   }
-  // }, [props.Id]);
-
-  const addCarousel = (
-    values: CarouselProps,
-    actions: any
-  ) => {
+  const addCarousel = (values: CarouselProps, actions: any) => {
     addCarouselMutation({ variables: values }).finally(() => {
       actions.resetForm();
       setPreview(null);
@@ -66,8 +36,7 @@ const Form: React.SFC<Props> = (props) => {
     onCompleted: (data) => {
       dismissBtn!.current!.click();
       const { ok, message, error } = data.createCarousel;
-      props.handlAlert(true, ok ? message : error,  ok );
-      
+      props.handlAlert(true, ok ? message : error, ok);
     },
   });
 
