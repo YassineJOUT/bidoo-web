@@ -1,329 +1,229 @@
-import React, { Component, useState, useEffect } from "react";
-import Title from "../../Shared/ContentTitle";
-import BreadCrumb from "../../Shared/BreadCrumb";
+import { Box, Button, Card, CardContent, CircularProgress, Grid, Step, StepLabel, Stepper, TextareaAutosize, FormControlLabel, makeStyles, Typography } from '@material-ui/core';
+import { Field, Form, Formik, FormikConfig, FormikValues } from 'formik';
+import React, { useState } from 'react';
+import { mixed, number, object } from 'yup';
 import ContactInfoForm from "./Forms/ContactInfo";
 import RestaurantInfoForm from "./Forms/RestaurantInfo";
 import CommissionForm from "./Forms/Commission";
-import { Formik } from "formik";
+import Title from "../../Shared/ContentTitle";
+import BreadCrumb from "../../Shared/BreadCrumb";
+import Divider from "@material-ui/core/Divider";
+import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
+import {ADD_RESTAURANT_MUTATION} from "../../../helpers/gql";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    backgroundColor: 'white' ,
+  },
+  button: {
+    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+  content: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  }
+}));
 
 const AddRestaurantContainer: React.FunctionComponent = () => {
-  const changeLevel = () => {
-    level === 3 ? setLevel(1) : setLevel(level + 1);
-  };
-  const [level, setLevel] = useState(1);
-  useEffect(() => {
-    console.log(level);
-  });
+
+  const [Values,setValues] = useState({
+  restaurantName:"",
+  restaurantWebsite:"",
+  restaurantPhone:"",
+  postCode:"",
+  email:"",
+  address:"",
+  city:"",
+  restaurantLogo: "",
+  about: "",
+  estimatedDeliveryTime: "",
+  commission: 0 ,
+  imagePath: "",
+  delivery : false,
+  pickUp: false,
+  dineIn: false
+});
+const classes = useStyles();
+const [activeStep, setActiveStep] = useState(0);
+const steps = getSteps();
+const [preview, setPreview] = useState<any>(null);
+/* const [delivery, setDelivery] = useState(false);
+const [pickUp, setPickUp] = useState(false);
+const [dineIn, setDineIn] = useState(false);
+const handleToggleDelivery = () => {
+ return setDelivery(!delivery);  
+ //setValues({...Values, deliveryy : deliv});
+}; 
+const handleTogglePickUp = () => {
+  return setPickUp(!pickUp);
+}; 
+const handleToggleDineIn = () => {
+  return setDineIn(!dineIn);
+};  
+const handleToggle = (event : any )=> {
+  setValues({ ...Values, [event.target.name]: event.target.checked });    
+};
+*/
+function getSteps() { return ['Contact info', 'Restaurant info', 'Commission']; }
+function getStepContent(step: Number,setFieldValue: Function, handleChange: Function) {
+  switch (step) {
+    case 0:
+      return <ContactInfoForm 
+              restaurantName = {Values.restaurantName}
+              restaurantWebsite = {Values.restaurantWebsite}
+              restaurantPhone = {Values.restaurantPhone}
+              postCode = {Values.postCode}
+              email = {Values.email}
+              address = {Values.address}
+              city = {Values.city}
+             />;
+    case 1:
+      return <RestaurantInfoForm 
+              restaurantLogo= {Values.restaurantLogo}
+              about= {Values.about}
+              delivery= {Values.delivery}
+              pickUp= {Values.pickUp}
+              dineIn= {Values.dineIn}
+              estimatedDeliveryTime= {Values.estimatedDeliveryTime}
+              imagePath= {Values.imagePath}
+              preview= {preview}
+              setPreview= {setPreview}
+              setFieldValue= {setFieldValue}
+              handleChange= {handleChange}
+      />;
+    case 2:
+      return <CommissionForm 
+             commission= {Values.commission}
+            />;
+    default:
+      return 'Unknown step';
+  }
+}
+
+const handleNext = () => {
+  let newStep = activeStep;
+  if(newStep < 2) setActiveStep(newStep +1);
+};
+
+const handleBack = () => {
+  let backStep = activeStep;
+  if(backStep > 0 ) setActiveStep(backStep - 1);
+};
+
+/* const addRestaurant= (
+        values: {   
+          restaurantName:string;
+          restaurantWebsite:string;
+          restaurantPhone:string;
+          postCode:string;
+          email:string;
+          address:string;
+          city:string;
+          restaurantLogo: string;
+          about: string;
+          delivery: boolean;
+          pickUp: boolean;
+          dineIn: boolean;
+          estimatedDeliveryTime: string;
+          commission: string;
+          imagePath: string; },
+        actions: any
+      ) => {
+        addRestaurantMutation({ variables: values }).finally(() => {
+          actions.resetForm();
+          setPreview(null);
+        });
+      };
+const [
+  addRestaurantMutation,
+  { loading: mutationLoading, error, data },
+] = useMutation(ADD_RESTAURANT_MUTATION);
+ */
+
   return (
-    <Formik
-      initialValues={{ email: "", password: "" }}
-      onSubmit={(values, { setSubmitting }) => console.log("submitted")}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-      }) => (
-        <form className="form-horizontal" onSubmit={handleSubmit}>
+<> 
+<div className="page-title-box">
+        <div className="row">
+              <Title title="Add restaurant">
+                <BreadCrumb title={"Website Settings"} url="/home" />
+              </Title>
+        </div>
+    </div>
+<div className={classes.root}>
+      <Stepper activeStep={activeStep}>
+        {steps.map((label, index) => {
+          return (
+            <Step key={label} >
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+      <Formik
+          initialValues={Values}
+         /*  onSubmit={(values, { setSubmitting, resetForm }) =>
+              addRestaurant(values, { setSubmitting, resetForm })
+            } */
+            onSubmit={(values, { setSubmitting, resetForm }) =>{
+                        console.log("values :::", values); } }
+      >  
+      {({ values, handleSubmit, setFieldValue,setValues, handleChange }) => (
+      <form className="form-horizontal" onSubmit={handleSubmit}>
+      <div className={classes.content}>
+        {activeStep === steps.length ? (
           <div>
-            <div className="page-title-box">
-              <div className="row">
-                <Title title="Website Setting">
-                  <BreadCrumb title={"Website Settings"} url="/home" />
-                </Title>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="card mini-stat ">
-                  <div className="card-body mini-stat-img">
-                    <div className="table-responsive">
-                      <ul className="nav nav-tabs" role="tablist">
-                        <li className="nav-item">
-                          <a
-                            onClick={() => setLevel(1)}
-                            className={
-                              level === 1 ? "nav-link active" : "nav-link"
-                            }
-                            data-toggle="tab"
-                            href="#home"
-                            role="tab"
-                            aria-selected="true"
-                          >
-                            <span className="d-block d-sm-none">
-                              <i className="fas fa-home"></i>
-                            </span>
-                            <span className="d-none d-sm-block">
-                              Contact info
-                            </span>
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            onClick={() => setLevel(2)}
-                            className={
-                              level === 2 ? "nav-link active" : "nav-link"
-                            }
-                            data-toggle="tab"
-                            href="#profile"
-                            role="tab"
-                            aria-selected="false"
-                          >
-                            <span className="d-block d-sm-none">
-                              <i className="far fa-user"></i>
-                            </span>
-                            <span className="d-none d-sm-block">
-                              Restaurant info
-                            </span>
-                          </a>
-                        </li>
-                        <li className="nav-item">
-                          <a
-                            onClick={() => setLevel(3)}
-                            className={
-                              level === 3 ? "nav-link active" : "nav-link"
-                            }
-                            data-toggle="tab"
-                            href="#messages"
-                            role="tab"
-                            aria-selected="false"
-                          >
-                            <span className="d-block d-sm-none">
-                              <i className="far fa-envelope"></i>
-                            </span>
-                            <span className="d-none d-sm-block">
-                              Commission
-                            </span>
-                          </a>
-                        </li>
-                      </ul>
-                      <div className="tab-content">
-                        <div
-                          className={
-                            level === 1 ? "tab-pane p-3 active" : "tab-pane p-3"
-                          }
-                          id="home"
-                          role="tabpanel"
-                        >
-                          <div className="row">
-                            <div className="col-lg-6">
-                              <h4 className="mt-0 header-title">
-                                Restaurant contact info
-                              </h4>
-                              <div className="form-group">
-                                <label>Restaurant name</label>
-                                <input
-                                  id="metakeywords"
-                                  name="city"
-                                  type="text"
-                                  className="form-control"
-                                />
-                              </div>
-                              <div className="form-group">
-                                <label>Restaurant website</label>
-                                <input
-                                  id="metakeywords"
-                                  name="city"
-                                  type="text"
-                                  className="form-control"
-                                />
-                              </div>
-                              <div className="form-group">
-                                <label>Restaurant phone</label>
-                                <input
-                                  id="metakeywords"
-                                  name="restaurantphone"
-                                  type="text"
-                                  className="form-control"
-                                />
-                              </div>
-                              <div className="form-group">
-                                <label>Post code</label>
-                                <input
-                                  id="metakeywords"
-                                  name="postcode"
-                                  type="text"
-                                  className="form-control"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-lg-6">
-                              <h4 className="mt-0 header-title ">
-                                <br />
-                              </h4>
-                              <div className="form-group">
-                                <label>Email</label>
-                                <input
-                                  id="metakeywords"
-                                  name="email"
-                                  type="text"
-                                  className="form-control"
-                                />
-                              </div>
-                              <div className="form-group">
-                                <label>Address</label>
-                                <input
-                                  id="metakeywords"
-                                  name="address"
-                                  type="text"
-                                  className="form-control"
-                                />
-                              </div>
-                              <div className="form-group">
-                                <label>City</label>
-                                <input
-                                  id="metakeywords"
-                                  name="city"
-                                  type="text"
-                                  className="form-control"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className={
-                            level === 2 ? "tab-pane p-3 active" : "tab-pane p-3"
-                          }
-                          id="profile"
-                          role="tabpanel"
-                        >
-                          <div className="row">
-                            <div className="col-lg-6">
-                              <h4 className="mt-0 header-title">
-                                Restaurant info
-                              </h4>
-                              <br />
-                              <label>Restaurant logo</label>
-                              <div className="form-group">
-                                <div className="bootstrap-filestyle input-group">
-                                  <span className="group-span-filestyle ">
-                                    <label className="btn btn-secondary ">
-                                      <span className="icon-span-filestyle fas fa-folder-open"></span>
-                                      <span className="buttonText">
-                                        Choose a file
-                                      </span>
-                                    </label>
-                                  </span>
-                                </div>
-                                <div className="form-group">
-                                  Recommended size 100 * 100
-                                  <br />
-                                  <img
-                                    className="rounded mr-2"
-                                    alt="200x200"
-                                    width="150"
-                                    src="../assets/images/thumbnail-default.jpg"
-                                    data-holder-rendered="true"
-                                  />
-                                </div>
-                                <div className="form-group">
-                                  <label> About </label>
-                                  <textarea
-                                    className="form-control"
-                                    id="metadescription"
-                                  ></textarea>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-lg-6">
-                              <div className="card-body">
-                                <div className="form-group">
-                                  <label>Delivery</label>
-                                  <br />
-                                  <input type="checkbox" id="switch1" />
-                                  <label
-                                    data-on-label="On"
-                                    data-off-label="Off"
-                                  ></label>
-                                </div>
-
-                                <div className="form-group">
-                                  <label>Pick up</label>
-                                  <br />
-                                  <input type="checkbox" id="switch2" />
-                                  <label
-                                    data-on-label="On"
-                                    data-off-label="Off"
-                                  ></label>
-                                </div>
-
-                                <div className="form-group">
-                                  <label>Dine in</label>
-                                  <br />
-                                  <input type="checkbox" id="switch3" />
-                                  <label
-                                    data-on-label="On"
-                                    data-off-label="Off"
-                                  ></label>
-                                </div>
-
-                                <div className="form-group">
-                                  <label>Estimated delivery time</label>
-                                  <input
-                                    id="metakeywords"
-                                    name="deliverytime"
-                                    type="text"
-                                    className="form-control"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className={
-                            level === 3 ? "tab-pane p-3 active" : "tab-pane p-3"
-                          }
-                          id="messages"
-                          role="tabpanel"
-                        >
-                          <div className="row">
-                            <div className="col-lg-6">
-                              <h4 className="mt-0 header-title">Commission</h4>
-                              <p className="text-muted mb-4">
-                                Fill all information below
-                              </p>
-
-                              <div className="form-group">
-                                <label>Commission %</label>
-                                <input
-                                  id="metakeywords"
-                                  name="tax"
-                                  type="text"
-                                  className="form-control"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <input
-                        type="button"
-                        onClick={() => changeLevel()}
-                        className="btn btn-primary mr-1 waves-effect waves-light"
-                        value={level !== 3 ? "next" : "first"}
-                      />
-                      <input
-                        type="submit"
-                        className="btn btn-success mr-1 waves-effect waves-light "
-                        style={{ display: level !== 3 ? "none" : "" }}
-                        value="submit"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <Typography className={classes.instructions}>
+              All steps completed.
+            </Typography>
+          </div>
+        ) : (
+          <div>
+            <Typography className={classes.instructions}>{
+                getStepContent(activeStep,setFieldValue, handleChange)
+                
+                }</Typography>
+            <div>
+              <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                Back
+              </Button>
+              {activeStep === steps.length - 1 ?
+             ( <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                className={classes.button}
+                type="submit"
+              >
+               Finish
+              </Button>) : (
+                <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                className={classes.button}
+              >
+                Next
+              </Button>
+              )}
             </div>
           </div>
-        </form>
+        )}
+      </div>
+   
+    </form>
       )}
-    </Formik>
+   </Formik>
+    </div>
+</>
+
   );
-};
+}
+
 
 export default AddRestaurantContainer;

@@ -1,46 +1,58 @@
 import React, { Component } from "react";
+import TextField from "@material-ui/core/TextField";
+import { Field } from "formik";
 
-class ContactInfoForm extends Component {
+class ContactInfoForm extends React.Component<
+{ restaurantName: string,
+  restaurantWebsite: string,
+  restaurantPhone: string,
+  postCode: string,
+  email: string,
+  address: string,
+  city: string,
+}
+  >
+  {
+  constructor(props: any) {
+    super(props);
+  } 
+
   render = () => {
     return (
-      <form>
-        <div className="row">
+
+        <div className="row" >
           <div className="col-lg-6">
             <h4 className="mt-0 header-title">Restaurant contact info</h4>
             <div className="form-group">
               <label>Restaurant name</label>
-              <input
-                id="metakeywords"
-                name="city"
+              <Field
                 type="text"
                 className="form-control"
+                name="restaurantName"
               />
             </div>
             <div className="form-group">
               <label>Restaurant website</label>
-              <input
-                id="metakeywords"
-                name="city"
+              <Field
                 type="text"
                 className="form-control"
+                name="restaurantWebsite"
               />
             </div>
             <div className="form-group">
               <label>Restaurant phone</label>
-              <input
-                id="metakeywords"
-                name="restaurantphone"
+              <Field
                 type="text"
                 className="form-control"
+                name="restaurantPhone"
               />
-            </div>
+               </div>
             <div className="form-group">
               <label>Post code</label>
-              <input
-                id="metakeywords"
-                name="postcode"
+               <Field
                 type="text"
                 className="form-control"
+                name="postCode"
               />
             </div>
             
@@ -49,41 +61,32 @@ class ContactInfoForm extends Component {
           <h4 className="mt-0 header-title "><br/></h4>
             <div className="form-group">
               <label>Email</label>
-              <input
-                id="metakeywords"
-                name="email"
+              <Field
                 type="text"
                 className="form-control"
-              />
+                name="email"
+              /> 
             </div>
             <div className="form-group">
               <label>Address</label>
-              <input
-                id="metakeywords"
-                name="address"
+              <Field
                 type="text"
                 className="form-control"
+                name="address"
               />
             </div>
             <div className="form-group">
               <label>City</label>
-              <input
-                id="metakeywords"
-                name="city"
+              <Field
                 type="text"
                 className="form-control"
+                name="city"
               />
             </div>
           </div>
         </div>
-        <button
-              type="submit"
-              className="btn btn-success mr-1 waves-effect waves-light"
-            >
-              Save Changes
-            </button>
-      </form>
-    );
+     
+    ); 
   };
 }
 

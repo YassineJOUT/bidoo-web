@@ -1,86 +1,131 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import { Field } from "formik";
+import Dropzone from "react-dropzone";
+import { Switch, FormControlLabel } from "@material-ui/core";
+interface variables{
 
-class RestaurantInfoForm extends Component {
+}
+interface Props {
+  restaurantLogo: string;
+  about: string;
+  delivery: boolean;
+  pickUp: boolean;
+  dineIn: boolean;
+  estimatedDeliveryTime: string;
+  imagePath: string;
+  preview: any;
+  setPreview: Function;
+  setFieldValue: Function;
+  handleChange: Function;
+}
+class RestaurantInfoForm extends React.Component<
+Props
+  >
+  {
+  constructor(props: any) {
+    super(props);
+  } 
   render = () => {
     return (
-      <form>
+  
         <div className="row">
-          <div className="col-lg-6">
-            <h4 className="mt-0 header-title">Restaurant info</h4>
-            <br />
-            <label>Restaurant logo</label>
-            <div className="form-group">
-              <div className="bootstrap-filestyle input-group">
-                <span className="group-span-filestyle ">
-                  <label className="btn btn-secondary ">
-                    <span className="icon-span-filestyle fas fa-folder-open"></span>
-                    <span className="buttonText">Choose a file</span>
-                  </label>
-                </span>
-              </div>
-              <div className="form-group">
-                Recommended size 100 * 100
-                <br />
-                <img
-                  className="rounded mr-2"
-                  alt="200x200"
-                  width="150"
-                  src="../assets/images/thumbnail-default.jpg"
-                  data-holder-rendered="true"
-                />
-              </div>
+        <div className="col-lg-6">
+                      <h4 className="mt-0 header-title">Restaurant info</h4>
+                      <br />
+                      <label>Restaurant logo</label>
+
+                      <div className="form-group">
+                        Recommended size ( 1903 x 969 )
+                        <br />
+                        <Dropzone
+                          accept="image/*"
+                          multiple={false}
+                          onDrop={(acceptedFiles) => {
+                            this.props.setFieldValue("image", acceptedFiles[0]);
+                            this.props.setPreview(URL.createObjectURL(acceptedFiles[0]));
+                          }}
+                        >
+                          {({ getRootProps, getInputProps }) => (
+                            <section>
+                              <div {...getRootProps()}>
+                                <input {...getInputProps()} />
+                                <div className="dropzone d-flex justify-content-center align-items-center"  style={{ width: 400 }}>
+                                  {this.props.preview ? "" : this.props.imagePath ? "" :"Drag an image here"}
+                                  {this.props.preview ? (
+                                    <img
+                                      src={this.props.preview}
+                                      style={{ width: "100%" }}
+                                    />
+                                  ) : (this.props.imagePath &&
+                                    <img
+                                      src={"http://localhost:3005/"+ this.props.imagePath }
+                                      style={{ width: "100%" }}
+                                    /> 
+                                    )
+                                  }
+                                </div>
+                              </div>
+                            </section>
+                          )}
+                        </Dropzone>
+                      </div>
               <div className="form-group">
                 <label> About </label>
-                <textarea
-                  className="form-control"
-                  id="metadescription"
-                ></textarea>
+                <Field
+                componentClass="textarea"
+                className="form-control"
+                name="about"
+                style={{ width: 700 , rows: 3 , cols : 80}}
+              />
               </div>
-            </div>
-          </div>
+        </div>
+      
           <div className="col-lg-6">
             <div className="card-body">
-              <div className="form-group">
-                <label>Delivery</label>
-                <br />
-                <input type="checkbox" id="switch1" />
-                <label data-on-label="On" data-off-label="Off"></label>
+            <div className="form-group">
+               <label>Delivery</label>
+             
+                 <Field 
+                           name="delivery"
+                           component={Switch}
+                           onChange={this.props.handleChange}
+                          // checked={this.props.delivery} 
+                           value={this.props.delivery}
+                          />     
+               
               </div>
 
               <div className="form-group">
                 <label>Pick up</label>
-                <br />
-                <input type="checkbox" id="switch2" />
-                <label data-on-label="On" data-off-label="Off"></label>
+                <Field
+                           name="pickUp"
+                           component={Switch}
+                           checked={this.props.pickUp} 
+                          />   
               </div>
 
               <div className="form-group">
                 <label>Dine in</label>
-                <br />
-                <input type="checkbox" id="switch3" />
-                <label data-on-label="On" data-off-label="Off"></label>
-              </div>
-
+               <Field
+                           name="dineIn"
+                           component={Switch}
+                           checked={this.props.dineIn} 
+                          />
+              </div>	  
               <div className="form-group">
                 <label>Estimated delivery time</label>
-                <input
-                  id="metakeywords"
-                  name="deliverytime"
-                  type="text"
-                  className="form-control"
-                />
+                <Field
+                type="textarea"
+                className="form-control"
+                name="estimatedDeliveryTime"
+                style={{ width: 700 }}
+              />
               </div>
             </div>
           </div>
-        </div>
-        <button
-          type="submit"
-          className="btn btn-success mr-1 waves-effect waves-light"
-        >
-          Save Changes
-        </button>
-      </form>
-    );
+      
+          </div>
+    ); 
   };
 }
 

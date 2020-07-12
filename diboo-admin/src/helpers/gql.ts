@@ -54,3 +54,11 @@ query getCarousel($id: String!){
     }
   }
 `;
+
+export const ADD_RESTAURANT_MUTATION = gql`
+mutation createRestaurant($restaurantName: String, $restaurantWebsite: String, $restaurantPhone: String, $postCode: String, $email: String, $address: String, $city: String, $restaurantLogo: String, $about: String, $delivery: Boolean, $pickUp: Boolean, $dineIn: Boolean, $estimatedDeliveryTime: String, $commission: String, $imagePath: String!) {
+    createRestaurant(input:{name: $restaurantName, website: $restaurantWebsite, phone: $restaurantPhone, postCode: $postCode, email: $email, address: $address, city: $city, estimatedTime: $estimatedDeliveryTime, about: $about, delivery: $delivery, pickUp: $pickUp, dineIn: $dineIn, commission: $commission, imagePath: $imagePath}){
+        ok
+    }
+  }
+`;
