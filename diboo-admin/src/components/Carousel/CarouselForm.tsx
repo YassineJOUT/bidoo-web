@@ -9,8 +9,22 @@ import {
 import _ from "lodash";
 import Alert from "../Shared/Alert";
 
-const Form: React.SFC<{ Id: string; handlAlert: Function }> = (props) => {
-  const [showAlert, setShowAlert] = useState(false);
+interface CarouselProps {
+  bannerLink: string;
+  id: string;
+  imagePath: string;
+  status: boolean;
+  subtitle: string;
+  title: string;
+}
+
+interface Props {
+  values: CarouselProps;
+  handlAlert: Function;
+}
+
+const Form: React.SFC<Props> = (props) => {
+
   const dismissBtn = useRef<HTMLButtonElement>(null);
   const [Values, setValues] = useState({
     id: "",
@@ -22,32 +36,24 @@ const Form: React.SFC<{ Id: string; handlAlert: Function }> = (props) => {
   });
   const [preview, setPreview] = useState<any>(null);
 
-  const [
-    getCarousel
-  ] = useLazyQuery(GET_CAROUSEL_MUTATION, {
-    onCompleted: (data) => {
-      console.log(data)
-      setValues(data.getOneCarousel.data[0]);
-    },
-  });
-  useEffect(() => {
-    if (!_.isEmpty(props.Id)) {
-      getCarousel({ variables: { id: props.Id } });
-    }
-  }, [props.Id]);
+  // const [
+  //   getCarousel
+  // ] = useLazyQuery(GET_CAROUSEL_MUTATION, {
+  //   onCompleted: (data) => {
+  //     console.log(data)
+  //     setValues(data.getOneCarousel.data[0]);
+  //   },
+  // });
+  // useEffect(() => {
+  //   if (!_.isEmpty(props.values.id)) {
+  //     getCarousel({ variables: { id: props..Id } });
+  //   }
+  // }, [props.Id]);
 
   const addCarousel = (
-    values: {
-      id: string;
-      title: string;
-      subtitle: string;
-      bannerLink: string;
-      image: any;
-    },
+    values: CarouselProps,
     actions: any
   ) => {
-    console.log("values");
-    console.log(values);
     addCarouselMutation({ variables: values }).finally(() => {
       actions.resetForm();
       setPreview(null);
@@ -92,10 +98,10 @@ const Form: React.SFC<{ Id: string; handlAlert: Function }> = (props) => {
             </div>
             <Formik
               enableReinitialize
-              initialValues={Values}
+              initialValues={props.values}
               //   validationSchema={loginValidationSchema}
               onSubmit={(values, { setSubmitting, resetForm }) => {
-                values.id = props.Id;
+                values.id = props.values.id;
                 return addCarousel(values, { setSubmitting, resetForm });
               }}
             >
@@ -126,7 +132,7 @@ const Form: React.SFC<{ Id: string; handlAlert: Function }> = (props) => {
                                   <div className="dropzone d-flex justify-content-center align-items-center">
                                     {preview
                                       ? ""
-                                      : Values.imagePath
+                                      : props.values.imagePath
                                       ? ""
                                       : "Drag an image here"}
                                     {preview ? (
@@ -135,11 +141,11 @@ const Form: React.SFC<{ Id: string; handlAlert: Function }> = (props) => {
                                         style={{ width: "100%" }}
                                       />
                                     ) : (
-                                      Values.imagePath && (
+                                      props.values.imagePath && (
                                         <img
                                           src={
                                             "http://localhost:3005/" +
-                                            Values.imagePath
+                                            props.values.imagePath
                                           }
                                           style={{ width: "100%" }}
                                         />

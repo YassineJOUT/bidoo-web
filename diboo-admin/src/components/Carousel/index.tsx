@@ -61,6 +61,14 @@ const CarouselContainer: React.FunctionComponent = () => {
       },
     });
   };
+  const [selectedData, setSelectedData] = useState({
+    bannerLink: "",
+    id: "",
+    imagePath: "",
+    status: false,
+    subtitle: "",
+    title: "",
+  });
   const [open, setOpen] = useState(false);
   const [showAlert, setShowAlert] = useState({
     show: false,
@@ -71,36 +79,31 @@ const CarouselContainer: React.FunctionComponent = () => {
     setOpen(true);
   };
 
-  const handlAlert = (show: boolean, message: string,type: boolean) => {
+  const handlAlert = (show: boolean, message: string, type: boolean) => {
     setShowAlert({ show, message, type });
     setTimeout(() => {
       setShowAlert({ show: false, message: "", type: true });
     }, 2000);
     refetch();
-  }
+  };
   const handleClose = (yes: boolean) => {
     setOpen(false);
     // call delete mutation
     yes && deleteMutation({ variables: { id: carouselId } });
   };
-  const [deleteMutation] = useMutation(
-    DELETE_MUTATION_MUTATION,
-    {
-      onCompleted: (data) => {
+  const [deleteMutation] = useMutation(DELETE_MUTATION_MUTATION, {
+    onCompleted: (data) => {
       const { ok, message, error } = data.deleteCarousel;
-      handlAlert(true, ok ? message : error,  ok );
-        
-      },
-    }
-  );
+      handlAlert(true, ok ? message : error, ok);
+    },
+  });
   const [editStatusMutation] = useMutation(EDIT_CAROUSEL_STATUS_MUTATION, {
     onCompleted: (data) => {
       const { ok, message, error } = data.editStatusCarousel;
-      handlAlert(true, ok ? message : error,  ok );
+      handlAlert(true, ok ? message : error, ok);
     },
     onError: (err) => {
-      handlAlert(true, "something went wrong!",false);
-   
+      handlAlert(true, "something went wrong!", false);
     },
   });
   const [carouselId, setCarouselId] = useState("");
@@ -167,10 +170,8 @@ const CarouselContainer: React.FunctionComponent = () => {
               title=""
               data-original-title="Edit"
               onClick={() => {
-                setTimeout(() => {
-                  setCarouselId("");
-                }, 100); 
-                setCarouselId(val.id);
+                //send all data to the compoment
+                setSelectedData(val);
               }}
             >
               <i className="mdi mdi-pencil font-18"></i>
@@ -222,7 +223,12 @@ const CarouselContainer: React.FunctionComponent = () => {
               <h4 className="mt-0 header-title">Carousel</h4>
 
               {rows && (
-                <MDBDataTable striped bordered data={{ ...dataa, rows }} />
+                <MDBDataTable
+                  striped
+                  bordered
+                  responsive
+                  data={{ ...dataa, rows }}
+                />
               )}
               {loading && (
                 <div className="d-flex justify-content-center">
@@ -241,7 +247,7 @@ const CarouselContainer: React.FunctionComponent = () => {
           </div>
         </div>
       </div>
-      <Form Id={carouselId} handlAlert={handlAlert} />
+      <Form values={selectedData} handlAlert={handlAlert} />
       {showAlert.show && (
         <Alert message={showAlert.message} type={showAlert.type} />
       )}
