@@ -3,9 +3,14 @@ import Title from "../Shared/ContentTitle";
 import BreadCrumb from "../Shared/BreadCrumb";
 import { MDBDataTable } from "mdbreact";
 import Form from "./CarouselForm";
-import { useQuery } from "@apollo/react-hooks";
-import { GET_CAROUSELS_MUTATION } from "../../helpers/gql";
-import CommissionForm from "../Settings/Commission/Forms";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import {
+  GET_CAROUSELS_MUTATION,
+  DELETE_MUTATION_MUTATION,
+  EDIT_CAROUSEL_STATUS_MUTATION,
+} from "../../helpers/gql";
+import YesNoModal from "../Shared/ConfirmModal";
+import Alert from "../Shared/Alert";
 
 const dataa = {
   columns: [
@@ -44,49 +49,114 @@ const dataa = {
       sort: "asc",
       width: 100,
     },
-  ]
+  ],
 };
-const handleActiveChnage = () => {
-console.log('fireeed');
-}
-const CarouselContainer: React.SFC = () => {
-  const [carouselId,setCarouselId] = useState("");
-  const { loading, error, data } = useQuery(GET_CAROUSELS_MUTATION);
 
-  console.log(data);
-  console.log(error);
-  console.log(loading);
+const CarouselContainer: React.FunctionComponent = () => {
+  const handleActiveChnage = (id: string, val: boolean) => {
+    editStatusMutation({
+      variables: {
+        id,
+        status: val,
+      },
+    });
+  };
+  const [selectedData, setSelectedData] = useState({
+    bannerLink: "",
+    id: "",
+    imagePath: "",
+    status: false,
+    subtitle: "",
+    title: "",
+  });
+  const [open, setOpen] = useState(false);
+  const [showAlert, setShowAlert] = useState({
+    show: false,
+    message: "",
+    type: true,
+  });
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handlAlert = (show: boolean, message: string, type: boolean) => {
+    setShowAlert({ show, message, type });
+    setTimeout(() => {
+      setShowAlert({ show: false, message: "", type: true });
+    }, 2000);
+    refetch();
+  };
+  const handleClose = (yes: boolean) => {
+    setOpen(false);
+    // call delete mutation
+    yes && deleteMutation({ variables: { id: carouselId } });
+  };
+  const [deleteMutation] = useMutation(DELETE_MUTATION_MUTATION, {
+    onCompleted: (data) => {
+      const { ok, message, error } = data.deleteCarousel;
+      handlAlert(true, ok ? message : error, ok);
+    },
+  });
+  const [editStatusMutation] = useMutation(EDIT_CAROUSEL_STATUS_MUTATION, {
+    onCompleted: (data) => {
+      const { ok, message, error } = data.editStatusCarousel;
+      handlAlert(true, ok ? message : error, ok);
+    },
+    onError: (err) => {
+      handlAlert(true, "something went wrong!", false);
+    },
+  });
+  const [carouselId, setCarouselId] = useState("");
+  const { loading, error, data, refetch } = useQuery(GET_CAROUSELS_MUTATION);
+
   let rows = null;
   if (data && data.getCarousels) {
-    rows = data.getCarousels.data.map((val: any,index: number) => {
+    rows = data.getCarousels.data.map((val: any, index: number) => {
       return {
         ...val,
-        photo: (
-          val.imagePath ?
+        photo: val.imagePath ? (
           <div className="d-flex justify-content-center">
-
-          <img key={index}
-            src={"http://localhost:3005/"+val.imagePath}
-            alt="Banner"
-            title="Banner Image"
-            className="imgborder"
-            height="50"
-            width="150"
-           />   </div>
-           : <div className="d-flex justify-content-center">
-          <div className=""> No Image</div>
-        </div>
+            <img
+              key={index}
+              src={"http://localhost:3005/" + val.imagePath}
+              alt="Banner"
+              title="Banner Image"
+              className="imgborder"
+              height="50"
+              width="150"
+            />{" "}
+          </div>
+        ) : (
+          <div className="d-flex justify-content-center">
+            <div className=""> No Image</div>
+          </div>
         ),
         status: [
-          <div key={index}
+          <div
+            key={index}
             className="btn-group btn-group-toggle mt-2 mt-xl-0"
             data-toggle="buttons"
           >
-            <label className="btn btn-outline-primary btn-sm btn-rounded  " onClick={handleActiveChnage}>
-              <input type="radio" name="options" id="option1"  /> active
+            <label
+              className={
+                val.status
+                  ? "btn btn-outline-primary btn-sm btn-rounded active"
+                  : "btn btn-outline-primary btn-sm btn-rounded "
+              }
+              onClick={() => handleActiveChnage(val.id, true)}
+            >
+              <input type="radio" name="options" id="option1" /> active
             </label>
-            <label className="btn btn-outline-danger btn-sm btn-rounded active">
-              <input type="radio" name="options" id="option2" onChange={handleActiveChnage}  /> inactive
+            <label
+              className={
+                val.status
+                  ? "btn btn-outline-danger btn-sm btn-rounded"
+                  : "btn btn-outline-danger btn-sm btn-rounded active"
+              }
+              onClick={() => handleActiveChnage(val.id, false)}
+            >
+              <input type="radio" name="options" id="option2" />
+              inactive
             </label>
           </div>,
           "",
@@ -100,19 +170,21 @@ const CarouselContainer: React.SFC = () => {
               title=""
               data-original-title="Edit"
               onClick={() => {
-                console.log("edit fired")
-                console.log(val.id)
-                setCarouselId(val.id)
+                //send all data to the compoment
+                setSelectedData(val);
               }}
             >
               <i className="mdi mdi-pencil font-18"></i>
             </span>
             <span
               className="mr-3 text-danger"
-              data-toggle="tooltip"
               data-placement="top"
               title=""
               data-original-title="Delete"
+              onClick={() => {
+                handleClickOpen();
+                setCarouselId(val.id);
+              }}
             >
               <i className="mdi mdi-close font-18"></i>
             </span>
@@ -125,7 +197,7 @@ const CarouselContainer: React.SFC = () => {
 
   return (
     <div>
-       <div className="page-title-box">
+      <div className="page-title-box">
         <div className="row">
           <Title title="Website carousel">
             <BreadCrumb title={"Website carousel"} url="/home" />
@@ -151,19 +223,39 @@ const CarouselContainer: React.SFC = () => {
               <h4 className="mt-0 header-title">Carousel</h4>
 
               {rows && (
-                <MDBDataTable striped bordered data={{ ...dataa, rows }} />
+                <MDBDataTable
+                  striped
+                  bordered
+                  responsive
+                  data={{ ...dataa, rows }}
+                />
               )}
               {loading && (
                 <div className="d-flex justify-content-center">
                   <div className="spinner-border "></div>
                 </div>
               )}
-              {error &&  <div className="d-flex justify-content-center alert alert-danger" role="alert">  Something went wrong </div>}
-            </div> 
+              {error && (
+                <div
+                  className="d-flex justify-content-center alert alert-danger"
+                  role="alert"
+                >
+                  Something went wrong
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <Form Id={carouselId} />
+      <Form values={selectedData} handlAlert={handlAlert} />
+      {showAlert.show && (
+        <Alert message={showAlert.message} type={showAlert.type} />
+      )}
+      <YesNoModal
+        message="Are you sure ?"
+        open={open}
+        handleClose={handleClose}
+      />
     </div>
   );
 };

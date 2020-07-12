@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Formik, Field } from "formik";
 import Dropzone from "react-dropzone";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
@@ -7,9 +7,27 @@ import {
   GET_CAROUSEL_MUTATION,
 } from "../../helpers/gql";
 import _ from "lodash";
+import Alert from "../Shared/Alert";
 
-const Form: React.SFC<{ Id: string }> = (props) => {
-  const [Values,setValues] = useState({
+interface CarouselProps {
+  bannerLink: string;
+  id: string;
+  imagePath: string;
+  status: boolean;
+  subtitle: string;
+  title: string;
+}
+
+interface Props {
+  values: CarouselProps;
+  handlAlert: Function;
+}
+
+const Form: React.SFC<Props> = (props) => {
+
+  const dismissBtn = useRef<HTMLButtonElement>(null);
+  const [Values, setValues] = useState({
+    id: "",
     title: "",
     subtitle: "",
     bannerLink: "",
@@ -18,18 +36,22 @@ const Form: React.SFC<{ Id: string }> = (props) => {
   });
   const [preview, setPreview] = useState<any>(null);
 
-  const [getCarousel,{ loading: getLoading, error: getError, data: getData } ]= useLazyQuery(GET_CAROUSEL_MUTATION,{onCompleted: (data) => {
-    setValues(data.getOneCarousel.data[0])
-  }});
-  useEffect(() => {
-    if (!_.isEmpty(props.Id)) {
-      getCarousel({ variables: { id: props.Id } });
-    }
-
-  },[props.Id]);
+  // const [
+  //   getCarousel
+  // ] = useLazyQuery(GET_CAROUSEL_MUTATION, {
+  //   onCompleted: (data) => {
+  //     console.log(data)
+  //     setValues(data.getOneCarousel.data[0]);
+  //   },
+  // });
+  // useEffect(() => {
+  //   if (!_.isEmpty(props.values.id)) {
+  //     getCarousel({ variables: { id: props..Id } });
+  //   }
+  // }, [props.Id]);
 
   const addCarousel = (
-    values: { title: string; subtitle: string; bannerLink: string; image: any },
+    values: CarouselProps,
     actions: any
   ) => {
     addCarouselMutation({ variables: values }).finally(() => {
@@ -40,158 +62,148 @@ const Form: React.SFC<{ Id: string }> = (props) => {
   const [
     addCarouselMutation,
     { loading: mutationLoading, error, data },
-  ] = useMutation(ADD_CAROUSEL_MUTATION);
+  ] = useMutation(ADD_CAROUSEL_MUTATION, {
+    onCompleted: (data) => {
+      dismissBtn!.current!.click();
+      const { ok, message, error } = data.createCarousel;
+      props.handlAlert(true, ok ? message : error,  ok );
+      
+    },
+  });
 
   return (
-    <div
-      className="modal fade bs-caroussel-modal tabindex= show"
-      role="dialog"
-      aria-labelledby="myExtraLargeModalLabel"
-      aria-modal="true"
-    >
-      <div className="modal-dialog modal-xl">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title mt-0" id="myExtraLargeModalLabel">
-              Add new carousel Image
-            </h5>
+    <div>
+      <div
+        className="modal fade bs-caroussel-modal tabindex= show"
+        role="dialog"
+        aria-labelledby="myExtraLargeModalLabel"
+        aria-modal="true"
+      >
+        <div className="modal-dialog modal-xl">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title mt-0" id="myExtraLargeModalLabel">
+                Add new carousel Image
+              </h5>
 
-            <button
-              type="button"
-              className="close"
-              data-dismiss="modal"
-              aria-label="Close"
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                ref={dismissBtn}
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <Formik
+              enableReinitialize
+              initialValues={props.values}
+              //   validationSchema={loginValidationSchema}
+              onSubmit={(values, { setSubmitting, resetForm }) => {
+                values.id = props.values.id;
+                return addCarousel(values, { setSubmitting, resetForm });
+              }}
             >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <Formik
-          enableReinitialize
-
-            initialValues={ Values }
-            //   validationSchema={loginValidationSchema}
-            onSubmit={(values, { setSubmitting, resetForm }) =>
-              addCarousel(values, { setSubmitting, resetForm })
-            }
-          >
-            {({ values, handleSubmit, setFieldValue,setValues }) => (
-              
-              <form className="form-horizontal" onSubmit={handleSubmit}>
-               
-                <div className="modal-body">
-                  {data && data.createCarousel && data.createCarousel.ok && (
-                    <div
-                      className=" d-flex justify-content-center alert alert-success d-flex"
-                      role="alert"
-                    >
-                      Carousel Added
-                    </div>
-                  )}
-                  {data &&
-                    data.createCarousel &&
-                    data.createCarousel.ok === false && (
-                      <div
-                        className=" d-flex justify-content-center alert alert-danger"
-                        role="alert"
-                      >
-                        "Something went wrong"
-                      </div>
-                    )}
-                  {error && (
-                    <div
-                      className="alert alert-danger d-flex justify-content-center"
-                      role="alert"
-                    >
-                      "Something went wrong"
-                    </div>
-                  )}
-                  <div className="row">
-                    <div className="col-lg-6">
-                      <h4 className="mt-0 header-title">Restaurant Banner</h4>
-                      <br />
-                      <label>Banner photo</label>
-
-                      <div className="form-group">
-                        Recommended size ( 1903 x 969 )
+              {({ values, handleSubmit, setFieldValue, setValues }) => (
+                <form className="form-horizontal" onSubmit={handleSubmit}>
+                  <div className="modal-body">
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <h4 className="mt-0 header-title">Restaurant Banner</h4>
                         <br />
-                        <Dropzone
-                          accept="image/*"
-                          multiple={false}
-                          onDrop={(acceptedFiles) => {
-                            setFieldValue("image", acceptedFiles[0]);
-                            setPreview(URL.createObjectURL(acceptedFiles[0]));
-                          }}
-                        >
-                          {({ getRootProps, getInputProps }) => (
-                            <section>
-                              <div {...getRootProps()}>
-                                <input {...getInputProps()} />
-                                <div className="dropzone d-flex justify-content-center align-items-center">
-                                  {preview ? "" : Values.imagePath ? "" :"Drag an image here"}
-                                  {preview ? (
-                                    <img
-                                      src={preview}
-                                      style={{ width: "100%" }}
-                                    />
-                                  ) : (Values.imagePath &&
-                                    <img
-                                      src={"http://localhost:3005/"+Values.imagePath }
-                                      style={{ width: "100%" }}
-                                    /> 
-                                    )
-                                  }
+                        <label>Banner photo</label>
+
+                        <div className="form-group">
+                          Recommended size ( 1903 x 969 )
+                          <br />
+                          <Dropzone
+                            accept="image/*"
+                            multiple={false}
+                            onDrop={(acceptedFiles) => {
+                              setFieldValue("image", acceptedFiles[0]);
+                              setPreview(URL.createObjectURL(acceptedFiles[0]));
+                            }}
+                          >
+                            {({ getRootProps, getInputProps }) => (
+                              <section>
+                                <div {...getRootProps()}>
+                                  <input {...getInputProps()} />
+                                  <div className="dropzone d-flex justify-content-center align-items-center">
+                                    {preview
+                                      ? ""
+                                      : props.values.imagePath
+                                      ? ""
+                                      : "Drag an image here"}
+                                    {preview ? (
+                                      <img
+                                        src={preview}
+                                        style={{ width: "100%" }}
+                                      />
+                                    ) : (
+                                      props.values.imagePath && (
+                                        <img
+                                          src={
+                                            "http://localhost:3005/" +
+                                            props.values.imagePath
+                                          }
+                                          style={{ width: "100%" }}
+                                        />
+                                      )
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            </section>
-                          )}
-                        </Dropzone>
+                              </section>
+                            )}
+                          </Dropzone>
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="btn btn-success mr-1 waves-effect waves-light"
+                        >
+                          {mutationLoading ? "Loading... " : "Save Changes"}
+                        </button>
                       </div>
+                      <div className="col-lg-6">
+                        <div className="card-body">
+                          <div className="form-group">
+                            <label>Banner title</label>
+                            <Field
+                              type="text"
+                              className="form-control"
+                              name="title"
+                              placeholder="Banner title"
+                            />
+                          </div>
 
-                      <button
-                        type="submit"
-                        className="btn btn-success mr-1 waves-effect waves-light"
-                      >
-                        {mutationLoading ? "Loading... " : "Save Changes"}
-                      </button>
-                    </div>
-                    <div className="col-lg-6">
-                      <div className="card-body">
-                        <div className="form-group">
-                          <label>Banner title</label>
-                          <Field
-                            type="text"
-                            className="form-control"
-                            name="title"
-                            placeholder="Banner title"
-                          />
-                        </div>
+                          <div className="form-group">
+                            <label>Banner subtitle</label>
+                            <Field
+                              type="text"
+                              name="subtitle"
+                              className="form-control"
+                              placeholder="Banner subtitle"
+                            />
+                          </div>
 
-                        <div className="form-group">
-                          <label>Banner subtitle</label>
-                          <Field
-                            type="text"
-                            name="subtitle"
-                            className="form-control"
-                            placeholder="Banner subtitle"
-                          />
-                        </div>
-
-                        <div className="form-group">
-                          <label>Banner hyper link</label>
-                          <Field
-                            type="text"
-                            name="bannerLink"
-                            className="form-control"
-                            placeholder="Banner hyper link"
-                          />
+                          <div className="form-group">
+                            <label>Banner hyper link</label>
+                            <Field
+                              type="text"
+                              name="bannerLink"
+                              className="form-control"
+                              placeholder="Banner hyper link"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
-            )}
-          </Formik>
+                </form>
+              )}
+            </Formik>
+          </div>
         </div>
       </div>
     </div>
