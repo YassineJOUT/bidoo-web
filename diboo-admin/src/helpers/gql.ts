@@ -44,6 +44,71 @@ export const EDIT_COMMISSION_MUTATION = gql`
     }
   }
 `;
+export const EDIT_SITESETTING_MUTATION = gql`
+  mutation updateSiteSetting($id: ID,
+    $adminName: String,
+    $adminEmail: String,
+    $supportEmail: String,
+    $invoiceEmail: String,
+    $sitePhone: String,
+    $siteName: String,
+    $siteLogo: String,
+    $siteFavIcon: String,
+    $adminPage: String,
+    $userPage: String,
+    $offlineStatus: Boolean,
+    $offlineNote: String,
+    $currencySymbol: String,
+    $headerText: String,
+    $googleAnalyticCode: String,
+    $siteMetaTagTitle: String,
+    $siteMetaTagKeyword: String,
+    $siteMetaTagDescription: String,
+    $facebook: String,
+    $twitter: String,
+    $linkedin: String,
+    $youtube: String,
+    $instagram: String,
+    $tax: Float,
+    $address: String,
+    $city: String,
+    $country: String,
+    $postCode: String) {
+    updateSiteSetting(input: {id:$id,
+      adminName: $adminName,
+      adminEmail: $adminEmail,
+      supportEmail: $supportEmail,
+      invoiceEmail: $invoiceEmail,
+      sitePhone: $sitePhone,
+      siteName: $siteName,
+      siteLogo: $siteLogo,
+      siteFavIcon: $siteFavIcon,
+      adminPage: $adminPage,
+      userPage: $userPage,
+      offlineStatus: $offlineStatus,
+      offlineNote: $offlineNote,
+      currencySymbol: $currencySymbol,
+      headerText: $headerText,
+      googleAnalyticCode: $googleAnalyticCode,
+      siteMetaTagTitle: $siteMetaTagTitle,
+      siteMetaTagKeyword: $siteMetaTagKeyword,
+      siteMetaTagDescription: $siteMetaTagDescription,
+      facebook: $facebook,
+      twitter: $twitter,
+      linkedin: $linkedin,
+      youtube: $youtube,
+      instagram: $instagram,
+      tax: $tax,
+      address: $address,
+      city: $city,
+      country: $country,
+      postCode: $postCode,}) {
+      ok
+      message
+      error
+    }
+  }
+`;
 export const EDIT_CAROUSEL_STATUS_MUTATION = gql`
   mutation editStatusCarousel($id: String, $status: Boolean) {
     editStatusCarousel(input: { id: $id, status: $status }) {
@@ -103,6 +168,46 @@ export const GET_COMMISSION_SETTING_MUTATION = gql`
       data {
         id
         commission
+      }
+      message
+      error
+    }
+  }
+`;
+export const GET_SITE_SETTING_MUTATION = gql`
+  {
+    getSetting {
+      ok
+      data {
+         id
+         adminName
+         adminEmail
+         supportEmail
+         invoiceEmail
+         sitePhone
+         siteName
+         siteLogo
+         siteFavIcon
+         adminPage
+         userPage
+         offlineStatus
+         offlineNote
+         currencySymbol
+         headerText
+         googleAnalyticCode
+         siteMetaTagTitle
+         siteMetaTagKeyword
+         siteMetaTagDescription
+         facebook
+         twitter
+         linkedin
+         youtube
+         instagram
+         tax
+         address
+         city
+         country
+         postCode
       }
       message
       error

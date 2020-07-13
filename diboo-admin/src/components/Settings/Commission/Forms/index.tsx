@@ -7,6 +7,7 @@ import {
 } from "../../../../helpers/gql";
 import { printIntrospectionSchema } from "graphql";
 import Alert from "../../../Shared/Alert";
+import { commissionValidationSchema } from "../../../../utilities/validationSchema";
 
 interface commissionProps {
   id: string;
@@ -47,7 +48,6 @@ const CommissionForm: React.FunctionComponent = (props) => {
 
   const { refetch, loading } = useQuery(GET_COMMISSION_SETTING_MUTATION, {
     onCompleted: (data) => {
-      console.log(data);
       data.getCommission.ok &&
         setComVals({
           id: data.getCommission.data.id,
@@ -59,7 +59,7 @@ const CommissionForm: React.FunctionComponent = (props) => {
     <Formik
       enableReinitialize
       initialValues={comVals}
-      // validationSchema={loginValidationSchema}
+      validationSchema={commissionValidationSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         return editCommission(values, { setSubmitting, resetForm });
       }}
