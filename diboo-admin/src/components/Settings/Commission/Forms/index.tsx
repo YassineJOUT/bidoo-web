@@ -1,13 +1,13 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Formik, Field } from "formik";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
   EDIT_COMMISSION_MUTATION,
   GET_COMMISSION_SETTING_MUTATION,
 } from "../../../../helpers/gql";
-import { printIntrospectionSchema } from "graphql";
 import Alert from "../../../Shared/Alert";
 import { commissionValidationSchema } from "../../../../utilities/validationSchema";
+import { Error } from "../../../Error";
 
 interface commissionProps {
   id: string;
@@ -25,28 +25,25 @@ const CommissionForm: React.FunctionComponent = (props) => {
     setTimeout(() => {
       setShowAlert({ show: false, message: "", type: true });
     }, 2000);
-    refetch();
   };
   const [comVals, setComVals] = useState({
     id: "",
     commission: 0,
   });
-  const editCommission = (values: commissionProps, actions: any) => {
-    editCommissionMutation({ variables: values });
+  const editCommission = async (values: commissionProps, actions: any) => {
+    actions.setSubmitting(true);
+    await editCommissionMutation({ variables: values });
+    actions.setSubmitting(false);
   };
-  const [
-    editCommissionMutation,
-    { loading: mutationLoading, error: mutationError },
-  ] = useMutation(EDIT_COMMISSION_MUTATION, {
+  const [editCommissionMutation] = useMutation(EDIT_COMMISSION_MUTATION, {
     onCompleted: (data) => {
       const { ok, message, error } = data.updateCommission;
       handlAlert(true, ok ? message : error, ok);
-      refetch();
     },
     onError: (err) => console.log(err),
   });
 
-  const { refetch, loading } = useQuery(GET_COMMISSION_SETTING_MUTATION, {
+  const { loading } = useQuery(GET_COMMISSION_SETTING_MUTATION, {
     onCompleted: (data) => {
       data.getCommission.ok &&
         setComVals({
@@ -64,7 +61,7 @@ const CommissionForm: React.FunctionComponent = (props) => {
         return editCommission(values, { setSubmitting, resetForm });
       }}
     >
-      {({ handleSubmit }) => (
+      {({ handleSubmit, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-lg-6">
@@ -74,6 +71,12 @@ const CommissionForm: React.FunctionComponent = (props) => {
                 <div>
                   <div className="form-group">
                     <label>Commission %</label>
+                    {touched.commission && (
+                      <Error
+                        touched={touched.commission}
+                        message={errors.commission}
+                      />
+                    )}
                     <Field
                       type="number"
                       className="form-control"
@@ -85,7 +88,7 @@ const CommissionForm: React.FunctionComponent = (props) => {
                     type="submit"
                     className="btn btn-success mr-1 waves-effect waves-light"
                   >
-                    Save Changes
+                    {isSubmitting ? "Loading.." : "Save Changes"}
                   </button>
                 </div>
               ) : (
