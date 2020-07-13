@@ -6,11 +6,12 @@ import Form from "./CarouselForm";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
   GET_CAROUSELS_MUTATION,
-  DELETE_MUTATION_MUTATION,
   EDIT_CAROUSEL_STATUS_MUTATION,
+  DELETE_CAROUSEL_MUTATION,
 } from "../../helpers/gql";
 import YesNoModal from "../Shared/ConfirmModal";
 import Alert from "../Shared/Alert";
+import { BASE_URL } from "../../utilities/config";
 
 const dataa = {
   columns: [
@@ -70,15 +71,14 @@ const CarouselContainer: React.FunctionComponent = () => {
     title: "",
   });
   const [open, setOpen] = useState(false);
-  const [showAlert, setShowAlert] = useState({
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+ const [showAlert, setShowAlert] = useState({
     show: false,
     message: "",
     type: true,
   });
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handlAlert = (show: boolean, message: string, type: boolean) => {
     setShowAlert({ show, message, type });
     setTimeout(() => {
@@ -91,7 +91,7 @@ const CarouselContainer: React.FunctionComponent = () => {
     // call delete mutation
     yes && deleteMutation({ variables: { id: carouselId } });
   };
-  const [deleteMutation] = useMutation(DELETE_MUTATION_MUTATION, {
+  const [deleteMutation] = useMutation(DELETE_CAROUSEL_MUTATION, {
     onCompleted: (data) => {
       const { ok, message, error } = data.deleteCarousel;
       handlAlert(true, ok ? message : error, ok);
@@ -118,13 +118,13 @@ const CarouselContainer: React.FunctionComponent = () => {
           <div className="d-flex justify-content-center">
             <img
               key={index}
-              src={"http://localhost:3005/" + val.imagePath}
+              src={BASE_URL + val.imagePath}
               alt="Banner"
               title="Banner Image"
               className="imgborder"
               height="50"
               width="150"
-            />{" "}
+            />
           </div>
         ) : (
           <div className="d-flex justify-content-center">

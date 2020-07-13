@@ -89,6 +89,11 @@ export const locationValidationSchema = Yup.object().shape({
   country: validStr
 });
 
+export const kitchenValidationSchema = Yup.object().shape({
+  kitchenName: validStr,
+  description: validStr,
+});
+
 
 export const contactValidationSchema = Yup.object().shape({
   supportEmail: validEmail,
