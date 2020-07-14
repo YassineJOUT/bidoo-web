@@ -259,6 +259,7 @@ const KitchenContainer: React.FunctionComponent = () => {
               <h4 className="mt-0 header-title">Kitchen Management</h4>
               {rows && (
                 <MDBDataTable
+                noBottomColumns
                   striped
                   bordered
                   responsive

@@ -225,9 +225,10 @@ const CarouselContainer: React.FunctionComponent = () => {
 
               {rows && (
                 <MDBDataTable
-                  striped
+                noBottomColumns
+                  hover
+                  exportToCSV
                   bordered
-                  responsive
                   data={{ ...dataa, rows }}
                 />
               )}
