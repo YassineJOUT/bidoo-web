@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Formik, Field } from "formik";
 import Dropzone from "react-dropzone";
-import { useMutation } from "@apollo/react-hooks";
-import { ADD_CAROUSEL_MUTATION } from "../../helpers/gql";
 import _ from "lodash";
 
 interface CarouselProps {
@@ -16,30 +14,20 @@ interface CarouselProps {
 
 interface Props {
   values: CarouselProps;
-  handlAlert: Function;
+  addOrEditCarousel: Function;
 }
 
 const Form: React.SFC<Props> = (props) => {
   const dismissBtn = useRef<HTMLButtonElement>(null);
   const [preview, setPreview] = useState<any>(null);
 
-  const addCarousel = (values: CarouselProps, actions: any) => {
-    addCarouselMutation({ variables: values }).finally(() => {
+  const addOrEditCarousel = (values: CarouselProps, actions: any) => {
+    props.addOrEditCarousel({ variables: values }).finally(() => {
+      dismissBtn!.current!.click();
       actions.resetForm();
       setPreview(null);
     });
   };
-  const [
-    addCarouselMutation,
-    { loading: mutationLoading, error, data },
-  ] = useMutation(ADD_CAROUSEL_MUTATION, {
-    onCompleted: (data) => {
-      dismissBtn!.current!.click();
-      const { ok, message, error } = data.createCarousel;
-      props.handlAlert(true, ok ? message : error, ok);
-    },
-  });
-
   return (
     <div>
       <div
@@ -71,10 +59,10 @@ const Form: React.SFC<Props> = (props) => {
               //   validationSchema={loginValidationSchema}
               onSubmit={(values, { setSubmitting, resetForm }) => {
                 values.id = props.values.id;
-                return addCarousel(values, { setSubmitting, resetForm });
+                return addOrEditCarousel(values, { setSubmitting, resetForm });
               }}
             >
-              {({ values, handleSubmit, setFieldValue, setValues }) => (
+              {({ handleSubmit, setFieldValue, isSubmitting }) => (
                 <form className="form-horizontal" onSubmit={handleSubmit}>
                   <div className="modal-body">
                     <div className="row">
@@ -131,7 +119,7 @@ const Form: React.SFC<Props> = (props) => {
                           type="submit"
                           className="btn btn-success mr-1 waves-effect waves-light"
                         >
-                          {mutationLoading ? "Loading... " : "Save Changes"}
+                          {isSubmitting ? "Loading... " : "Save Changes"}
                         </button>
                       </div>
                       <div className="col-lg-6">

@@ -6,8 +6,8 @@ import Form from "./CarouselForm";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
   GET_CAROUSELS_MUTATION,
-  EDIT_CAROUSEL_STATUS_MUTATION,
   DELETE_CAROUSEL_MUTATION,
+  ADD_OR_EDIT_CAROUSEL_MUTATION,
 } from "../../helpers/gql";
 import YesNoModal from "../Shared/ConfirmModal";
 import Alert from "../Shared/Alert";
@@ -55,7 +55,7 @@ const dataa = {
 
 const CarouselContainer: React.FunctionComponent = () => {
   const handleActiveChnage = (id: string, val: boolean) => {
-    editStatusMutation({
+    addOrEditMutation({
       variables: {
         id,
         status: val,
@@ -74,7 +74,7 @@ const CarouselContainer: React.FunctionComponent = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
- const [showAlert, setShowAlert] = useState({
+  const [showAlert, setShowAlert] = useState({
     show: false,
     message: "",
     type: true,
@@ -97,12 +97,13 @@ const CarouselContainer: React.FunctionComponent = () => {
       handlAlert(true, ok ? message : error, ok);
     },
   });
-  const [editStatusMutation] = useMutation(EDIT_CAROUSEL_STATUS_MUTATION, {
+  const [addOrEditMutation] = useMutation(ADD_OR_EDIT_CAROUSEL_MUTATION, {
     onCompleted: (data) => {
-      const { ok, message, error } = data.editStatusCarousel;
+      const { ok, message, error } = data.createOrEditCarousel;
       handlAlert(true, ok ? message : error, ok);
     },
     onError: (err) => {
+      console.log(err)
       handlAlert(true, "something went wrong!", false);
     },
   });
@@ -247,7 +248,10 @@ const CarouselContainer: React.FunctionComponent = () => {
           </div>
         </div>
       </div>
-      <Form values={selectedData} handlAlert={handlAlert} />
+      <Form
+        values={selectedData}
+        addOrEditCarousel={addOrEditMutation}
+      />
       {showAlert.show && (
         <Alert message={showAlert.message} type={showAlert.type} />
       )}

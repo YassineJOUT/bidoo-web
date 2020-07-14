@@ -12,19 +12,21 @@ export const USER_LOGIN_MUTATION = gql`
   }
 `;
 
-export const ADD_CAROUSEL_MUTATION = gql`
-  mutation createCarousel(
+export const ADD_OR_EDIT_CAROUSEL_MUTATION = gql`
+  mutation createOrEditCarousel(
     $id: String
     $title: String
     $subtitle: String
+    $status: Boolean
     $bannerLink: String
     $image: Upload
   ) {
-    createCarousel(
+    createOrEditCarousel(
       input: {
         id: $id
         title: $title
         subtitle: $subtitle
+        status: $status
         bannerLink: $bannerLink
         image: $image
       }
