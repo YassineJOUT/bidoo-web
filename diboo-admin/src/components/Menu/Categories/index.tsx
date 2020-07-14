@@ -1,330 +1,290 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Title from "../../Shared/ContentTitle";
 import BreadCrumb from "../../Shared/BreadCrumb";
 import AddButtom from "../../Shared/AddButton";
-import { MDBDataTable } from "mdbreact";
+import { MDBDataTable, MDBBadge } from "mdbreact";
 import Card from "../../Shared/Card";
-const data = {
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import {
+  DELETE_MENUCATEGORY_MUTATION,
+  ADD_OR_EDIT_MENUCATEGORY_MUTATION,
+  GET_MENUCATEGORIES_MUTATION,
+} from "../../../helpers/gql";
+import Form from "./CategoryForm";
+import YesNoModal from "../../Shared/ConfirmModal";
+import Alert from "../../Shared/Alert";
+import { BASE_URL } from "../../../utilities/config";
+import moment from "moment";
+const dataa = {
   columns: [
     {
-      label: "#",
-      field: "id",
-      sort: "asc",
-      width: 150
+      label: "ID",
+      field: "badge",
     },
     {
       label: "Category name",
-      field: "category",
+      field: "name",
       sort: "asc",
-      width: 270
+      width: 270,
     },
     {
       label: "Added by",
-      field: "addedby",
+      field: "addedBy",
       sort: "asc",
-      width: 200
+      width: 200,
     },
     {
       label: "Added date",
       field: "date",
       sort: "asc",
-      width: 100
+      width: 100,
     },
-    
+
     {
       label: "Status",
       field: "status",
       sort: "asc",
-      width: 100
+      width: 100,
     },
     {
       label: "Action",
       field: "action",
       sort: "asc",
-      width: 100
-    }
+      width: 100,
+    },
   ],
-  rows: [
-    {
-      id: "1",
-      category: "System Architect",
-      addedby: "Rest",
-      date: "2011/04/25",
-      
-      status: [
-        <div
-          className="btn-group btn-group-toggle mt-2 mt-xl-0"
-          data-toggle="buttons"
-        >
-          <label className="btn btn-outline-primary btn-sm btn-rounded  ">
-            <input type="radio" name="options" id="option1" /> active
-          </label>
-          <label className="btn btn-outline-danger btn-sm btn-rounded active">
-            <input type="radio" name="options" id="option2" /> inactive
-          </label>
-        </div>,
-        ""
-      ],
-      action: [
-        <span>
-          <a
-            href="javascript:void(0);"
-            className="mr-3 text-primary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title=""
-            data-original-title="Edit"
-          >
-            <i className="mdi mdi-pencil font-18"></i>
-          </a>
-          <a
-            href="javascript:void(0);"
-            className="mr-3 text-danger"
-            data-toggle="tooltip"
-            data-placement="top"
-            title=""
-            data-original-title="Delete"
-          >
-            <i className="mdi mdi-close font-18"></i>
-          </a>
-         
-        </span>,
-        ""
-      ]
-    }
-  ]
 };
-class MenuCategoriesContainer extends Component {
-  render = () => {
-    return (
-      <div>
-        <div className="page-title-box">
-          <div className="row">
-            <Title title="Menu Categories">
-              <BreadCrumb title={"Menu Categories"} url="/home" />
-            </Title>
-            <AddButtom text="Add new category"/>
-           </div>
-        </div>
+
+const MenuCategoriesContainer: React.FunctionComponent = () => {
+  const handleActiveChnage = (id: string, val: boolean) => {
+    console.log(id)
+    console.log(val)
+    addOrEditMutation({
+      variables: {
+        id,
+        status: val,
+      },
+    });
+  };
+  const [selectedData, setSelectedData] = useState({
+    categoryName: "",
+    id: "",
+    imagePath: "",
+    status: false,
+    description: "",
+  });
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const [showAlert, setShowAlert] = useState({
+    show: false,
+    message: "",
+    type: true,
+  });
+  const handlAlert = (show: boolean, message: string, type: boolean) => {
+    setShowAlert({ show, message, type });
+    setTimeout(() => {
+      setShowAlert({ show: false, message: "", type: true });
+    }, 2000);
+    refetch();
+  };
+  const handleClose = (yes: boolean) => {
+    setOpen(false);
+    // call delete mutation
+    yes && deleteMutation({ variables: { id: categoryId } });
+  };
+  const [deleteMutation] = useMutation(DELETE_MENUCATEGORY_MUTATION, {
+    onCompleted: (data) => {
+      const { ok, message, error } = data.deleteCategory;
+      handlAlert(true, ok ? message : error, ok);
+    },
+  });
+  const [addOrEditMutation] = useMutation(ADD_OR_EDIT_MENUCATEGORY_MUTATION, {
+    onCompleted: (data) => {
+      const { ok, message, error } = data.createOrUpdateCategory;
+      handlAlert(true, ok ? message : error, ok);
+    },
+    onError: (err) => {
+      console.log(err);
+      handlAlert(true, "something went wrong!", false);
+    },
+  });
+  const [categoryId, setcategoryId] = useState("");
+  const { loading, error, data, refetch } = useQuery(
+    GET_MENUCATEGORIES_MUTATION
+  );
+  let rows = null;
+  if (data && data.getCategories) {
+    rows = data.getCategories.data.map((val: any, index: number) => {
+      return {
+        badge: (
+          <MDBBadge pill color='primary' className='p-1 px-2' key={index} searchvalue={index}>
+            ID: {index + 1}
+          </MDBBadge>
+        ),
+        ...val,
+        date: moment(val.createdAt).format("MMMM Do YYYY"),
+        name: val.categoryName,
+        addedBy: "Rest",
+        photo: val.imagePath ? (
+          <div className="d-flex justify-content-center">
+            <img
+              key={index}
+              src={BASE_URL + val.imagePath}
+              alt="Banner"
+              title="Banner Image"
+              className="imgborder"
+              height="50"
+              width="150"
+            />
+          </div>
+        ) : (
+          <div className="d-flex justify-content-center">
+            <div className=""> No Image</div>
+          </div>
+        ),
+        status: [
+          <div
+            key={index}
+            className="btn-group btn-group-toggle mt-2 mt-xl-0"
+            data-toggle="buttons"
+          >
+            <label
+              className={
+                val.status
+                  ? "btn btn-outline-primary btn-sm btn-rounded active"
+                  : "btn btn-outline-primary btn-sm btn-rounded "
+              }
+              onClick={() => handleActiveChnage(val.id, true)}
+            >
+              <input type="radio" name="options" id="option1" /> active
+            </label>
+            <label
+              className={
+                val.status
+                  ? "btn btn-outline-danger btn-sm btn-rounded"
+                  : "btn btn-outline-danger btn-sm btn-rounded active"
+              }
+              onClick={() => handleActiveChnage(val.id, false)}
+            >
+              <input type="radio" name="options" id="option2" />
+              inactive
+            </label>
+          </div>,
+          "",
+        ],
+        action: [
+          <span key={index}>
+            <span
+              className="mr-3 text-primary"
+              data-toggle="modal"
+              data-target=".bs-caroussel-modal"
+              title=""
+              data-original-title="Edit"
+              onClick={() => {
+                //send all data to the compoment
+                setSelectedData(val);
+              }}
+            >
+              <i className="mdi mdi-pencil font-18"></i>
+            </span>
+            <span
+              className="mr-3 text-danger"
+              data-placement="top"
+              title=""
+              data-original-title="Delete"
+              onClick={() => {
+                handleClickOpen();
+                setcategoryId(val.id);
+              }}
+            >
+              <i className="mdi mdi-close font-18"></i>
+            </span>
+          </span>,
+          "",
+        ],
+      };
+    });
+  }
+
+
+  return (
+    <div>
+      <div className="page-title-box">
         <div className="row">
-          <Card
-            title="TOTAL Categrories"
-            icon="dripicons-broadcast"
-            value={10}
-            col={4}
-          />
-          <Card
-            title="Active Categrories"
-            icon="ion ion-md-restaurant"
-            value={10}
-            col={4}
-          />
-          <Card
-            title="Inactive Categrories"
-            icon="fas fa-dollar-sign"
-            value={330}
-            col={4}
-          />
+          <Title title="Menu Categories">
+            <BreadCrumb title={"Menu Categories"} url="/home" />
+          </Title>
+          <AddButtom text="Add new category" />
         </div>
-        <div className="row">
-          <div className="col-lg-12">
-            <div className="card mini-stat ">
-              <div className="card-body mini-stat-img">
+      </div>
+      <div className="row">
+        <Card
+          title="TOTAL Categrories"
+          icon="dripicons-broadcast"
+          value={10}
+          col={4}
+        />
+        <Card
+          title="Active Categrories"
+          icon="ion ion-md-restaurant"
+          value={10}
+          col={4}
+        />
+        <Card
+          title="Inactive Categrories"
+          icon="fas fa-dollar-sign"
+          value={330}
+          col={4}
+        />
+      </div>
+      <div className="row">
+        <div className="col-lg-12">
+          <div className="card mini-stat ">
+            <div className="card-body mini-stat-img">
               <h4 className="mt-0 header-title">Category List</h4>
+              {rows && (
                 <MDBDataTable
-                noBottomColumns striped hover data={data} />
-              </div>
+                theadColor="black"
+                noBottomColumns
+                  hover
+                  exportToCSV
+                  bordered
+                  data={{ ...dataa, rows }}
+                />
+              )}
+              {loading && (
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-border "></div>
+                </div>
+              )}
+              {error && (
+                <div
+                  className="d-flex justify-content-center alert alert-danger"
+                  role="alert"
+                >
+                  Something went wrong
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <div className="modal fade bs-caroussel-modal tabindex= show" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-modal="true" >
-      <div className="modal-dialog modal-xl" >
-          <div className="modal-content">
-              <div className="modal-header">
-                  <h5 className="modal-title mt-0" id="myExtraLargeModalLabel">Add new category</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">×</span>
-                  </button>
-              </div>
-              <div className="modal-body">
-                  <div className="row">
-                  
-                      <div className="col-lg-6">
-                          
-                          <h4 className="mt-0 header-title">Menu Category</h4><br/>
-                          <label >Category Photo</label>
-                          <div className="form-group">
-                          <div className="bootstrap-filestyle input-group"><span className="group-span-filestyle " ><label className="btn btn-secondary "><span className="icon-span-filestyle fas fa-folder-open"></span> <span className="buttonText">Choose a file</span></label></span></div>
-                      </div>
-                          <div className="form-group">
-                             
-                              <br/>
-                              <img className="rounded mr-2" alt="200x200" width="150" src="../assets/images/thumbnail-default.jpg" data-holder-rendered="true"/>
-                          </div>
-                          
-                          <button type="submit" className="btn btn-success mr-1 waves-effect waves-light">Save Changes</button>
-          
-                      </div>
-                      <div className="col-lg-6">
-                          <div className="card-body">
-
-                              <div className="form-group">
-                                  <label >Restaurant</label>
-                                  <select className="form-control">
-                                    <option>Select a restaurant</option>
-                                    <option>Restaurant 1</option>
-                                    <option>Restaurant 2</option>
-                                </select>
-                              </div>
-
-                              <div className="form-group">
-                                  <label >Category name</label>
-                                  <input id="metakeywords" name="kictehnnamefr" type="text" className="form-control"/>
-                              </div>
-                               
-                                
-                              <div className="form-group">
-                                  <label >Category description</label>
-                                  <textarea className="form-control" id="metadescription" ></textarea>
-                              </div>
-
-                          </div>
-                         
-                      </div>
-
-                  </div>
-
-                  <div className="row">
-                    <div className="col-12">
-                      <div className="card">
-                          <div className="card-body">
-                            <h4 className="mt-0 header-title">Category items</h4>
-                            <p className="text-muted mb-4">
-                            </p>
-                              <table id="datatable-buttons" className="table  table-bordered dt-responsive nowrap" >
-                                <thead className="thead-light">
-                                  <tr>
-                                    <th className="text-center">#</th>
-                                    <th className="text-center">Item name</th>
-                                    <th className="text-center">Category name</th>
-                                    <th className="text-center">Item price</th>
-                                    <th className="text-center">Added date</th>
-                                    <th className="text-center">Status</th>
-                                    <th className="text-center">Popular</th>
-                                    <th className="text-center">Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <th scope="row">1</th>
-                                    <td className="text-center">
-                                      Pizza margaritta
-                                    </td>
-                                    <td className="text-center">
-                                      Pizza
-                                    </td>
-                                    <td className="text-center">
-                                      9.00dh
-                                    </td>
-                                    <td className="text-center">
-                                      Oct 8, 2019
-                                    </td>
-                                    
-                                    <td className="text-center">
-                                      <div className="btn-group btn-group-toggle mt-2 mt-xl-0" data-toggle="buttons">
-                                        <label className="btn btn-outline-primary btn-sm btn-rounded  active">
-                                          <input type="radio" name="options" id="option1"/>
-                                          active
-                                        </label>
-                                        <label className="btn btn-outline-danger  btn-sm btn-rounded ">
-                                          <input type="radio" name="options" id="option2" />
-                                          inactive
-                                        </label>
-                                      </div>
-                                    </td>
-                                    <td className="text-center">
-                                      <div className="btn-group btn-group-toggle mt-2 mt-xl-0" data-toggle="buttons">
-                                        <label className="btn btn-outline-primary btn-sm btn-rounded  active">
-                                          <input type="radio" name="options" id="option1"/>
-                                          Yes
-                                        </label>
-                                        <label className="btn btn-outline-danger btn-sm btn-rounded ">
-                                          <input type="radio" name="options" id="option2" />
-                                          No
-                                        </label>
-                                      </div>
-                                    </td>
-                                   
-                               
-                                      <td className="text-center">
-                                        <a className="mr-3 text-primary" data-toggle="modal" data-target=".bs-caroussel-modal"><i className="mdi mdi-pencil font-18" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"></i></a>
-                                        <a href="javascript:void(0);" className="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i className="mdi mdi-close font-18"></i></a>
-    
-                                    </td>
-                                
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">1</th>
-                                    <td className="text-center">
-                                      Pizza margaritta
-                                    </td>
-                                    <td className="text-center">
-                                      Pizza
-                                    </td>
-                                    <td className="text-center">
-                                      9.00dh
-                                    </td>
-                                    <td className="text-center">
-                                      Oct 8, 2019
-                                    </td>
-                                    
-                                    <td className="text-center">
-                                      <div className="btn-group btn-group-toggle mt-2 mt-xl-0" data-toggle="buttons">
-                                        <label className="btn btn-outline-primary btn-sm btn-rounded  active">
-                                          <input type="radio" name="options" id="option1"/>
-                                          active
-                                        </label>
-                                        <label className="btn btn-outline-danger btn-sm btn-rounded ">
-                                          <input type="radio" name="options" id="option2" />
-                                          inactive
-                                        </label>
-                                      </div>
-                                    </td>
-                                    <td className="text-center">
-                                      <div className="btn-group btn-group-toggle mt-2 mt-xl-0" data-toggle="buttons">
-                                        <label className="btn btn-outline-primary btn-sm btn-rounded  active">
-                                          <input type="radio" name="options" id="option1"/>
-                                          Yes
-                                        </label>
-                                        <label className="btn btn-outline-danger btn-sm btn-rounded ">
-                                          <input type="radio" name="options" id="option2" />
-                                          No
-                                        </label>
-                                      </div>
-                                    </td>
-                                   
-                               
-                                      <td className="text-center">
-                                        <a className="mr-3 text-primary" data-toggle="modal" data-target=".bs-caroussel-modal"><i className="mdi mdi-pencil font-18" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"></i></a>
-                                        <a href="javascript:void(0);" className="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i className="mdi mdi-close font-18"></i></a>
-    
-                                    </td>
-                                
-                                  </tr>
-                                  
-                                </tbody>
-                              </table>
-                          </div>
-                      </div>
-                  </div> 
-                  </div>
-              </div>
-          </div>
       </div>
-  </div>
-      </div>
-    );
-  };
-}
+      <Form
+        values={selectedData}
+        addOrEditCategory={addOrEditMutation}
+      />
+      {showAlert.show && (
+        <Alert message={showAlert.message} type={showAlert.type} />
+      )}
+      <YesNoModal
+        message="Are you sure ?"
+        open={open}
+        handleClose={handleClose}
+      />
+    </div>
+  );
+};
 
 export default MenuCategoriesContainer;

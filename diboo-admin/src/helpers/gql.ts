@@ -1,5 +1,7 @@
 import { gql } from "apollo-boost";
-
+/***
+ * LOGIN
+ */
 export const USER_LOGIN_MUTATION = gql`
   mutation login($email: String!, $password: String!) {
     login(input: { email: $email, password: $password }) {
@@ -11,7 +13,10 @@ export const USER_LOGIN_MUTATION = gql`
     }
   }
 `;
-
+/***
+ * CAROUSEL
+ */
+// add or edit
 export const ADD_OR_EDIT_CAROUSEL_MUTATION = gql`
   mutation createOrEditCarousel(
     $id: String
@@ -37,40 +42,95 @@ export const ADD_OR_EDIT_CAROUSEL_MUTATION = gql`
     }
   }
 `;
-export const ADD_OR_EDIT_KITCHEN_MUTATION = gql`
-  mutation createOrUpdateKitchen(
-    $id: String
-    $kitchenName: String
-    $description: String
-    $status: Boolean
-    $popular: Boolean
-    $image: Upload
-  ) {
-    createOrUpdateKitchen(
-      input: {
-        id: $id
-        kitchenName: $kitchenName
-        description: $description
-        status: $status
-        popular: $popular
-        image: $image
+// get one
+export const GET_CAROUSEL_MUTATION = gql`
+  query getCarousel($id: String!) {
+    getOneCarousel(id: $id) {
+      ok
+      data {
+        id
+        title
+        subtitle
+        bannerLink
+        status
+        imagePath
       }
-    ) {
+      error
+    }
+  }
+`;
+// get all
+export const GET_CAROUSELS_MUTATION = gql`
+  {
+    getCarousels {
+      ok
+      data {
+        id
+        title
+        subtitle
+        bannerLink
+        status
+        imagePath
+      }
+      error
+    }
+  }
+`;
+// delete
+export const DELETE_CAROUSEL_MUTATION = gql`
+  mutation deleteCarousel($id: String!) {
+    deleteCarousel(id: $id) {
       ok
       message
       error
     }
   }
 `;
-export const EDIT_COMMISSION_MUTATION = gql`
-  mutation updateCommission($id: ID, $commission: Float) {
-    updateCommission(input: { id: $id, commission: $commission }) {
+/***
+ * SETTINGS
+ */
+
+export const GET_SITE_SETTING_MUTATION = gql`
+  {
+    getSetting {
       ok
+      data {
+        id
+        adminName
+        adminEmail
+        supportEmail
+        invoiceEmail
+        sitePhone
+        siteName
+        siteLogo
+        siteFavIcon
+        adminPage
+        userPage
+        offlineStatus
+        offlineNote
+        currencySymbol
+        headerText
+        googleAnalyticCode
+        siteMetaTagTitle
+        siteMetaTagKeyword
+        siteMetaTagDescription
+        facebook
+        twitter
+        linkedin
+        youtube
+        instagram
+        tax
+        address
+        city
+        country
+        postCode
+      }
       message
       error
     }
   }
 `;
+
 export const EDIT_SITESETTING_MUTATION = gql`
   mutation updateSiteSetting(
     $id: ID
@@ -142,18 +202,54 @@ export const EDIT_SITESETTING_MUTATION = gql`
     }
   }
 `;
-export const EDIT_CAROUSEL_STATUS_MUTATION = gql`
-  mutation editStatusCarousel($id: String, $status: Boolean) {
-    editStatusCarousel(input: { id: $id, status: $status }) {
+
+/***
+ * COMMISSION
+ */
+export const EDIT_COMMISSION_MUTATION = gql`
+  mutation updateCommission($id: ID, $commission: Float) {
+    updateCommission(input: { id: $id, commission: $commission }) {
       ok
       message
       error
     }
   }
 `;
-export const DELETE_CAROUSEL_MUTATION = gql`
-  mutation deleteCarousel($id: String!) {
-    deleteCarousel(id: $id) {
+export const GET_COMMISSION_SETTING_MUTATION = gql`
+  {
+    getCommission {
+      ok
+      data {
+        id
+        commission
+      }
+      message
+      error
+    }
+  }
+`;
+/***
+ * KITCHEN
+ */
+export const ADD_OR_EDIT_KITCHEN_MUTATION = gql`
+  mutation createOrUpdateKitchen(
+    $id: String
+    $kitchenName: String
+    $description: String
+    $status: Boolean
+    $popular: Boolean
+    $image: Upload
+  ) {
+    createOrUpdateKitchen(
+      input: {
+        id: $id
+        kitchenName: $kitchenName
+        description: $description
+        status: $status
+        popular: $popular
+        image: $image
+      }
+    ) {
       ok
       message
       error
@@ -170,22 +266,6 @@ export const DELETE_KICHEN_MUTATION = gql`
   }
 `;
 
-export const GET_CAROUSELS_MUTATION = gql`
-  {
-    getCarousels {
-      ok
-      data {
-        id
-        title
-        subtitle
-        bannerLink
-        status
-        imagePath
-      }
-      error
-    }
-  }
-`;
 export const GET_KITCHENS_MUTATION = gql`
   {
     getKitchens {
@@ -203,72 +283,54 @@ export const GET_KITCHENS_MUTATION = gql`
     }
   }
 `;
-export const GET_CAROUSEL_MUTATION = gql`
-  query getCarousel($id: String!) {
-    getOneCarousel(id: $id) {
-      ok
-      data {
-        id
-        title
-        subtitle
-        bannerLink
-        status
-        imagePath
+/**
+ * CATEGORIES
+ */
+export const ADD_OR_EDIT_MENUCATEGORY_MUTATION = gql`
+  mutation createOrUpdateCategory(
+    $id: String
+    $categoryName: String
+    $description: String
+    $status: Boolean
+    $image: Upload
+  ) {
+    createOrUpdateCategory(
+      input: {
+        id: $id
+        categoryName: $categoryName
+        description: $description
+        status: $status
+        image: $image
       }
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`;
+export const DELETE_MENUCATEGORY_MUTATION = gql`
+  mutation deleteCategory($id: String!) {
+    deleteCategory(id: $id) {
+      ok
+      message
       error
     }
   }
 `;
 
-export const GET_COMMISSION_SETTING_MUTATION = gql`
+export const GET_MENUCATEGORIES_MUTATION = gql`
   {
-    getCommission {
+    getCategories {
       ok
       data {
         id
-        commission
+        categoryName
+        description
+        status
+        imagePath
+        createdAt
       }
-      message
-      error
-    }
-  }
-`;
-export const GET_SITE_SETTING_MUTATION = gql`
-  {
-    getSetting {
-      ok
-      data {
-        id
-        adminName
-        adminEmail
-        supportEmail
-        invoiceEmail
-        sitePhone
-        siteName
-        siteLogo
-        siteFavIcon
-        adminPage
-        userPage
-        offlineStatus
-        offlineNote
-        currencySymbol
-        headerText
-        googleAnalyticCode
-        siteMetaTagTitle
-        siteMetaTagKeyword
-        siteMetaTagDescription
-        facebook
-        twitter
-        linkedin
-        youtube
-        instagram
-        tax
-        address
-        city
-        country
-        postCode
-      }
-      message
       error
     }
   }
