@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import Title from "../../Shared/ContentTitle";
 import BreadCrumb from "../../Shared/BreadCrumb";
 import AddButtom from "../../Shared/AddButton";
-import { MDBDataTable } from "mdbreact";
+import { MDBDataTable, MDBBadge } from "mdbreact";
 import YesNoModal from "../../Shared/ConfirmModal";
 import Alert from "../../Shared/Alert";
 import Form from "./KitchenForm";
@@ -17,6 +17,10 @@ import moment from "moment";
 
 const dataa = {
   columns: [
+    {
+      label: "ID",
+      field: "badge",
+    },
     {
       label: "Photo",
       field: "photo",
@@ -126,6 +130,17 @@ const KitchenContainer: React.FunctionComponent = () => {
   if (data && data.getKitchens) {
     rows = data.getKitchens.data.map((val: any, index: number) => {
       return {
+        badge: (
+          <MDBBadge
+            pill
+            color="primary"
+            className="p-1 px-2"
+            key={index}
+            searchvalue={index}
+          >
+            ID: {index + 1}
+          </MDBBadge>
+        ),
         ...val,
         date: moment(val.createdAt).format("MMMM Do YYYY"),
         name: val.kitchenName,
@@ -259,7 +274,7 @@ const KitchenContainer: React.FunctionComponent = () => {
               <h4 className="mt-0 header-title">Kitchen Management</h4>
               {rows && (
                 <MDBDataTable
-                noBottomColumns
+                  noBottomColumns
                   striped
                   bordered
                   responsive

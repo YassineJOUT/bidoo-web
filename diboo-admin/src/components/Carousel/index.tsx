@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import Title from "../Shared/ContentTitle";
 import BreadCrumb from "../Shared/BreadCrumb";
-import { MDBDataTable } from "mdbreact";
+import { MDBDataTable, MDBBadge } from "mdbreact";
 import Form from "./CarouselForm";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
@@ -15,6 +15,10 @@ import { BASE_URL } from "../../utilities/config";
 
 const dataa = {
   columns: [
+    {
+      label: 'ID',
+      field: 'badge',
+    },
     {
       label: "Carousel photo",
       field: "photo",
@@ -114,6 +118,11 @@ const CarouselContainer: React.FunctionComponent = () => {
   if (data && data.getCarousels) {
     rows = data.getCarousels.data.map((val: any, index: number) => {
       return {
+        badge: (
+          <MDBBadge pill color='primary' className='p-1 px-2' key={index} searchvalue={index}>
+            ID: {index + 1}
+          </MDBBadge>
+        ),
         ...val,
         photo: val.imagePath ? (
           <div className="d-flex justify-content-center">
@@ -225,6 +234,7 @@ const CarouselContainer: React.FunctionComponent = () => {
 
               {rows && (
                 <MDBDataTable
+                theadColor="black"
                 noBottomColumns
                   hover
                   exportToCSV
