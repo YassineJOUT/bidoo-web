@@ -115,8 +115,16 @@ const MenuCategoriesContainer: React.FunctionComponent = () => {
     GET_MENUCATEGORIES_MUTATION
   );
   let rows = null;
+  let catCounts = {
+    categories: 0,
+    activeCategories: 0,
+    InActiveCategories: 0,
+  }
   if (data && data.getCategories) {
     rows = data.getCategories.data.map((val: any, index: number) => {
+      catCounts.categories++;
+      val.status ? catCounts.activeCategories++ : catCounts.InActiveCategories++;
+      console.log(catCounts)
       return {
         badge: (
           <MDBBadge pill color='primary' className='p-1 px-2' key={index} searchvalue={index}>
@@ -223,19 +231,19 @@ const MenuCategoriesContainer: React.FunctionComponent = () => {
         <Card
           title="TOTAL Categrories"
           icon="dripicons-broadcast"
-          value={10}
+          value={catCounts.categories}
           col={4}
         />
         <Card
           title="Active Categrories"
           icon="ion ion-md-restaurant"
-          value={10}
+          value={catCounts.activeCategories}
           col={4}
         />
         <Card
           title="Inactive Categrories"
           icon="fas fa-dollar-sign"
-          value={330}
+          value={catCounts.InActiveCategories}
           col={4}
         />
       </div>
