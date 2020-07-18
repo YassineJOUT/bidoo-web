@@ -21,7 +21,6 @@ const Form: React.SFC<Props> = (props) => {
   const [preview, setPreview] = useState<any>(null);
 
   const addOrEditCategory = (values: CategoryProps, actions: any) => {
-    console.log(values);
     props.addOrEditCategory({ variables: values }).finally(() => {
       dismissBtn!.current!.click();
       actions.resetForm();

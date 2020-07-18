@@ -12,7 +12,6 @@ const AddRestaurantContainer: React.FunctionComponent = () => {
   };
   const [level, setLevel] = useState(1);
   useEffect(() => {
-    console.log(level);
   });
   return (
     <Formik

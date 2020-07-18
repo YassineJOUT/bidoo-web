@@ -138,7 +138,6 @@ const ItemsContainer: React.FunctionComponent = () => {
   const [itemId, setItemId] = useState("");
   const { loading, error, data, refetch } = useQuery(GET_MENUITEMS_MUTATION);
   let rows = null;
-  console.log(data);
   if (data && data.getItems) {
     rows = data.getItems.data.map((val: any, index: number) => {
       return {

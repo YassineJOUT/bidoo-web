@@ -64,8 +64,6 @@ export const CategoryInitalValues = {
 };
 const MenuCategoriesContainer: React.FunctionComponent = () => {
   const handleActiveChnage = (id: string, val: boolean) => {
-    console.log(id)
-    console.log(val)
     addOrEditMutation({
       variables: {
         id,
@@ -125,7 +123,6 @@ const MenuCategoriesContainer: React.FunctionComponent = () => {
     rows = data.getCategories.data.map((val: any, index: number) => {
       catCounts.categories++;
       val.status ? catCounts.activeCategories++ : catCounts.InActiveCategories++;
-      console.log(catCounts)
       return {
         badge: (
           <MDBBadge pill color='primary' className='p-1 px-2' key={index} searchvalue={index}>
