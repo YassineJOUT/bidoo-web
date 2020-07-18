@@ -55,6 +55,13 @@ const dataa = {
   ],
 };
 
+export const CategoryInitalValues = {
+  categoryName: "",
+  id: "",
+  imagePath: "",
+  status: false,
+  description: "",
+};
 const MenuCategoriesContainer: React.FunctionComponent = () => {
   const handleActiveChnage = (id: string, val: boolean) => {
     console.log(id)
@@ -66,13 +73,7 @@ const MenuCategoriesContainer: React.FunctionComponent = () => {
       },
     });
   };
-  const [selectedData, setSelectedData] = useState({
-    categoryName: "",
-    id: "",
-    imagePath: "",
-    status: false,
-    description: "",
-  });
+  const [selectedData, setSelectedData] = useState(CategoryInitalValues);
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);

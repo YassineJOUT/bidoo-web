@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Formik, Field } from "formik";
 import Dropzone from "react-dropzone";
-import { useMutation } from "@apollo/react-hooks";
-import { ADD_OR_EDIT_KITCHEN_MUTATION } from "../../../helpers/gql";
 import _ from "lodash";
 import { BASE_URL } from "../../../utilities/config";
 import { kitchenValidationSchema } from "../../../utilities/validationSchema";

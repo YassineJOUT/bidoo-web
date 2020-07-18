@@ -284,6 +284,78 @@ export const GET_KITCHENS_MUTATION = gql`
   }
 `;
 /**
+ * ITEMS
+ */
+export const ADD_OR_EDIT_MENUITEM_MUTATION = gql`
+  mutation createOrUpdateItem(
+    $id: String
+    $itemName: String
+    $description: String
+    $status: Boolean
+    $popular: Boolean
+    $instruction: Boolean
+    $price: Float
+    $image: Upload
+    $category: ID
+  ) {
+    createOrUpdateItem(
+      input: {
+        id: $id
+        itemName: $itemName
+        description: $description
+        status: $status
+        popular: $popular
+        price: $price
+        instruction: $instruction
+        image: $image
+        category: $category
+      }
+    ) {
+      ok
+      message
+      error
+    }
+  }
+`;
+export const DELETE_MENUITEM_MUTATION = gql`
+  mutation deleteItem($id: String!) {
+    deleteItem(id: $id) {
+      ok
+      message
+      error
+    }
+  }
+`;
+
+export const GET_MENUITEMS_MUTATION = gql`
+  {
+    getItems {
+      ok
+      data {
+        id
+        itemName
+        description
+        status
+        imagePath
+        createdAt
+        price
+        instruction
+        popular
+        category
+      }
+      error
+    }
+    getCategories {
+      ok
+      error
+      data {
+        id
+        categoryName
+      }
+    }
+  }
+`;
+/**
  * CATEGORIES
  */
 export const ADD_OR_EDIT_MENUCATEGORY_MUTATION = gql`

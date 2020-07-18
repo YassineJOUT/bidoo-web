@@ -3,7 +3,7 @@ import { Formik, Field } from "formik";
 import Dropzone from "react-dropzone";
 import _ from "lodash";
 
-interface CategoryProps {
+export interface CategoryProps {
   categoryName: string;
   id: string;
   imagePath: string;
@@ -21,13 +21,14 @@ const Form: React.SFC<Props> = (props) => {
   const [preview, setPreview] = useState<any>(null);
 
   const addOrEditCategory = (values: CategoryProps, actions: any) => {
-    console.log(values)
+    console.log(values);
     props.addOrEditCategory({ variables: values }).finally(() => {
-       dismissBtn!.current!.click();
-       actions.resetForm();
-       setPreview(null);
-     });
+      dismissBtn!.current!.click();
+      actions.resetForm();
+      setPreview(null);
+    });
   };
+
   return (
     <div
       className="modal fade bs-caroussel-modal tabindex= show"
@@ -134,21 +135,19 @@ const Form: React.SFC<Props> = (props) => {
                         <div className="form-group">
                           <label>Category name</label>
                           <Field
-                              type="text"
-                              name="categoryName"
-                              className="form-control"
-                            />
-                       
+                            type="text"
+                            name="categoryName"
+                            className="form-control"
+                          />
                         </div>
 
                         <div className="form-group">
                           <label>Category description</label>
                           <Field
-                              component="textarea"
-                              name="description"
-                              className="form-control"
-                            />
-                       
+                            component="textarea"
+                            name="description"
+                            className="form-control"
+                          />
                         </div>
                       </div>
                     </div>
