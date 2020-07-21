@@ -1,9 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 import Title from "../../Shared/ContentTitle";
 import BreadCrumb from "../../Shared/BreadCrumb";
-import ContactInfoForm from "./Forms/ContactInfo";
-import RestaurantInfoForm from "./Forms/RestaurantInfo";
-import CommissionForm from "./Forms/Commission";
 import { Formik } from "formik";
 
 const AddRestaurantContainer: React.FunctionComponent = () => {
