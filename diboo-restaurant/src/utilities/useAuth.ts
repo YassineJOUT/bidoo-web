@@ -1,4 +1,4 @@
-import { useState, createContext, Dispatch, SetStateAction } from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
 
 // localStorage.js
 export const loadState = ():Context => {
