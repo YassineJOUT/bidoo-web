@@ -42,7 +42,7 @@ const App: React.FC = () => {
               exact
               component={() => (
                 <Redirect
-                  to={context.contextState.isLogged ? "/dashboard" : "login"}
+                  to={context.contextState.isLogged ? "/dashboard" : "/login"}
                 />
               )}
             />

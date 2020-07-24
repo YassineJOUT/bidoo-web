@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import MetisMenu from "react-metismenu";
+
 import { menuContent } from "../../../utilities/Consts";
 interface Props {
   collapse: boolean

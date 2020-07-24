@@ -1,14 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 
 type Props = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
-const Layout: React.SFC<Props> = ({ children }) => (
-    <div >
-
-                { children }
-    </div>
-);
+const Layout: React.SFC<Props> = ({ children }) => <>{children}</>;
 
 export default Layout;

@@ -1,5 +1,4 @@
 import { createContext, Dispatch, SetStateAction } from "react";
-
 // localStorage.js
 export const loadState = ():Context => {
     const serializedState = localStorage.getItem("state");
