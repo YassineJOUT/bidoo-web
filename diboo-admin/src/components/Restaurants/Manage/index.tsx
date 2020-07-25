@@ -1,17 +1,19 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import Title from "../../Shared/ContentTitle";
 import BreadCrumb from "../../Shared/BreadCrumb";
 import { MDBDataTable } from "mdbreact";
 import Card from "../../Shared/Card";
+import RestaurantInfoForm from "../Add/Forms/RestaurantInfo";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import { GET_RESTAURANT_MUTATION, GET_RESTAURANTS_MUTATION, DELETE_RESTAURANT_MUTATION, EDIT_RESTAURANT_STATUS_MUTATION } from "../../../helpers/gql";
+import EditForm from "./Forms/Edit/EditRestaurantForm";
+import DisplayDetailsForm from "./Forms/DisplayDetails/DisplayDetailsForm";
+import Modal from "../../Shared/Modal";
+import ModalForm from "../../Shared/Modal/ModalForm";
 
-const data = {
+
+const dataRows = {
   columns: [
-    {
-      label: "#",
-      field: "id",
-      sort: "asc",
-      width: 150
-    },
     {
       label: "Name",
       field: "name",
@@ -46,123 +48,175 @@ const data = {
     }
     ,
     {
-      label: "Actions",
-      field: "actions",
+      label: "Action",
+      field: "action",
       sort: "asc",
       width: 100
     }
-  ],
-  rows: [
-    {
-      id: "1",
-      name: "System rest",
-      city: "Edinburgh",
-      phone: "09876545",
-      status: [
-        <div
+  ]}
+
+
+function ManageRestaurantsContainer()  {
+  const [restaurantId,setRestaurantId] = useState(" ");
+  const { loading, error, data } = useQuery(GET_RESTAURANTS_MUTATION);
+  const [preview, setPreview] = useState<any>(null);
+  const [choice,setChoice] = useState(0);
+  const [status,setStatus] = useState(false);
+  const handleDeleteCase= (
+    id: String
+     ) => {
+    deleteRestaurantMutation({ variables: id }).finally(() => {
+      setPreview(null);
+    });
+  };
+const [
+deleteRestaurantMutation
+] = useMutation(DELETE_RESTAURANT_MUTATION);
+const [editStatusMutation] = useMutation(EDIT_RESTAURANT_STATUS_MUTATION, {
+    onCompleted: (data) => {
+      const { ok, message, error } = data.createOrEditCarousel;
+    },
+    onError: (err) => {
+      console.log(err)
+    },
+  });
+  let numberOfRestaurants = 0;
+  const handleActiveChange  = (id: string, val: boolean) => {
+  console.log("id :::",id); console.log("val :::",val);
+  
+        editStatusMutation({
+        variables: {
+          id,
+          status: val,
+        },
+      });  
+    };
+  let rows = null;
+  let statusActive = 0;
+  let statusInactive = 0;
+  if (data && data.getRestaurants) {
+    numberOfRestaurants= data.getRestaurants.data.length;
+    rows = data.getRestaurants.data.map((val: any,index: number) => {
+      if(val.status==true) statusActive ++;
+      else statusInactive ++;
+    return {
+        ...val,
+        status: [
+          <div
+          key={index}
           className="btn-group btn-group-toggle mt-2 mt-xl-0"
           data-toggle="buttons"
         >
-          <label className="btn btn-outline-primary btn-sm btn-rounded  ">
+          <label
+            className={
+              val.status
+                ? "btn btn-outline-primary btn-sm btn-rounded active"
+                : "btn btn-outline-primary btn-sm btn-rounded "
+            }
+            onClick={() => handleActiveChange(val.id, true)}
+          >
             <input type="radio" name="options" id="option1" /> active
           </label>
-          <label className="btn btn-outline-danger btn-sm btn-rounded active">
-            <input type="radio" name="options" id="option2" /> inactive
+          <label
+            className={
+              val.status
+                ? "btn btn-outline-danger btn-sm btn-rounded"
+                : "btn btn-outline-danger btn-sm btn-rounded active"
+            }
+            onClick={() => handleActiveChange(val.id, false)}
+          >
+            <input type="radio" name="options" id="option2" />
+            inactive
           </label>
         </div>,
-        ""
-      ],
-      options: "Details | Invoice | Preview",
-       actions: [
-        <span>
-          <a
-            href="javascript:void(0);"
-            className="mr-3 text-primary"
-            data-toggle="tooltip"
-            data-placement="top"
-            title=""
-            data-original-title="Edit"
-          >
-            <i className="mdi mdi-pencil font-18"></i>
-          </a>
-          <a
-            href="javascript:void(0);"
+          "",
+        ],
+        options: [
+          <span key={index}>
+          <ModalForm Id={val.id} title="Details"/>|
+          <ModalForm Id={val.id} title="Invoice"/>|
+          <ModalForm Id={val.id} title="Preview"/>
+          </span>
+        ],
+        action: [ 
+          <span key={index}>
+          <ModalForm Id={val.id} title="Edit"/>
+          <span
             className="mr-3 text-danger"
             data-toggle="tooltip"
             data-placement="top"
             title=""
             data-original-title="Delete"
+            onClick={() => {
+              setRestaurantId(val.id)
+              handleDeleteCase(val.id);
+            }}
+            style={{cursor: "pointer"}}
           >
             <i className="mdi mdi-close font-18"></i>
-          </a>
-          
+          </span>
         </span>,
-        ""
-      ]
-    }
-  ]
-};
+        "",
+        ],
+      };
+    });
+  }
 
-class ManageRestaurantsContainer extends Component {
-  render = () => {
     return (
-      <div>
+    <div>
         <div className="page-title-box">
           <div className="row align-items-center">
             <Title title="Manage Restaurants">
               <BreadCrumb title={"Manage Restaurants"} url="/home" />
             </Title>
-
-            <div className="col-sm-6">
-              <div className="float-right d-none d-md-block">
-                <button
-                  type="button"
-                  className="btn btn-primary  waves-effect waves-light"
-                  data-toggle="modal"
-                  data-target=".bs-caroussel-modal"
-                >
-                  <i className="fas fa-plus mr-2"></i> Add new restaurant
-                </button>
-              </div>
-            </div>
           </div>
         </div>
         <div className="row">
           <Card
             title="TOTAL RESTAURANTS"
             icon="ion ion-ios-restaurant"
-            value={10}
+            value={numberOfRestaurants}
             col={4}
           />
           <Card
             title="ACTIVE RESTAURANTS"
             icon="ion ion-ios-restaurant"
-            value={20}
+            value={statusActive}
             col={4}
             iconColor="success"
           />
           <Card
             title="INACTIVE RESTAURANTS"
             icon="ion ion-ios-restaurant"
-            value={30}
+            value={statusInactive}
             col={4}
             iconColor="danger"
           />
         </div>
+     <div className="row">
+       <div className="col-lg-12">
+         <div className="card mini-stat ">
+           <div className="card-body mini-stat-img">
+             <h4 className="mt-0 header-title">Restaurants</h4>
 
-        <div className="row">
-          <div className="col-lg-12">
-            <div className="card mini-stat ">
-              <div className="card-body mini-stat-img">
-              <h4 className="mt-0 header-title">Restaurants</h4>
-                <MDBDataTable striped hover data={data} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-}
+             {rows && (
+               <MDBDataTable striped bordered data={{ ...dataRows, rows }} />
+             )}
+             {loading && (
+               <div className="d-flex justify-content-center">
+                 <div className="spinner-border "></div>
+               </div>
+             )}
+             {error &&  <div className="d-flex justify-content-center alert alert-danger" role="alert">  Something went wrong </div>}
+           </div> 
+         </div>
+       </div>
+     </div> 
+     </div>  
+   /*  <div>
+     <DisplayDetailsForm Id={restaurantId}/>
+    */
+  );
+};
 
 export default ManageRestaurantsContainer;

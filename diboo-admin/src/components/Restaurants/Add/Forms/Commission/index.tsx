@@ -4,6 +4,7 @@ import { Field } from 'formik';
 
 class CommissionForm extends React.Component<
 { commission: Number,
+  editValues: any,
 }
   >
   {
@@ -20,7 +21,8 @@ class CommissionForm extends React.Component<
                 className="form-control"
                 name="commission"
                 style={{ width: 300 }}
-              /> 
+                placeholder={this.props.editValues.commission}
+              />  
        </div>
 
   );

@@ -127,37 +127,7 @@ class OrderReportsContainer extends Component {
             col={4}
           />
           <Card
-            title="ACTIVE RESTAURANTS"
-            icon="ion ion-ios-restaurant"
-            value={20}
-            col={2}
-            iconColor="success"
-          />
-          <Card
-            title="INACTIVE "
-            icon="ion ion-ios-restaurant"
-            value={30}
-            col={2}
-            iconColor="danger"
-          />
-          <Card
-            title="ACTIVE RESTAURANTS"
-            icon="ion ion-ios-restaurant"
-            value={20}
-            col={2}
-            iconColor="success"
-          />
-          <Card
-            title="INACTIVE "
-            icon="ion ion-ios-restaurant"
-            value={30}
-            col={2}
-            iconColor="danger"
-          />
-        </div>
-        <div className="row">
-          <Card
-            title="TOTAL RESTAURANTS"
+            title="TOTAL ORDERS"
             icon="ion ion-ios-restaurant"
             value={10}
             col={4}
@@ -166,16 +136,17 @@ class OrderReportsContainer extends Component {
             title="ACTIVE RESTAURANTS"
             icon="ion ion-ios-restaurant"
             value={20}
-            col={4}
+            col={2}
             iconColor="success"
           />
           <Card
-            title="INACTIVE RESTAURANTS"
+            title="INACTIVE "
             icon="ion ion-ios-restaurant"
             value={30}
-            col={4}
+            col={2}
             iconColor="danger"
           />
+          
         </div>
         <div className="row">
           <div className="col-lg-12">

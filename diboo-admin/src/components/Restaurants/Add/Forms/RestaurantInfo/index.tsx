@@ -17,6 +17,7 @@ interface Props {
   setPreview: Function;
   setFieldValue: Function;
   handleChange: Function;
+  editValues: any
 }
 class RestaurantInfoForm extends React.Component<
 Props
@@ -75,7 +76,8 @@ Props
                 componentClass="textarea"
                 className="form-control"
                 name="about"
-                style={{ width: 700 , rows: 3 , cols : 80}}
+                style={{ width: 500 , rows: 3 , cols : 80}}
+                placeholder={this.props.editValues.about}
               />
               </div>
         </div>
@@ -91,6 +93,7 @@ Props
                            onChange={this.props.handleChange}
                           // checked={this.props.delivery} 
                            value={this.props.delivery}
+                           placeholder={this.props.editValues.delivery}
                           />     
                
               </div>
@@ -118,7 +121,8 @@ Props
                 type="textarea"
                 className="form-control"
                 name="estimatedDeliveryTime"
-                style={{ width: 700 }}
+                style={{ width: 479 }}
+                placeholder={this.props.editValues.estimatedTime}
               />
               </div>
             </div>

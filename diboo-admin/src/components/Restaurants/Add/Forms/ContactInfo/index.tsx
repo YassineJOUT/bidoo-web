@@ -10,13 +10,13 @@ class ContactInfoForm extends React.Component<
   email: string,
   address: string,
   city: string,
+  editValues: any
 }
   >
   {
   constructor(props: any) {
     super(props);
   } 
-
   render = () => {
     return (
 
@@ -29,6 +29,7 @@ class ContactInfoForm extends React.Component<
                 type="text"
                 className="form-control"
                 name="restaurantName"
+                placeholder={this.props.editValues.name}
               />
             </div>
             <div className="form-group">
@@ -37,6 +38,7 @@ class ContactInfoForm extends React.Component<
                 type="text"
                 className="form-control"
                 name="restaurantWebsite"
+                placeholder={this.props.editValues.website}
               />
             </div>
             <div className="form-group">
@@ -45,6 +47,7 @@ class ContactInfoForm extends React.Component<
                 type="text"
                 className="form-control"
                 name="restaurantPhone"
+                placeholder={this.props.editValues.phone}
               />
                </div>
             <div className="form-group">
@@ -53,6 +56,7 @@ class ContactInfoForm extends React.Component<
                 type="text"
                 className="form-control"
                 name="postCode"
+                placeholder={this.props.editValues.postCode}
               />
             </div>
             
@@ -65,6 +69,7 @@ class ContactInfoForm extends React.Component<
                 type="text"
                 className="form-control"
                 name="email"
+                placeholder={this.props.editValues.email}
               /> 
             </div>
             <div className="form-group">
@@ -73,6 +78,7 @@ class ContactInfoForm extends React.Component<
                 type="text"
                 className="form-control"
                 name="address"
+                placeholder={this.props.editValues.address}
               />
             </div>
             <div className="form-group">
@@ -81,6 +87,7 @@ class ContactInfoForm extends React.Component<
                 type="text"
                 className="form-control"
                 name="city"
+                placeholder={this.props.editValues.city}
               />
             </div>
           </div>

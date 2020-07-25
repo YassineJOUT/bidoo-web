@@ -9,7 +9,9 @@ import Title from "../../Shared/ContentTitle";
 import BreadCrumb from "../../Shared/BreadCrumb";
 import Divider from "@material-ui/core/Divider";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
-import {ADD_RESTAURANT_MUTATION} from "../../../helpers/gql";
+import {ADD_RESTAURANT_MUTATION, UPDATE_RESTAURANT_MUTATION} from "../../../helpers/gql";
+import { isNullOrUndefined } from 'util';
+import { isNull } from 'lodash';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -29,10 +31,10 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   }
 }));
-
-const AddRestaurantContainer: React.FunctionComponent = () => {
-
+const AddRestaurantContainer: React.FunctionComponent<{editValues:any}> = ({editValues}) => {
+  console.log("editValues :::", editValues);
   const [Values,setValues] = useState({
+  id: "",
   restaurantName:"",
   restaurantWebsite:"",
   restaurantPhone:"",
@@ -49,11 +51,31 @@ const AddRestaurantContainer: React.FunctionComponent = () => {
   pickUp: false,
   dineIn: false
 });
+const [ValuesToInsert,setValuesToInsert] = useState<any>(
+  {    
+  id: "",
+  name:"",
+  website:"",
+  phone:"",
+  postCode:"",
+  email:"",
+  address:"",
+  city:"",
+  restaurantLogo: "",
+  about: "",
+  delivery: false,
+  pickUp: false,
+  dineIn: false,
+  estimatedTime: "",
+  commission: 0,
+  imagePath: ""}
+);
 const classes = useStyles();
 const [activeStep, setActiveStep] = useState(0);
 const steps = getSteps();
 const [preview, setPreview] = useState<any>(null);
-/* const [delivery, setDelivery] = useState(false);
+/* 
+const [delivery, setDelivery] = useState(false);
 const [pickUp, setPickUp] = useState(false);
 const [dineIn, setDineIn] = useState(false);
 const handleToggleDelivery = () => {
@@ -70,6 +92,7 @@ const handleToggle = (event : any )=> {
   setValues({ ...Values, [event.target.name]: event.target.checked });    
 };
 */
+
 function getSteps() { return ['Contact info', 'Restaurant info', 'Commission']; }
 function getStepContent(step: Number,setFieldValue: Function, handleChange: Function) {
   switch (step) {
@@ -82,6 +105,7 @@ function getStepContent(step: Number,setFieldValue: Function, handleChange: Func
               email = {Values.email}
               address = {Values.address}
               city = {Values.city}
+              editValues = {editValues? editValues : ''} 
              />;
     case 1:
       return <RestaurantInfoForm 
@@ -96,10 +120,12 @@ function getStepContent(step: Number,setFieldValue: Function, handleChange: Func
               setPreview= {setPreview}
               setFieldValue= {setFieldValue}
               handleChange= {handleChange}
+              editValues = {editValues? editValues : ''}
       />;
     case 2:
       return <CommissionForm 
              commission= {Values.commission}
+             editValues = {editValues? editValues : ''}
             />;
     default:
       return 'Unknown step';
@@ -116,11 +142,11 @@ const handleBack = () => {
   if(backStep > 0 ) setActiveStep(backStep - 1);
 };
 
-/* const addRestaurant= (
+const addRestaurant= (
         values: {   
-          restaurantName:string;
-          restaurantWebsite:string;
-          restaurantPhone:string;
+          name:string;
+          website:string;
+          phone:string;
           postCode:string;
           email:string;
           address:string;
@@ -130,8 +156,8 @@ const handleBack = () => {
           delivery: boolean;
           pickUp: boolean;
           dineIn: boolean;
-          estimatedDeliveryTime: string;
-          commission: string;
+          estimatedTime: string;
+          commission: Number;
           imagePath: string; },
         actions: any
       ) => {
@@ -144,17 +170,79 @@ const [
   addRestaurantMutation,
   { loading: mutationLoading, error, data },
 ] = useMutation(ADD_RESTAURANT_MUTATION);
- */
 
+const updateRestaurant= (
+  values: {   
+    id: string;
+    name:string;
+    website:string;
+    phone:string;
+    postCode:string;
+    email:string;
+    address:string;
+    city:string;
+    restaurantLogo: string;
+    about: string;
+    delivery: boolean;
+    pickUp: boolean;
+    dineIn: boolean;
+    estimatedTime: string;
+    commission: Number;
+    imagePath: string; },
+  actions: any
+) => {
+  updateRestaurantMutation({ variables: values }).finally(() => {
+    setPreview(null);
+  });
+};
+const [
+updateRestaurantMutation,
+{ loading } ,
+] = useMutation(UPDATE_RESTAURANT_MUTATION);
+let cpt =0;
+const handleEditCase=(values: any, actions: any)=>{
+  console.log("Values in handleEditCase before :::",values);
+ /*  const temp= values; 
+  temp.id = editValues.id; 
+  console.log("temp :::",temp);
+  if (values.restaurantName === "") temp.restaurantName = editValues.name ; 
+  if (values.restaurantWebsite ==="") temp.restaurantWebsite= editValues.website ;
+  if (values.restaurantPhone ==="") temp.restaurantPhone = editValues.phone;
+  if (values.postCode ==="") temp.postCode = editValues.postCode;
+  if (values.email ==="") temp.email = editValues.email;
+  if (values.address ==="") temp.address = editValues.address;
+  if (values.city ==="") temp.city = editValues.city;
+  if (values.about === "") temp.restaurantName = editValues.restaurantName;
+  if (values.estimatedDeliveryTime === "") temp.estimatedDeliveryTime = editValues.estimatedTime;
+  if (values.commission === 0 ) temp.commission = editValues.commission;
+  if (values.imagePath === "") temp.imagePath = editValues.imagePath;
+  //setValues({...temp});
+values = temp;
+  ValuesToInsert.id = values.id;
+  ValuesToInsert.name = values.restaurantName;
+  ValuesToInsert.website = values.restaurantWebsite;
+  ValuesToInsert.phone = values.restaurantPhone;
+  ValuesToInsert.postCode = values.postCode;
+  ValuesToInsert.email = values.email;
+  ValuesToInsert.address = values.address;
+  ValuesToInsert.city = values.city;
+  ValuesToInsert.restaurantLogo = values.restaurantLogo;
+  ValuesToInsert.about = values.about;
+  ValuesToInsert.delivery = values.delivery;
+  ValuesToInsert.pickUp = values.pickUp;
+  ValuesToInsert.dineIn = values.dineIn;
+  ValuesToInsert.estimatedTime = values.estimatedDeliveryTime;
+  ValuesToInsert.commission = values.commission;
+  ValuesToInsert.imagePath = values.imagePath; 
+  console.log("************************************************ :::");
+  console.log("Values :::",values);
+  console.log("editValues :::",editValues);
+  console.log("ValuesToInsert :::",ValuesToInsert);
+//  updateRestaurant(ValuesToInsert,{actions}); */
+}
   return (
 <> 
-<div className="page-title-box">
-        <div className="row">
-              <Title title="Add restaurant">
-                <BreadCrumb title={"Website Settings"} url="/home" />
-              </Title>
-        </div>
-    </div>
+
 <div className={classes.root}>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
@@ -167,11 +255,11 @@ const [
       </Stepper>
       <Formik
           initialValues={Values}
-         /*  onSubmit={(values, { setSubmitting, resetForm }) =>
-              addRestaurant(values, { setSubmitting, resetForm })
-            } */
-            onSubmit={(values, { setSubmitting, resetForm }) =>{
-                        console.log("values :::", values); } }
+          onSubmit={(Values, { setSubmitting, resetForm }) =>{
+            console.log("Values after submit :::",Values);
+            if(editValues != isNull) handleEditCase(Values, { setSubmitting });
+            // else addRestaurant(values, { setSubmitting, resetForm });    
+            }}
       >  
       {({ values, handleSubmit, setFieldValue,setValues, handleChange }) => (
       <form className="form-horizontal" onSubmit={handleSubmit}>
