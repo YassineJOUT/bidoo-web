@@ -2,3 +2,8 @@
   height : 2%;
   border : 1px solid black;
 }
+.top-level {
+  background-repeat: repeat;
+  background: #f3f3f3;
+  height: 100%;
+}

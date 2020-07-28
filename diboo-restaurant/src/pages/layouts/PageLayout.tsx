@@ -23,15 +23,9 @@ setCollaps = () => {
 render = () =>{
   
   return (
-    <div>
-        <TopBar fireCollapse={
-          ()=>{
-            this.setCollaps()
-          }
-        }/>
-        <SideBar  collapse={
-          this.state.collapse
-        }/>
+    <div className="top-level">
+        <TopBar />
+        <SideBar  />
         { this.props.children }
     </div>
   )

@@ -1,17 +1,12 @@
 import React, { Component } from "react";
 import MetisMenu from "react-metismenu";
-
 import { menuContent } from "../../../utilities/Consts";
 interface Props {
   collapse: boolean
 }
 
-class SideBar extends Component<Props> {
+const SideBar: React.FunctionComponent = () => {
   //history.push("forgotpassword")
-
-  render = () => {
-    
-    
     return (
       <div className="left side-menu" >
         <div className="slimScrollDiv" >
@@ -33,7 +28,6 @@ class SideBar extends Component<Props> {
         </div>
       </div>
     );
-  };
 }
 
 export default SideBar;

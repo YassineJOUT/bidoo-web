@@ -5,7 +5,7 @@ import { history } from "../../../utilities/history";
 interface Props {
   fireCollapse: Function;
 }
-const TopBar: React.SFC<Props> = () => {
+const TopBar: React.FunctionComponent = () => {
   const { contextState, setContext } = useContext(Context);
   const logout = () => {
     const v = {
@@ -20,7 +20,7 @@ const TopBar: React.SFC<Props> = () => {
     };
     setContext(v);
     saveState(v);
-    history.push("login");
+    // history.push("login");
   };
 
   return (
@@ -95,15 +95,70 @@ const TopBar: React.SFC<Props> = () => {
 
         <ul className="list-inline menu-left mb-0">
           <li className="float-left">
-            <button
-              className="button-menu-mobile open-left waves-effect"
-              onClick={() => {
-                // this.props.fireCollapse();
-              }}
-            >
+            <button className="button-menu-mobile open-left waves-effect">
               <i className="mdi mdi-menu"></i>
             </button>
           </li>
+          <li className="float-left">
+            <a href="#">
+              <i
+                className="fas fa-shopping-cart"
+                style={{
+                  marginLeft: "50px",
+                  marginTop: "30%",
+                  color: "blue",
+                  fontSize: "25px",
+                }}
+              ></i>
+            </a>
+            <a></a>
+          </li>
+          <a></a>
+          <li className="float-left">
+            <a></a>
+            <a href="#">
+              <i
+                className="fas fa-utensils"
+                style={{
+                  marginLeft: "50px",
+                  marginTop: "30%",
+                  color: "blue",
+                  fontSize: "25px",
+                }}
+              ></i>
+            </a>
+            <a></a>
+          </li>
+          <a></a>
+          <li className="float-left">
+            <a></a>
+            <a href="#">
+              <i
+                className="fas fa-shipping-fast"
+                style={{
+                  marginLeft: "50px",
+                  marginTop: "30%",
+                  color: "blue",
+                  fontSize: "25px",
+                }}
+              ></i>
+            </a>
+            <a></a>
+          </li>
+          <a>
+            <li className="waves-effect">
+              <div
+                style={{
+                  marginLeft: "50px",
+                  marginTop: "6%",
+                  color: "blue",
+                  fontSize: "25px",
+                }}
+              >
+                Welcome Wok To Go
+              </div>
+            </li>
+          </a>
         </ul>
       </nav>
     </div>

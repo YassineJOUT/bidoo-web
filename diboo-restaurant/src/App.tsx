@@ -12,6 +12,8 @@ import ProtectedRoute, {
   ProtectedRouteProps,
 } from "./utilities/protectedRoute";
 import { createUploadLink } from "apollo-upload-client";
+import SideBar from "./components/Shared/SideBar";
+import Dashboard from "./pages/Dashboard";
 
 const link = createUploadLink({
   uri: "http://localhost:3005/graphql",
@@ -37,16 +39,23 @@ const App: React.FC = () => {
       <ApolloProvider client={client}>
         <div>
           <Router history={history}>
-            <Route
+            {/* <Route
               path="/"
               exact
               component={() => (
                 <Redirect
-                  to={context.contextState.isLogged ? "/dashboard" : "/login"}
+                  to={context.contextState.isLogged ? "/dashboard" : "/dashboard"}
                 />
               )}
-            />
+            /> */}
             <Route path="/login" exact component={Login} />
+            <Route path="/dashboard" exact component={Dashboard} />
+            {/* <ProtectedRoute
+              {...defaultProtectedRouteProps}
+              exact={true}
+              path="/dashboard"
+              component={Dashboard}
+            /> */}
           </Router>
         </div>
       </ApolloProvider>

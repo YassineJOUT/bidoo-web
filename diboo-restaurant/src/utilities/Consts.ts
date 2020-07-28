@@ -10,86 +10,75 @@ export const menuContent = [
     //   to: "/map-view"
     // },
     {
-      icon: "ion ion-md-home",
-      label: "Home carousel",
-      to: "/carousel"
+      icon: "ion ion-md-business",
+      label: "Menu management",
+      content: [
+        {
+          label: "Menu Categories",
+          to: "/menu-categories"
+        },
+        {
+          label: "Item list",
+          to: "/item-list"
+        }
+      ]
+    },
+    {
+      icon: "fas fa-history",
+      label: "Order history",
+      to: "/order-history"
+  
+    },
+    {
+      icon: "ion ion-md-clipboard",
+      label: "Reports",
+      to: "/reports"
+    },
+    {
+      icon: "fas fa-cogs",
+      label: "Management",
+      content: [
+        {
+          label: "Coupon Code/Offers ",
+          to: "/coupon"
+        },
+        {
+          label: "SEO",
+          to: "/seo"
+        }
+      ]
+    },
+    {
+      icon: "fas fa-file-invoice",
+      label: "Invoices",
+      to: "invoices"
     },
     {
       icon: "ion ion-ios-settings",
       label: "Settings",
       content: [
         {
-          label: "Site settings",
-          to: "/site-settings"
+          label: "Contact details",
+          to: "/contact-details"
         },
         {
-          label: "Commission settings",
-          to: "/commission-settings"
+          label: "Store detail",
+          to: "/store-detail"
+        },
+        {
+          label: "Delivery detail",
+          to: "/delivery-detail"
+        }
+        ,
+        {
+          label: "Commission info",
+          to: "/commission-info"
         }
       ]
     },
     {
-      icon: "ion ion-md-business",
-      label: "Manage restaurants",
-      content: [
-        {
-          label: "Add restaurant",
-          to: "/add-restaurant"
-        },
-        {
-          label: "Manage restaurant",
-          to: "/manage-restaurants"
-        },
-        {
-          label: "Orders Report",
-          to: "/order-reports"
-        }
-      ]
-    },
-    {
-      icon: "ion ion-md-business",
-      label: "Menu management",
-      content: [
-        {
-          label: "Kitchen",
-          to: "/kitchen"
-        },
-        {
-          label: "Menu categories",
-          to: "/menu-categories"
-        },
-        {
-          label: "Category items",
-          to: "/category-items"
-        }
-      ]
-    },
-    {
-      icon: "ion ion-md-restaurant",
-      label: "Manage customers",
-      content: [
-        {
-          label: "Customers",
-          to: "/customer"
-        },
-        {
-          label: "Track payment",
-          to: "/track-payment"
-        }
-      ]
-    },
-    {
-      icon: "ion ion-md-cart",
-      label: "Manage orders",
-      content: [
-        {
-          label: "Customer orders",
-          to: "/orders"
-        },
-        {
-          label: "Guest orders",
-          to: "/orders-guest"
-        }
-      ]
+      icon: "fas fa-question-circle",
+      label: "FAQ",
+      to: "/faq"
     }
   ];
