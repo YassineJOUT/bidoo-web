@@ -16,7 +16,7 @@ import {
   ADD_RESTAURANT_MUTATION,
   UPDATE_RESTAURANT_MUTATION,
 } from "../../../helpers/gql";
-import { isNull } from "lodash";
+import { isNull, divide } from "lodash";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -281,7 +281,7 @@ values = temp;
         </Stepper>
         <Formik
           initialValues={Values}
-          onSubmit={(Values, { setSubmitting, resetForm }) => {
+          onSubmit={(Values, { setSubmitting }) => {
             console.log("Values after submit :::", Values);
             if (editValues != isNull) handleEditCase(Values, { setSubmitting });
             // else addRestaurant(values, { setSubmitting, resetForm });
@@ -298,15 +298,15 @@ values = temp;
               <div className={classes.content}>
                 {activeStep === steps.length ? (
                   <div>
-                    <Typography className={classes.instructions}>
+                    <div className={classes.instructions}>
                       All steps completed.
-                    </Typography>
+                    </div>
                   </div>
                 ) : (
                   <div>
-                    <Typography className={classes.instructions}>
+                    <div className={classes.instructions}>
                       {getStepContent(activeStep, setFieldValue, handleChange)}
-                    </Typography>
+                    </div>
                     <div>
                       <Button
                         disabled={activeStep === 0}
@@ -338,6 +338,8 @@ values = temp;
                     </div>
                   </div>
                 )}
+          {console.log(values)}
+
               </div>
             </form>
           )}

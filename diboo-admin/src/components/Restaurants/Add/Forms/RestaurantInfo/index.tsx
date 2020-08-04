@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Field } from "formik";
 import Dropzone from "react-dropzone";
 import { Switch } from "@material-ui/core";
@@ -18,6 +18,11 @@ interface Props {
   editValues: any;
 }
 const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
+  const [switchs, setSwitchs] = useState({
+    delivery: false,
+    pickUp: false,
+    dineIn: false,
+  });
   return (
     <div className="row">
       <div className="col-lg-6">
@@ -42,7 +47,7 @@ const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
                   <input {...getInputProps()} />
                   <div
                     className="dropzone d-flex justify-content-center align-items-center"
-                    style={{ width: 400 }}
+                    style={{ width: "100%" }}
                   >
                     {props.preview
                       ? ""
@@ -73,10 +78,9 @@ const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
         <div className="form-group">
           <label> About </label>
           <Field
-            componentClass="textarea"
+            component="textarea"
             className="form-control"
             name="about"
-            style={{ width: 500, rows: 3, cols: 80 }}
             placeholder={props.editValues.about}
           />
         </div>
@@ -90,21 +94,38 @@ const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
             <Field
               name="delivery"
               component={Switch}
-              onChange={props.handleChange}
-              // checked={props.delivery}
-              value={props.delivery}
-              placeholder={props.editValues.delivery}
+              value={switchs.delivery}
+              onClick={() => {
+                props.setFieldValue("delivery", !switchs.delivery);
+                setSwitchs({ ...switchs, delivery: !switchs.delivery });
+              }}
             />
           </div>
 
           <div className="form-group">
             <label>Pick up</label>
-            <Field name="pickUp" component={Switch} checked={props.pickUp} />
+            <Field
+              name="pickUp"
+              component={Switch}
+              value={switchs.pickUp}
+              onClick={() => {
+                props.setFieldValue("pickUp", !switchs.pickUp);
+                setSwitchs({ ...switchs, pickUp: !switchs.pickUp });
+              }}
+            />
           </div>
 
           <div className="form-group">
             <label>Dine in</label>
-            <Field name="dineIn" component={Switch} checked={props.dineIn} />
+            <Field
+              name="dineIn"
+              component={Switch}
+              value={switchs.dineIn}
+              onClick={() => {
+                props.setFieldValue("dineIn", !switchs.dineIn);
+                setSwitchs({ ...switchs, dineIn: !switchs.dineIn });
+              }}
+            />
           </div>
           <div className="form-group">
             <label>Estimated delivery time</label>
