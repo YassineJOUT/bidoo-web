@@ -1,14 +1,10 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import Title from "../../Shared/ContentTitle";
 import BreadCrumb from "../../Shared/BreadCrumb";
 import { MDBDataTable } from "mdbreact";
 import Card from "../../Shared/Card";
-import RestaurantInfoForm from "../Add/Forms/RestaurantInfo";
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import { GET_RESTAURANT_MUTATION, GET_RESTAURANTS_MUTATION, DELETE_RESTAURANT_MUTATION, EDIT_RESTAURANT_STATUS_MUTATION } from "../../../helpers/gql";
-import EditForm from "./Forms/Edit/EditRestaurantForm";
-import DisplayDetailsForm from "./Forms/DisplayDetails/DisplayDetailsForm";
-import Modal from "../../Shared/Modal";
+import {  GET_RESTAURANTS_MUTATION, DELETE_RESTAURANT_MUTATION, EDIT_RESTAURANT_STATUS_MUTATION } from "../../../helpers/gql";
 import ModalForm from "../../Shared/Modal/ModalForm";
 
 
