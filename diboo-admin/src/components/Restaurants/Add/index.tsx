@@ -79,7 +79,6 @@ const initialValuesToInsert = {
 const AddRestaurantContainer: React.FunctionComponent<Props> = ({
   editValues,
 }) => {
-  console.log("editValues :::", editValues);
   const [Values] = useState(initalState);
   // const [ValuesToInsert, setValuesToInsert] = useState<any>(
   //   initialValuesToInsert
@@ -169,23 +168,7 @@ const handleToggle = (event : any )=> {
   };
 
   const addRestaurant = (
-    values: {
-      name: string;
-      website: string;
-      phone: string;
-      postCode: string;
-      email: string;
-      address: string;
-      city: string;
-      restaurantLogo: string;
-      about: string;
-      delivery: boolean;
-      pickUp: boolean;
-      dineIn: boolean;
-      estimatedTime: string;
-      commission: Number;
-      imagePath: string;
-    },
+    values: any,
     actions: any
   ) => {
     addRestaurantMutation({ variables: values }).finally(() => {
@@ -228,47 +211,11 @@ const handleToggle = (event : any )=> {
   );
   let cpt = 0;
   const handleEditCase = (values: any, actions: any) => {
-    console.log("Values in handleEditCase before :::", values);
-    /*  const temp= values; 
-  temp.id = editValues.id; 
-  console.log("temp :::",temp);
-  if (values.restaurantName === "") temp.restaurantName = editValues.name ; 
-  if (values.restaurantWebsite ==="") temp.restaurantWebsite= editValues.website ;
-  if (values.restaurantPhone ==="") temp.restaurantPhone = editValues.phone;
-  if (values.postCode ==="") temp.postCode = editValues.postCode;
-  if (values.email ==="") temp.email = editValues.email;
-  if (values.address ==="") temp.address = editValues.address;
-  if (values.city ==="") temp.city = editValues.city;
-  if (values.about === "") temp.restaurantName = editValues.restaurantName;
-  if (values.estimatedDeliveryTime === "") temp.estimatedDeliveryTime = editValues.estimatedTime;
-  if (values.commission === 0 ) temp.commission = editValues.commission;
-  if (values.imagePath === "") temp.imagePath = editValues.imagePath;
-  //setValues({...temp});
-values = temp;
-  ValuesToInsert.id = values.id;
-  ValuesToInsert.name = values.restaurantName;
-  ValuesToInsert.website = values.restaurantWebsite;
-  ValuesToInsert.phone = values.restaurantPhone;
-  ValuesToInsert.postCode = values.postCode;
-  ValuesToInsert.email = values.email;
-  ValuesToInsert.address = values.address;
-  ValuesToInsert.city = values.city;
-  ValuesToInsert.restaurantLogo = values.restaurantLogo;
-  ValuesToInsert.about = values.about;
-  ValuesToInsert.delivery = values.delivery;
-  ValuesToInsert.pickUp = values.pickUp;
-  ValuesToInsert.dineIn = values.dineIn;
-  ValuesToInsert.estimatedTime = values.estimatedDeliveryTime;
-  ValuesToInsert.commission = values.commission;
-  ValuesToInsert.imagePath = values.imagePath; 
-  console.log("************************************************ :::");
-  console.log("Values :::",values);
-  console.log("editValues :::",editValues);
-  console.log("ValuesToInsert :::",ValuesToInsert);
-//  updateRestaurant(ValuesToInsert,{actions}); */
+   
   };
   return (
     <>
+    {console.log(activeStep)}
       <div className={classes.root}>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
@@ -281,10 +228,10 @@ values = temp;
         </Stepper>
         <Formik
           initialValues={Values}
-          onSubmit={(Values, { setSubmitting }) => {
-            console.log("Values after submit :::", Values);
-            if (editValues != isNull) handleEditCase(Values, { setSubmitting });
-            // else addRestaurant(values, { setSubmitting, resetForm });
+          onSubmit={(Values, { setSubmitting,resetForm }) => {
+            //if (editValues != isNull) handleEditCase(Values, { setSubmitting });
+             addRestaurant(Values, { setSubmitting, resetForm });
+             //console.log(" Submitted! ")
           }}
         >
           {({
@@ -323,22 +270,20 @@ values = temp;
                           className={classes.button}
                           type="submit"
                         >
-                          Finish
+                          { mutationLoading ? "Inserting..." : "Finish"}
                         </Button>
                       ) : (
-                        <Button
-                          variant="contained"
+                        <input
                           color="primary"
                           onClick={handleNext}
-                          className={classes.button}
-                        >
-                          Next
-                        </Button>
+                          className={"MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-2 MuiButton-containedPrimary"}
+                          value="Next"
+                          type="button"
+                        />
                       )}
                     </div>
                   </div>
                 )}
-          {console.log(values)}
 
               </div>
             </form>
