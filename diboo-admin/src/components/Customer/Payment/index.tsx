@@ -107,7 +107,8 @@ class PaymentsContainer extends Component {
             <div className="card mini-stat ">
               <div className="card-body mini-stat-img">
                 <h4 className="mt-0 header-title">Payments List</h4>
-                <MDBDataTable striped hover data={data} />
+                <MDBDataTable
+                noBottomColumns striped hover data={data} />
               </div>
             </div>
           </div>

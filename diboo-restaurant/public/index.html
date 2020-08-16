@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
       content="Web site created using create-react-app"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+  
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -24,11 +24,38 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+         <!-- DataTables -->
+    <link href="%PUBLIC_URL%/assets/libs/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="%PUBLIC_URL%/assets/libs/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+ 
+ 
+    <link href="%PUBLIC_URL%/assets/libs/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+         
+
+    <link href="%PUBLIC_URL%/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="%PUBLIC_URL%/assets/css/icons.css" rel="stylesheet" type="text/css">
+    <link href="%PUBLIC_URL%/assets/css/style.css" rel="stylesheet" type="text/css">
+    <link href="%PUBLIC_URL%/assets/css/metis.min.css" rel="stylesheet" type="text/css">
+    <title>DIBOO Restaurant admin</title>
+    <style>
+      .has-error{
+        border: 1px red solid;
+      }
+      .valid-error{
+        font-size: 10px;
+        color:red;
+      }
+      
+      .msg-error{
+        font-size: 14px;
+        color:red;
+      }
+    </style>
   </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+  <body >
     <div id="root"></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -39,5 +66,12 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+     <!-- jQuery  -->
+     <script src="%PUBLIC_URL%/assets/js/jquery.min.js"></script>
+     <script src="%PUBLIC_URL%/assets/js/bootstrap.bundle.min.js"></script>
+     <script src="%PUBLIC_URL%/assets/js/jquery.slimscroll.js"></script>
+     <script src="%PUBLIC_URL%/assets/js/waves.min.js"></script>
+     <!-- App js -->
+     <!-- <script src="%PUBLIC_URL%/assets/js/app.js"></script> -->
   </body>
 </html>

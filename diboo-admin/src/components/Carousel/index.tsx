@@ -1,19 +1,24 @@
 import React, { Component, useState } from "react";
 import Title from "../Shared/ContentTitle";
 import BreadCrumb from "../Shared/BreadCrumb";
-import { MDBDataTable } from "mdbreact";
+import { MDBDataTable, MDBBadge } from "mdbreact";
 import Form from "./CarouselForm";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import {
   GET_CAROUSELS_MUTATION,
-  DELETE_MUTATION_MUTATION,
-  EDIT_CAROUSEL_STATUS_MUTATION,
+  DELETE_CAROUSEL_MUTATION,
+  ADD_OR_EDIT_CAROUSEL_MUTATION,
 } from "../../helpers/gql";
 import YesNoModal from "../Shared/ConfirmModal";
 import Alert from "../Shared/Alert";
+import { BASE_URL } from "../../utilities/config";
 
 const dataa = {
   columns: [
+    {
+      label: 'ID',
+      field: 'badge',
+    },
     {
       label: "Carousel photo",
       field: "photo",
@@ -54,7 +59,7 @@ const dataa = {
 
 const CarouselContainer: React.FunctionComponent = () => {
   const handleActiveChnage = (id: string, val: boolean) => {
-    editStatusMutation({
+    addOrEditMutation({
       variables: {
         id,
         status: val,
@@ -70,15 +75,14 @@ const CarouselContainer: React.FunctionComponent = () => {
     title: "",
   });
   const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
   const [showAlert, setShowAlert] = useState({
     show: false,
     message: "",
     type: true,
   });
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handlAlert = (show: boolean, message: string, type: boolean) => {
     setShowAlert({ show, message, type });
     setTimeout(() => {
@@ -91,18 +95,19 @@ const CarouselContainer: React.FunctionComponent = () => {
     // call delete mutation
     yes && deleteMutation({ variables: { id: carouselId } });
   };
-  const [deleteMutation] = useMutation(DELETE_MUTATION_MUTATION, {
+  const [deleteMutation] = useMutation(DELETE_CAROUSEL_MUTATION, {
     onCompleted: (data) => {
       const { ok, message, error } = data.deleteCarousel;
       handlAlert(true, ok ? message : error, ok);
     },
   });
-  const [editStatusMutation] = useMutation(EDIT_CAROUSEL_STATUS_MUTATION, {
+  const [addOrEditMutation] = useMutation(ADD_OR_EDIT_CAROUSEL_MUTATION, {
     onCompleted: (data) => {
-      const { ok, message, error } = data.editStatusCarousel;
+      const { ok, message, error } = data.createOrEditCarousel;
       handlAlert(true, ok ? message : error, ok);
     },
     onError: (err) => {
+      console.log(err)
       handlAlert(true, "something went wrong!", false);
     },
   });
@@ -113,18 +118,23 @@ const CarouselContainer: React.FunctionComponent = () => {
   if (data && data.getCarousels) {
     rows = data.getCarousels.data.map((val: any, index: number) => {
       return {
+        badge: (
+          <MDBBadge pill color='primary' className='p-1 px-2' key={index} searchvalue={index}>
+            ID: {index + 1}
+          </MDBBadge>
+        ),
         ...val,
         photo: val.imagePath ? (
           <div className="d-flex justify-content-center">
             <img
               key={index}
-              src={"http://localhost:3005/" + val.imagePath}
+              src={BASE_URL + val.imagePath}
               alt="Banner"
               title="Banner Image"
               className="imgborder"
               height="50"
               width="150"
-            />{" "}
+            />
           </div>
         ) : (
           <div className="d-flex justify-content-center">
@@ -224,9 +234,11 @@ const CarouselContainer: React.FunctionComponent = () => {
 
               {rows && (
                 <MDBDataTable
-                  striped
+                theadColor="black"
+                noBottomColumns
+                  hover
+                  exportToCSV
                   bordered
-                  responsive
                   data={{ ...dataa, rows }}
                 />
               )}
@@ -247,7 +259,10 @@ const CarouselContainer: React.FunctionComponent = () => {
           </div>
         </div>
       </div>
-      <Form values={selectedData} handlAlert={handlAlert} />
+      <Form
+        values={selectedData}
+        addOrEditCarousel={addOrEditMutation}
+      />
       {showAlert.show && (
         <Alert message={showAlert.message} type={showAlert.type} />
       )}

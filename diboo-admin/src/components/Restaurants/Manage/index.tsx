@@ -192,7 +192,6 @@ const [editStatusMutation] = useMutation(EDIT_RESTAURANT_STATUS_MUTATION, {
          <div className="card mini-stat ">
            <div className="card-body mini-stat-img">
              <h4 className="mt-0 header-title">Restaurants</h4>
-
              {rows && (
                <MDBDataTable striped bordered data={{ ...dataRows, rows }} />
              )}
