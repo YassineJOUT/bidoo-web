@@ -67,9 +67,9 @@ export const GET_CAROUSEL_MUTATION = gql`
 
 export const ADD_RESTAURANT_MUTATION = gql`
 mutation createRestaurant(
-  $restaurantName: String
-  $restaurantWebsite: String
-  $restaurantPhone: String
+  $name: String
+  $website: String
+  $phone: String
   $postCode: String
   $email: String
   $address: String
@@ -78,20 +78,20 @@ mutation createRestaurant(
   $delivery: Boolean
   $pickUp: Boolean
   $dineIn: Boolean
-  $estimatedDeliveryTime: String
+  $estimatedTime: String
   $commission: Float
   $image: Upload
 ) {
   createRestaurant(
     input: {
-      name: $restaurantName
-      website: $restaurantWebsite
-      phone: $restaurantPhone
+      name: $name
+      website: $website
+      phone: $phone
       postCode: $postCode
       email: $email
       address: $address
       city: $city
-      estimatedTime: $estimatedDeliveryTime
+      estimatedTime: $estimatedTime
       about: $about
       delivery: $delivery
       pickUp: $pickUp

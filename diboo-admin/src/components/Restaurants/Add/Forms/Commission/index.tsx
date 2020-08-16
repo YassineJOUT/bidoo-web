@@ -3,7 +3,7 @@ import { Field } from "formik";
 
 interface Props {
   commission: Number;
-  editValues: any;
+  handleChange: Function
 }
 
 const CommissionForm: React.FunctionComponent<Props> = (props) => {
@@ -15,7 +15,6 @@ const CommissionForm: React.FunctionComponent<Props> = (props) => {
         className="form-control"
         name="commission"
         style={{ width: 300 }}
-        placeholder={props.editValues.commission}
       />
     </div>
   );

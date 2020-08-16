@@ -6,17 +6,19 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { Formik } from "formik";
-import React, { useState } from "react";
+import { Formik, Field } from "formik";
+import React, { useState, useEffect } from "react";
 import ContactInfoForm from "./Forms/ContactInfo";
 import RestaurantInfoForm from "./Forms/RestaurantInfo";
 import CommissionForm from "./Forms/Commission";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
 import {
   ADD_RESTAURANT_MUTATION,
   UPDATE_RESTAURANT_MUTATION,
+  GET_RESTAURANT_MUTATION,
 } from "../../../helpers/gql";
 import { isNull, divide } from "lodash";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -36,38 +38,20 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
 }));
-interface Props {
+interface Props extends RouteComponentProps<{ id: string }> {
   editValues: any;
 }
 
 const initalState = {
   id: "",
-  restaurantName: "",
-  restaurantWebsite: "",
-  restaurantPhone: "",
-  postCode: "",
-  email: "",
-  address: "",
-  city: "",
-  restaurantLogo: "",
-  about: "",
-  estimatedDeliveryTime: "",
-  commission: 0,
-  imagePath: "",
-  delivery: false,
-  pickUp: false,
-  dineIn: false,
-};
-const initialValuesToInsert = {
-  id: "",
   name: "",
+  test: "",
   website: "",
   phone: "",
   postCode: "",
   email: "",
   address: "",
   city: "",
-  restaurantLogo: "",
   about: "",
   delivery: false,
   pickUp: false,
@@ -76,86 +60,88 @@ const initialValuesToInsert = {
   commission: 0,
   imagePath: "",
 };
+
 const AddRestaurantContainer: React.FunctionComponent<Props> = ({
   editValues,
+  match,
 }) => {
-  const [Values] = useState(initalState);
-  // const [ValuesToInsert, setValuesToInsert] = useState<any>(
-  //   initialValuesToInsert
-  // );
+  const [Values, setValues] = useState(initalState);
+  //get id param
+  const restId = match.params.id;
+  // get rest mutation
+  const [
+    getRestaurant,
+    { loading: queryLoading, error: queryError, data: queryData },
+  ] = useLazyQuery(GET_RESTAURANT_MUTATION, {
+    variables: {
+      id: restId,
+    },
+    onCompleted: (data) => {
+      const rest = data.getOneRestaurant.data[0];
+      setValues({ ...Values, ...rest });
+    },
+  });
+  console.log(queryError)
+  useEffect(() => {
+   // console.log("useEffect is called");
+    if (restId) {
+      getRestaurant();
+    }
+  }, []);
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   const [preview, setPreview] = useState<any>(null);
-  /* 
-const [delivery, setDelivery] = useState(false);
-const [pickUp, setPickUp] = useState(false);
-const [dineIn, setDineIn] = useState(false);
-const handleToggleDelivery = () => {
- return setDelivery(!delivery);  
- //setValues({...Values, deliveryy : deliv});
-}; 
-const handleTogglePickUp = () => {
-  return setPickUp(!pickUp);
-}; 
-const handleToggleDineIn = () => {
-  return setDineIn(!dineIn);
-};  
-const handleToggle = (event : any )=> {
-  setValues({ ...Values, [event.target.name]: event.target.checked });    
-};
-*/
 
   function getSteps() {
     return ["Contact info", "Restaurant info", "Commission"];
   }
-  function getStepContent(
+
+  const getStepContent = (
     step: Number,
     setFieldValue: Function,
     handleChange: Function
-  ) {
+  ) => {
     switch (step) {
       case 0:
         return (
           <ContactInfoForm
-            restaurantName={Values.restaurantName}
-            restaurantWebsite={Values.restaurantWebsite}
-            restaurantPhone={Values.restaurantPhone}
+            name={Values.name}
+            website={Values.website}
+            phone={Values.phone}
             postCode={Values.postCode}
             email={Values.email}
             address={Values.address}
             city={Values.city}
-            editValues={editValues ? editValues : ""}
+            handleChange={handleChange}
           />
         );
       case 1:
         return (
           <RestaurantInfoForm
-            restaurantLogo={Values.restaurantLogo}
             about={Values.about}
             delivery={Values.delivery}
             pickUp={Values.pickUp}
             dineIn={Values.dineIn}
-            estimatedDeliveryTime={Values.estimatedDeliveryTime}
+            estimatedTime={Values.estimatedTime}
             imagePath={Values.imagePath}
             preview={preview}
             setPreview={setPreview}
             setFieldValue={setFieldValue}
             handleChange={handleChange}
-            editValues={editValues ? editValues : ""}
           />
         );
       case 2:
         return (
           <CommissionForm
             commission={Values.commission}
-            editValues={editValues ? editValues : ""}
+            handleChange={handleChange}
           />
         );
       default:
         return "Unknown step";
     }
-  }
+  };
 
   const handleNext = () => {
     let newStep = activeStep;
@@ -167,10 +153,7 @@ const handleToggle = (event : any )=> {
     if (backStep > 0) setActiveStep(backStep - 1);
   };
 
-  const addRestaurant = (
-    values: any,
-    actions: any
-  ) => {
+  const addRestaurant = (values: any, actions: any) => {
     addRestaurantMutation({ variables: values }).finally(() => {
       actions.resetForm();
       setPreview(null);
@@ -180,42 +163,8 @@ const handleToggle = (event : any )=> {
     addRestaurantMutation,
     { loading: mutationLoading, error, data },
   ] = useMutation(ADD_RESTAURANT_MUTATION);
-
-  const updateRestaurant = (
-    values: {
-      id: string;
-      name: string;
-      website: string;
-      phone: string;
-      postCode: string;
-      email: string;
-      address: string;
-      city: string;
-      restaurantLogo: string;
-      about: string;
-      delivery: boolean;
-      pickUp: boolean;
-      dineIn: boolean;
-      estimatedTime: string;
-      commission: Number;
-      imagePath: string;
-    },
-    actions: any
-  ) => {
-    updateRestaurantMutation({ variables: values }).finally(() => {
-      setPreview(null);
-    });
-  };
-  const [updateRestaurantMutation, { loading }] = useMutation(
-    UPDATE_RESTAURANT_MUTATION
-  );
-  let cpt = 0;
-  const handleEditCase = (values: any, actions: any) => {
-   
-  };
   return (
     <>
-    {console.log(activeStep)}
       <div className={classes.root}>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
@@ -227,11 +176,12 @@ const handleToggle = (event : any )=> {
           })}
         </Stepper>
         <Formik
+          enableReinitialize
           initialValues={Values}
-          onSubmit={(Values, { setSubmitting,resetForm }) => {
+          onSubmit={(Values, { setSubmitting, resetForm }) => {
             //if (editValues != isNull) handleEditCase(Values, { setSubmitting });
-             addRestaurant(Values, { setSubmitting, resetForm });
-             //console.log(" Submitted! ")
+            addRestaurant(Values, { setSubmitting, resetForm });
+            //console.log(" Submitted! ")
           }}
         >
           {({
@@ -240,8 +190,11 @@ const handleToggle = (event : any )=> {
             setFieldValue,
             setValues,
             handleChange,
+            errors
           }) => (
             <form className="form-horizontal" onSubmit={handleSubmit}>
+              {console.log("vals")}
+              {console.log(values)}
               <div className={classes.content}>
                 {activeStep === steps.length ? (
                   <div>
@@ -270,13 +223,15 @@ const handleToggle = (event : any )=> {
                           className={classes.button}
                           type="submit"
                         >
-                          { mutationLoading ? "Inserting..." : "Finish"}
+                          {mutationLoading ? "Inserting..." : "Finish"}
                         </Button>
                       ) : (
                         <input
                           color="primary"
                           onClick={handleNext}
-                          className={"MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-2 MuiButton-containedPrimary"}
+                          className={
+                            "MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-button-2 MuiButton-containedPrimary"
+                          }
                           value="Next"
                           type="button"
                         />
@@ -284,7 +239,6 @@ const handleToggle = (event : any )=> {
                     </div>
                   </div>
                 )}
-
               </div>
             </form>
           )}
@@ -294,4 +248,4 @@ const handleToggle = (event : any )=> {
   );
 };
 
-export default AddRestaurantContainer;
+export default withRouter(AddRestaurantContainer);

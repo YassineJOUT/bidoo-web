@@ -77,9 +77,7 @@ const [editStatusMutation] = useMutation(EDIT_RESTAURANT_STATUS_MUTATION, {
     },
   });
   let numberOfRestaurants = 0;
-  const handleActiveChange  = (id: string, val: boolean) => {
-  console.log("id :::",id); console.log("val :::",val);
-  
+  const handleActiveChange  = (id: string, val: boolean) => {  
         editStatusMutation({
         variables: {
           id,

@@ -39,6 +39,7 @@ const EditRestaurantForm: React.FunctionComponent<Props> = (props) => {
     }
   }, [props.Id, getRestaurant]);
   return (
+    <div></div>
     /* 
         <div
           className="modal fade bs-caroussel-modal tabindex= show"
@@ -52,7 +53,7 @@ const EditRestaurantForm: React.FunctionComponent<Props> = (props) => {
                 <h5 className="modal-title mt-0" id="myExtraLargeModalLabel">
                   Edit Restaurant
                 </h5> */
-    <AddRestaurantContainer editValues={Values} />
+    // <AddRestaurantContainer editValues={Values} />
     /*  <button
                   type="button"
                   className="close"

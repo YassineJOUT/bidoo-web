@@ -2,14 +2,14 @@ import React from "react";
 import { Field } from "formik";
 
 interface Props {
-  restaurantName: string;
-  restaurantWebsite: string;
-  restaurantPhone: string;
+  name: string;
+  website: string;
+  phone: string;
   postCode: string;
   email: string;
   address: string;
   city: string;
-  editValues: any;
+  handleChange: Function
 }
 
 const ContactInfoForm: React.FunctionComponent<Props> = (props) => {
@@ -22,8 +22,7 @@ const ContactInfoForm: React.FunctionComponent<Props> = (props) => {
           <Field
             type="text"
             className="form-control"
-            name="restaurantName"
-            placeholder={props.editValues.name}
+            name="name"
           />
         </div>
         <div className="form-group">
@@ -31,8 +30,8 @@ const ContactInfoForm: React.FunctionComponent<Props> = (props) => {
           <Field
             type="text"
             className="form-control"
-            name="restaurantWebsite"
-            placeholder={props.editValues.website}
+            name="website"
+
           />
         </div>
         <div className="form-group">
@@ -40,8 +39,8 @@ const ContactInfoForm: React.FunctionComponent<Props> = (props) => {
           <Field
             type="text"
             className="form-control"
-            name="restaurantPhone"
-            placeholder={props.editValues.phone}
+            name="phone"
+
           />
         </div>
         <div className="form-group">
@@ -50,7 +49,7 @@ const ContactInfoForm: React.FunctionComponent<Props> = (props) => {
             type="text"
             className="form-control"
             name="postCode"
-            placeholder={props.editValues.postCode}
+
           />
         </div>
       </div>
@@ -64,7 +63,7 @@ const ContactInfoForm: React.FunctionComponent<Props> = (props) => {
             type="text"
             className="form-control"
             name="email"
-            placeholder={props.editValues.email}
+
           />
         </div>
         <div className="form-group">
@@ -73,7 +72,7 @@ const ContactInfoForm: React.FunctionComponent<Props> = (props) => {
             type="text"
             className="form-control"
             name="address"
-            placeholder={props.editValues.address}
+
           />
         </div>
         <div className="form-group">
@@ -82,7 +81,6 @@ const ContactInfoForm: React.FunctionComponent<Props> = (props) => {
             type="text"
             className="form-control"
             name="city"
-            placeholder={props.editValues.city}
           />
         </div>
       </div>

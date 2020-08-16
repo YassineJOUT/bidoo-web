@@ -99,7 +99,7 @@ const App: React.FC = () => {
             <ProtectedRoute
               {...defaultProtectedRouteProps}
               exact={true}
-              path="/add-restaurant"
+              path="/add-restaurant/:id?"
               component={AddRestaurant}
             />
             {/* <Route path="/add-restaurant" exact component={AddRestaurant} /> */}

@@ -4,24 +4,24 @@ import Dropzone from "react-dropzone";
 import { Switch } from "@material-ui/core";
 
 interface Props {
-  restaurantLogo: string;
   about: string;
   delivery: boolean;
   pickUp: boolean;
   dineIn: boolean;
-  estimatedDeliveryTime: string;
+  estimatedTime: string;
   imagePath: string;
   preview: any;
   setPreview: Function;
   setFieldValue: Function;
   handleChange: Function;
-  editValues: any;
 }
 const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
+  console.log("Props")
+  console.log(props)
   const [switchs, setSwitchs] = useState({
-    delivery: false,
-    pickUp: false,
-    dineIn: false,
+    delivery: props.delivery,
+    pickUp: props.pickUp,
+    dineIn: props.dineIn,
   });
   return (
     <div className="row">
@@ -81,7 +81,6 @@ const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
             component="textarea"
             className="form-control"
             name="about"
-            placeholder={props.editValues.about}
           />
         </div>
       </div>
@@ -94,7 +93,7 @@ const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
             <Field
               name="delivery"
               component={Switch}
-              value={switchs.delivery}
+              checked={switchs.delivery}
               onClick={() => {
                 props.setFieldValue("delivery", !switchs.delivery);
                 setSwitchs({ ...switchs, delivery: !switchs.delivery });
@@ -107,7 +106,8 @@ const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
             <Field
               name="pickUp"
               component={Switch}
-              value={switchs.pickUp}
+              checked={switchs.pickUp}
+
               onClick={() => {
                 props.setFieldValue("pickUp", !switchs.pickUp);
                 setSwitchs({ ...switchs, pickUp: !switchs.pickUp });
@@ -120,7 +120,7 @@ const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
             <Field
               name="dineIn"
               component={Switch}
-              value={switchs.dineIn}
+              checked={switchs.dineIn}
               onClick={() => {
                 props.setFieldValue("dineIn", !switchs.dineIn);
                 setSwitchs({ ...switchs, dineIn: !switchs.dineIn });
@@ -132,9 +132,8 @@ const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
             <Field
               type="textarea"
               className="form-control"
-              name="estimatedDeliveryTime"
+              name="estimatedTime"
               style={{ width: 479 }}
-              placeholder={props.editValues.estimatedTime}
             />
           </div>
         </div>
