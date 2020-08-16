@@ -1,87 +1,145 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { Field } from "formik";
+import Dropzone from "react-dropzone";
+import { Switch } from "@material-ui/core";
 
-class RestaurantInfoForm extends Component {
-  render = () => {
-    return (
-      <form>
-        <div className="row">
-          <div className="col-lg-6">
-            <h4 className="mt-0 header-title">Restaurant info</h4>
-            <br />
-            <label>Restaurant logo</label>
-            <div className="form-group">
-              <div className="bootstrap-filestyle input-group">
-                <span className="group-span-filestyle ">
-                  <label className="btn btn-secondary ">
-                    <span className="icon-span-filestyle fas fa-folder-open"></span>
-                    <span className="buttonText">Choose a file</span>
-                  </label>
-                </span>
-              </div>
-              <div className="form-group">
-                Recommended size 100 * 100
-                <br />
-                <img
-                  className="rounded mr-2"
-                  alt="200x200"
-                  width="150"
-                  src="../assets/images/thumbnail-default.jpg"
-                  data-holder-rendered="true"
-                />
-              </div>
-              <div className="form-group">
-                <label> About </label>
-                <textarea
-                  className="form-control"
-                  id="metadescription"
-                ></textarea>
-              </div>
-            </div>
+interface Props {
+  about: string;
+  delivery: boolean;
+  pickUp: boolean;
+  dineIn: boolean;
+  estimatedTime: string;
+  imagePath: string;
+  preview: any;
+  setPreview: Function;
+  setFieldValue: Function;
+  handleChange: Function;
+}
+const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
+  console.log("Props")
+  console.log(props)
+  const [switchs, setSwitchs] = useState({
+    delivery: props.delivery,
+    pickUp: props.pickUp,
+    dineIn: props.dineIn,
+  });
+  return (
+    <div className="row">
+      <div className="col-lg-6">
+        <h4 className="mt-0 header-title">Restaurant info</h4>
+        <br />
+        <label>Restaurant logo</label>
+
+        <div className="form-group">
+          Recommended size ( 1903 x 969 )
+          <br />
+          <Dropzone
+            accept="image/*"
+            multiple={false}
+            onDrop={(acceptedFiles) => {
+              props.setFieldValue("image", acceptedFiles[0]);
+              props.setPreview(URL.createObjectURL(acceptedFiles[0]));
+            }}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <section>
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <div
+                    className="dropzone d-flex justify-content-center align-items-center"
+                    style={{ width: "100%" }}
+                  >
+                    {props.preview
+                      ? ""
+                      : props.imagePath
+                      ? ""
+                      : "Drag an image here"}
+                    {props.preview ? (
+                      <img
+                        src={props.preview}
+                        style={{ width: "100%" }}
+                        alt="img"
+                      />
+                    ) : (
+                      props.imagePath && (
+                        <img
+                          alt="img"
+                          src={"http://localhost:3005/" + props.imagePath}
+                          style={{ width: "100%" }}
+                        />
+                      )
+                    )}
+                  </div>
+                </div>
+              </section>
+            )}
+          </Dropzone>
+        </div>
+        <div className="form-group">
+          <label> About </label>
+          <Field
+            component="textarea"
+            className="form-control"
+            name="about"
+          />
+        </div>
+      </div>
+
+      <div className="col-lg-6">
+        <div className="card-body">
+          <div className="form-group">
+            <label>Delivery</label>
+
+            <Field
+              name="delivery"
+              component={Switch}
+              checked={switchs.delivery}
+              onClick={() => {
+                props.setFieldValue("delivery", !switchs.delivery);
+                setSwitchs({ ...switchs, delivery: !switchs.delivery });
+              }}
+            />
           </div>
-          <div className="col-lg-6">
-            <div className="card-body">
-              <div className="form-group">
-                <label>Delivery</label>
-                <br />
-                <input type="checkbox" id="switch1" />
-                <label data-on-label="On" data-off-label="Off"></label>
-              </div>
 
-              <div className="form-group">
-                <label>Pick up</label>
-                <br />
-                <input type="checkbox" id="switch2" />
-                <label data-on-label="On" data-off-label="Off"></label>
-              </div>
+          <div className="form-group">
+            <label>Pick up</label>
+            <Field
+              name="pickUp"
+              component={Switch}
+              checked={switchs.pickUp}
 
-              <div className="form-group">
-                <label>Dine in</label>
-                <br />
-                <input type="checkbox" id="switch3" />
-                <label data-on-label="On" data-off-label="Off"></label>
-              </div>
+              onClick={() => {
+                props.setFieldValue("pickUp", !switchs.pickUp);
+                setSwitchs({ ...switchs, pickUp: !switchs.pickUp });
+              }}
+            />
+          </div>
 
-              <div className="form-group">
-                <label>Estimated delivery time</label>
-                <input
-                  id="metakeywords"
-                  name="deliverytime"
-                  type="text"
-                  className="form-control"
-                />
-              </div>
-            </div>
+          <div className="form-group">
+            <label>Dine in</label>
+            <Field
+              name="dineIn"
+              component={Switch}
+              checked={switchs.dineIn}
+              onClick={() => {
+                props.setFieldValue("dineIn", !switchs.dineIn);
+                setSwitchs({ ...switchs, dineIn: !switchs.dineIn });
+              }}
+            />
+          </div>
+          <div className="form-group">
+            <label>Estimated delivery time</label>
+            <Field
+              type="textarea"
+              className="form-control"
+              name="estimatedTime"
+              style={{ width: 479 }}
+            />
           </div>
         </div>
-        <button
-          type="submit"
-          className="btn btn-success mr-1 waves-effect waves-light"
-        >
-          Save Changes
-        </button>
-      </form>
-    );
-  };
-}
+      </div>
+    </div>
+  );
+};
 
 export default RestaurantInfoForm;
