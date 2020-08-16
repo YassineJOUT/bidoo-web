@@ -4,11 +4,11 @@ export const menuContent = [
       label: "Dashboard",
       to: "/dashboard"
     },
-    {
-      icon: "ion ion-md-pin",
-      label: "Restaurant Map View",
-      to: "/map-view"
-    },
+    // {
+    //   icon: "ion ion-md-pin",
+    //   label: "Restaurant Map View",
+    //   to: "/map-view"
+    // },
     {
       icon: "ion ion-md-home",
       label: "Home carousel",
