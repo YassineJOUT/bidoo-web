@@ -266,7 +266,6 @@ export const DELETE_KICHEN_MUTATION = gql`
   }
 `;
 
-
 export const GET_KITCHENS_MUTATION = gql`
   {
     getKitchens {
@@ -403,10 +402,14 @@ export const GET_MENUCATEGORIES_MUTATION = gql`
         status
         imagePath
         createdAt
+      }
+    }
+  }
+`;
 
-
-export const ADD_RESTAURANT_MUTATION = gql`
-mutation createRestaurant(
+export const ADD_OR_EDIT_RESTAURANT_MUTATION = gql`
+mutation addOrEditRestaurant(
+  $id: ID
   $name: String
   $website: String
   $phone: String
@@ -422,8 +425,9 @@ mutation createRestaurant(
   $commission: Float
   $image: Upload
 ) {
-  createRestaurant(
+  addOrEditRestaurant(
     input: {
+      id: $id
       name: $name
       website: $website
       phone: $phone
@@ -441,6 +445,8 @@ mutation createRestaurant(
     }
   ) {
     ok
+    error
+    message
   }
 }
 `;
@@ -543,4 +549,3 @@ export const EDIT_RESTAURANT_STATUS_MUTATION = gql`
     }
   }
 `;
-

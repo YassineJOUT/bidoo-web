@@ -13,12 +13,12 @@ import RestaurantInfoForm from "./Forms/RestaurantInfo";
 import CommissionForm from "./Forms/Commission";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/react-hooks";
 import {
-  ADD_RESTAURANT_MUTATION,
-  UPDATE_RESTAURANT_MUTATION,
+  ADD_OR_EDIT_RESTAURANT_MUTATION,
   GET_RESTAURANT_MUTATION,
 } from "../../../helpers/gql";
 import { isNull, divide } from "lodash";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import Alert from "../../Shared/Alert";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -45,7 +45,6 @@ interface Props extends RouteComponentProps<{ id: string }> {
 const initalState = {
   id: "",
   name: "",
-  test: "",
   website: "",
   phone: "",
   postCode: "",
@@ -61,10 +60,19 @@ const initalState = {
   imagePath: "",
 };
 
-const AddRestaurantContainer: React.FunctionComponent<Props> = ({
-  editValues,
-  match,
-}) => {
+const AddRestaurantContainer: React.FunctionComponent<Props> = ({ match }) => {
+  // handle alerts
+  const [showAlert, setShowAlert] = useState({
+    show: false,
+    message: "",
+    type: true,
+  });
+  const handlAlert = (show: boolean, message: string, type: boolean) => {
+    setShowAlert({ show, message, type });
+    setTimeout(() => {
+      setShowAlert({ show: false, message: "", type: true });
+    }, 2000);
+  };
   const [Values, setValues] = useState(initalState);
   //get id param
   const restId = match.params.id;
@@ -81,9 +89,9 @@ const AddRestaurantContainer: React.FunctionComponent<Props> = ({
       setValues({ ...Values, ...rest });
     },
   });
-  console.log(queryError)
+  console.log(queryError);
   useEffect(() => {
-   // console.log("useEffect is called");
+    // console.log("useEffect is called");
     if (restId) {
       getRestaurant();
     }
@@ -152,17 +160,27 @@ const AddRestaurantContainer: React.FunctionComponent<Props> = ({
     let backStep = activeStep;
     if (backStep > 0) setActiveStep(backStep - 1);
   };
-
   const addRestaurant = (values: any, actions: any) => {
-    addRestaurantMutation({ variables: values }).finally(() => {
+    const { imagePath, ...result } = values;
+    console.log("Submitted");
+    console.log(result, imagePath);
+    addOrEditRestaurantMutation({ variables: {...result, commission: parseFloat(result.commission)} }).finally(() => {
       actions.resetForm();
       setPreview(null);
     });
   };
   const [
-    addRestaurantMutation,
+    addOrEditRestaurantMutation,
     { loading: mutationLoading, error, data },
-  ] = useMutation(ADD_RESTAURANT_MUTATION);
+  ] = useMutation(ADD_OR_EDIT_RESTAURANT_MUTATION, {
+    onCompleted: (data) => {
+      const { ok, message, error } = data.addOrEditRestaurant;
+      console.log("completed!");
+      console.log({ ok, message, error });
+      handlAlert(true, ok ? message : error, ok);
+    },
+    onError: (err) => console.log(err),
+  });
   return (
     <>
       <div className={classes.root}>
@@ -190,18 +208,35 @@ const AddRestaurantContainer: React.FunctionComponent<Props> = ({
             setFieldValue,
             setValues,
             handleChange,
-            errors
+            errors,
           }) => (
             <form className="form-horizontal" onSubmit={handleSubmit}>
-              {console.log("vals")}
-              {console.log(values)}
               <div className={classes.content}>
+                {queryLoading && (
+                  <div className="d-flex justify-content-center">
+                    <div className="spinner-border "></div>
+                  </div>
+                )}
+
                 {activeStep === steps.length ? (
                   <div>
                     <div className={classes.instructions}>
                       All steps completed.
                     </div>
                   </div>
+                ) : error || queryError ? (
+                  <>
+                 { console.log("Errors")}
+                 { console.log(queryError)}
+                 { console.log(error)}
+                    <div
+                      className="d-flex justify-content-center alert alert-danger"
+                      role="alert"
+                    >
+                      Something went wrong
+                    </div>
+                    <br />
+                  </>
                 ) : (
                   <div>
                     <div className={classes.instructions}>
@@ -240,6 +275,9 @@ const AddRestaurantContainer: React.FunctionComponent<Props> = ({
                   </div>
                 )}
               </div>
+              {showAlert.show && (
+                <Alert message={showAlert.message} type={showAlert.type} />
+              )}
             </form>
           )}
         </Formik>
