@@ -19,6 +19,7 @@ import {
 import { isNull, divide } from "lodash";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import Alert from "../../Shared/Alert";
+import { client } from "../../../App";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -83,17 +84,29 @@ const AddRestaurantContainer: React.FunctionComponent<Props> = ({ match }) => {
   ] = useLazyQuery(GET_RESTAURANT_MUTATION, {
     variables: {
       id: restId,
-    },
-    onCompleted: (data) => {
-      const rest = data.getOneRestaurant.data[0];
-      setValues({ ...Values, ...rest });
+      onCompleted: () => console.log("Query Completed!"),
     },
   });
-  console.log(queryError);
+
   useEffect(() => {
     // console.log("useEffect is called");
     if (restId) {
-      getRestaurant();
+      // getRestaurant();
+      try {
+        const res = client.readQuery({
+          query: GET_RESTAURANT_MUTATION,
+          variables: {
+            id: restId,
+          },
+        });
+        console.log(res);
+        res &&
+          res.getOneRestaurant &&
+          res.getOneRestaurant.ok &&
+          setValues({ ...Values, ...res.getOneRestaurant.data[0] });
+      } catch (err) {
+        console.log(err);
+      }
     }
   }, []);
   const classes = useStyles();
@@ -162,9 +175,10 @@ const AddRestaurantContainer: React.FunctionComponent<Props> = ({ match }) => {
   };
   const addRestaurant = (values: any, actions: any) => {
     const { imagePath, ...result } = values;
-    console.log("Submitted");
-    console.log(result, imagePath);
-    addOrEditRestaurantMutation({ variables: {...result, commission: parseFloat(result.commission)} }).finally(() => {
+
+    addOrEditRestaurantMutation({
+      variables: { ...result, commission: parseFloat(result.commission) },
+    }).finally(() => {
       actions.resetForm();
       setPreview(null);
     });
@@ -175,8 +189,7 @@ const AddRestaurantContainer: React.FunctionComponent<Props> = ({ match }) => {
   ] = useMutation(ADD_OR_EDIT_RESTAURANT_MUTATION, {
     onCompleted: (data) => {
       const { ok, message, error } = data.addOrEditRestaurant;
-      console.log("completed!");
-      console.log({ ok, message, error });
+
       handlAlert(true, ok ? message : error, ok);
     },
     onError: (err) => console.log(err),
@@ -226,9 +239,6 @@ const AddRestaurantContainer: React.FunctionComponent<Props> = ({ match }) => {
                   </div>
                 ) : error || queryError ? (
                   <>
-                 { console.log("Errors")}
-                 { console.log(queryError)}
-                 { console.log(error)}
                     <div
                       className="d-flex justify-content-center alert alert-danger"
                       role="alert"

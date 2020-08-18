@@ -6,6 +6,7 @@ import Card from "../../Shared/Card";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import {  GET_RESTAURANTS_MUTATION, DELETE_RESTAURANT_MUTATION, EDIT_RESTAURANT_STATUS_MUTATION } from "../../../helpers/gql";
 import ModalForm from "../../Shared/Modal/ModalForm";
+import { Link } from "react-router-dom";
 
 
 const dataRows = {
@@ -132,25 +133,32 @@ const [editStatusMutation] = useMutation(EDIT_RESTAURANT_STATUS_MUTATION, {
           <ModalForm Id={val.id} title="Preview"/>
           </span>
         ],
-        action: [ 
+        action: [
           <span key={index}>
-          <ModalForm Id={val.id} title="Edit"/>
-          <span
-            className="mr-3 text-danger"
-            data-toggle="tooltip"
-            data-placement="top"
-            title=""
-            data-original-title="Delete"
-            onClick={() => {
-              setRestaurantId(val.id)
-              handleDeleteCase(val.id);
-            }}
-            style={{cursor: "pointer"}}
-          >
-            <i className="mdi mdi-close font-18"></i>
-          </span>
-        </span>,
-        "",
+             <Link to={`/add-restaurant/${ val.id }`} ><span
+              className="mr-3 text-primary"
+              data-toggle="modal"
+              data-target=".bs-caroussel-modal"
+              title=""
+              data-original-title="Edit"
+              
+            >
+              <i className="mdi mdi-pencil font-18"></i>
+            </span>
+            </Link>
+            <span
+              className="mr-3 text-danger"
+              data-placement="top"
+              title=""
+              data-original-title="Delete"
+              onClick={() => {
+                
+              }}
+            >
+              <i className="mdi mdi-close font-18"></i>
+            </span>
+          </span>,
+          "",
         ],
       };
     });

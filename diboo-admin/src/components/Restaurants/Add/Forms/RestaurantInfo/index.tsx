@@ -16,8 +16,7 @@ interface Props {
   handleChange: Function;
 }
 const RestaurantInfoForm: React.FunctionComponent<Props> = (props) => {
-  console.log("Props")
-  console.log(props)
+
   const [switchs, setSwitchs] = useState({
     delivery: props.delivery,
     pickUp: props.pickUp,

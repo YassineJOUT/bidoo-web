@@ -38,7 +38,6 @@ const DisplayDetailsForm: React.FunctionComponent<Props> = (props) => {
     }
   }, [props.Id, getRestaurant]);
   function getContent(step: Number) {
-    console.log("values :::", Values);
     switch (step) {
       case 0:
         return (
