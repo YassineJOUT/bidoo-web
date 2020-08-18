@@ -495,7 +495,11 @@ export const GET_RESTAURANT_MUTATION = gql`
 
 export const DELETE_RESTAURANT_MUTATION = gql`
   mutation deleteRestaurant($id: String!) {
-    response
+    deleteRestaurant(id: $id){
+      ok
+      message
+      error
+    }
   }
 `;
 

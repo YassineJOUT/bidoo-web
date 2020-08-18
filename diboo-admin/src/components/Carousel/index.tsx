@@ -100,6 +100,9 @@ const CarouselContainer: React.FunctionComponent = () => {
       const { ok, message, error } = data.deleteCarousel;
       handlAlert(true, ok ? message : error, ok);
     },
+    onError: (err) => {
+      handlAlert(true, "Something went wrong!", false);
+    }
   });
   const [addOrEditMutation] = useMutation(ADD_OR_EDIT_CAROUSEL_MUTATION, {
     onCompleted: (data) => {

@@ -12,6 +12,7 @@ import {
 import ModalForm from "../../Shared/Modal/ModalForm";
 import { Link } from "react-router-dom";
 import Alert from "../../Shared/Alert";
+import YesNoModal from "../../Shared/ConfirmModal";
 
 const dataRows = {
   columns: [
@@ -55,6 +56,17 @@ const dataRows = {
 };
 
 const ManageRestaurantsContainer: React.FunctionComponent = () => {
+  //handle model close
+  const [restId, setRestId] = useState("");
+  const handleClose = (yes: boolean) => {
+    setOpen(false);
+    // call delete mutation
+    yes && deleteRestaurantMutation({ variables: { id: restId } });
+  };
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
    // handle alerts
    const [showAlert, setShowAlert] = useState({
     show: false,
@@ -67,17 +79,17 @@ const ManageRestaurantsContainer: React.FunctionComponent = () => {
       setShowAlert({ show: false, message: "", type: true });
     }, 2000);
   };
-  const [restaurantId, setRestaurantId] = useState(" ");
   const { loading, error, data } = useQuery(GET_RESTAURANTS_MUTATION);
-  const [preview, setPreview] = useState<any>(null);
-  const [choice, setChoice] = useState(0);
-  const [status, setStatus] = useState(false);
-  const handleDeleteCase = (id: String) => {
-    deleteRestaurantMutation({ variables: id }).finally(() => {
-      setPreview(null);
-    });
-  };
-  const [deleteRestaurantMutation] = useMutation(DELETE_RESTAURANT_MUTATION);
+
+  const [deleteRestaurantMutation] = useMutation(DELETE_RESTAURANT_MUTATION,{
+    onCompleted: (data) => {
+      const { ok, message, error } = data.deleteRestaurant;
+      handlAlert(true, ok ? message : error, ok);
+    },
+    onError: (err) => {
+      handlAlert(true, "Something went wrong! ", false);
+    }
+  });
   const [editStatusMutation] = useMutation(EDIT_RESTAURANT_STATUS_MUTATION, {
     onCompleted: (data) => {
       const { ok, message, error } = data.updateRestaurantStatus;
@@ -162,7 +174,10 @@ const ManageRestaurantsContainer: React.FunctionComponent = () => {
               data-placement="top"
               title=""
               data-original-title="Delete"
-              onClick={() => {}}
+              onClick={() => {
+                handleClickOpen();
+                setRestId(val.id);
+              }}
             >
               <i className="mdi mdi-close font-18"></i>
             </span>
@@ -233,6 +248,11 @@ const ManageRestaurantsContainer: React.FunctionComponent = () => {
       {showAlert.show && (
         <Alert message={showAlert.message} type={showAlert.type} />
       )}
+       <YesNoModal
+        message="Are you sure ?"
+        open={open}
+        handleClose={handleClose}
+      />
     </div>
     /*  <div>
      <DisplayDetailsForm Id={restaurantId}/>
