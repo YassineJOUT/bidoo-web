@@ -543,9 +543,11 @@ export const UPDATE_RESTAURANT_MUTATION = gql`
 `;
 
 export const EDIT_RESTAURANT_STATUS_MUTATION = gql`
-  mutation updateRestaurant($id: String!, $status: boolean!) {
-    updateRestaurantStatus(id: $id, status: $status) {
-      reponse
-    }
+mutation updateRestaurantStatus($id: String!, $status: Boolean!) {
+  updateRestaurantStatus(id: $id, status: $status) {
+    ok
+    message
+    error
   }
+}
 `;
